@@ -2136,6 +2136,7 @@ update_ota_exit:
 #endif
 
 #ifdef SDCARD_OTA_UPDATE
+#if defined(FATFS_DISK_SD) && FATFS_DISK_SD
 
 FATFS m_fs;
 
@@ -2330,4 +2331,5 @@ update_ota_exit:
 	
 	return ret;
 }
+#endif
 #endif
