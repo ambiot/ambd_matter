@@ -1,0 +1,17 @@
+*.i
+*.d
+*.o
+*.s
+*.su
+
+
+project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/asdk/image/*
+project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp/asdk/image/*
+
+project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/toolchain/linux/*
+project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp/toolchain/linux/*
+
+project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/asdk/lib/application/*
+project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp/asdk/lib/application/*
+
+project/realtek_amebaD_va0_example/inc/inc_hp/build_info.h
