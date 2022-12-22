@@ -444,6 +444,11 @@ Certain platform allows computing and verifying the IP, UDP, TCP and ICMP checks
 #endif
 #endif
 
+#if defined(CONFIG_EXAMPLE_MATTER) && CONFIG_EXAMPLE_MATTER
+#undef  MEMP_NUM_SYS_TIMEOUT
+#define MEMP_NUM_SYS_TIMEOUT            14
+#endif
+
 #include "lwip/init.h"                  //for version control
 
 #ifdef __cplusplus
