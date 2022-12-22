@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # Usage
-# ./flash.sh <Device Port> <Path to Output Dir>
-# ./flash.sh /dev/ttyUSB0 /path/to/output
+# ./flash.sh <Device Port> <Path to km0_boot_all.bin> <Path to km4_boot_all.bin> <Path to km0_km4_image2.bin> <address[optional]>
 
 if [ -z "$1" ]
   then
@@ -17,16 +16,24 @@ if [ -z "$2" ]
 fi
 
 SDK_ROOT_DIR=$PWD/../../..
-OUTPUT_DIR=$2
-BOOT_DIR=$OUTPUT_DIR/asdk/bootloader
-IMAGE_DIR=$OUTPUT_DIR/asdk/image
+KM0_BOOT_ALL_IMG=$2
+KM4_BOOT_ALL_IMG=$3
+KM0_KM4_IMG=$4
+# sudo ./AmebaD_ImageTool -set chip AmebaD
 rm -rf log* Image_All.bin*
-sudo ./AmebaD_ImageTool -set chip AmebaD
 sudo ./AmebaD_ImageTool -add device $1
 sudo ./AmebaD_ImageTool -set baudrate 1500000
-sudo ./AmebaD_ImageTool -combine $BOOT_DIR/km0_boot_all.bin 0x0000 $BOOT_DIR/km4_boot_all.bin 0x4000 $IMAGE_DIR/km0_km4_image2.bin 0x6000
+sudo ./AmebaD_ImageTool -combine $KM0_BOOT_ALL_IMG 0x0000 $KM4_BOOT_ALL_IMG 0x4000 $KM0_KM4_IMG 0x6000
 sudo ./AmebaD_ImageTool -set image $PWD/Image_All.bin
-sudo ./AmebaD_ImageTool -set address 0x08000000
+if [ -n "$5" ]
+then
+    echo "Flashing to address $5"
+    sudo ./AmebaD_ImageTool -set address $5
+else
+    # if no address is given, use default address 0x08000000
+    echo "Flashing to address 0x08000000"
+    sudo ./AmebaD_ImageTool -set address 0x08000000
+fi
 sudo ./AmebaD_ImageTool -show
 read -p "Check if the settings are correct, then enter UART DOWNLOAD mode
 1) Push the UART DOWNLOAD button and keep it pressed.
