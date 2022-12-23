@@ -39,6 +39,7 @@ DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/all-clusters-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
+DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 
 vpath %.cpp $(DIR) $(shell find $(DIR) -type d)
 vpath %.c $(DIR) $(shell find $(DIR) -type d)
@@ -48,6 +49,7 @@ vpath %.c $(DIR) $(shell find $(DIR) -type d)
 
 GLOBAL_CFLAGS += -DCHIP_PROJECT=1
 GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolve/AddressResolve_DefaultImpl.h\"
+GLOBAL_CFLAGS += -DCONFIG_ENABLE_CHIP_SHELL=1
 
 #*****************************************************************************#
 #                               Include FILE LIST                             #
@@ -93,6 +95,7 @@ CPPSRC += $(CHIPDIR)/src/app/util/binding-table.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/DataModelHandler.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/ember-compatibility-functions.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/ember-print.cpp
+CPPSRC += $(CHIPDIR)/src/app/util/generic-callback-stubs.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/message.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/util.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/error-mapping.cpp
@@ -100,12 +103,13 @@ CPPSRC += $(CHIPDIR)/src/app/util/privilege-storage.cpp
 
 CPPSRC += $(CHIPDIR)/src/app/reporting/Engine.cpp
 
-CPPSRC += $(shell cat $(ROOTDIR)/cluster-file.txt)
+CPPSRC += $(shell cat $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt)
+
+CPPSRC += $(BASEDIR)/tools/matter/codegen_helpers/gen/app/callback-stub.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/cluster-objects.cpp
 
-CPPSRC += $(CHIPDIR)/zzz_generated/all-clusters-app/zap-generated/callback-stub.cpp
 CPPSRC += $(CHIPDIR)/zzz_generated/all-clusters-app/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/bridged-actions-stub.cpp

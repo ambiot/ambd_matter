@@ -21,7 +21,7 @@ BASEDIR		= $(ROOTDIR)/../../../../..
 KM0_BUILDDIR	= $(ROOTDIR)/../../project_lp
 KM4_BUILDDIR	= $(ROOTDIR)/../../project_hp
 #CHIPDIR	    =$(BASEDIR)/third_party/connectedhomeip
-CHIPDIR         = $(BASEDIR)/../connectedhomeip
+CHIPDIR         = $(BASEDIR)/third_party/connectedhomeip
 
 TARGETDIR	=$(BASEDIR)/component/soc/realtek/amebad
 BOOTLOADER	=$(BASEDIR)/component/soc/realtek/amebad/bootloader
@@ -289,6 +289,7 @@ endif
 #BT config
 IFLAGS               += -I$(BASEDIR)/component/common/bluetooth/realtek/sdk/example/bt_config
 IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/bluetooth/bt_matter_adapter
+IFLAGS               += -I$(BASEDIR)/tools/matter/codegen_helpers/gen
 
 
 #*****************************************************************************#

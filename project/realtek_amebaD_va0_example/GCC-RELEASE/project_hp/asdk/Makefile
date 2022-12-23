@@ -196,6 +196,8 @@ endif
 	@$(ROM_SYMBOL_GEN_PYTHON) 
 	@$(ROM_SYMBOL_S_GEN_PYTHON) 
 
+mkdir_codegen:
+	if [ ! -d $(BASEDIR)/tools/matter/codegen_helpers/gen ]; then mkdir $(BASEDIR)/tools/matter/codegen_helpers/gen; fi
 
 #*****************************************************************************#
 #                      RULES TO MAKE SUB DIRS                                 #
@@ -231,13 +233,17 @@ make_subdirs_bootloader:
 
 make_subdirs_lib_all_clusters:
 	@ rm -f $(RAM_OBJS_LIST)
-	python3 ameba_zap_cluster_list.py --zap_file $(BASEDIR)/third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/all-clusters-app.zap
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(BASEDIR)/tools/matter/codegen_helpers/gen --expected-outputs $(BASEDIR)/tools/matter/codegen_helpers/expected.outputs $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.matter
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.zap > $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
+	python3 $(BASEDIR)/tools/matter/codegen_helpers/parse_clusters.py --cluster_file $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
 	make -C make/chip/all_clusters_app all
 	make -C make/chip_main/all_clusters_app all
 
 make_subdirs_lib_lighting:
 	@ rm -f $(RAM_OBJS_LIST)
-	python3 ameba_zap_cluster_list.py --zap_file $(BASEDIR)/third_party/connectedhomeip/examples/lighting-app/lighting-common/lighting-app.zap
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(BASEDIR)/tools/matter/codegen_helpers/gen --expected-outputs $(BASEDIR)/tools/matter/codegen_helpers/expected.outputs $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.matter
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap > $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
+	python3 $(BASEDIR)/tools/matter/codegen_helpers/parse_clusters.py --cluster_file $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
 	make -C make/chip/lighting_app all
 	make -C make/chip_main/lighting_app all
 
@@ -592,6 +598,7 @@ clean:
 
 	make -C make/chip clean
 	make -C make/chip_main clean
+	rm -rf $(BASEDIR)/tools/matter/codegen_helpers/gen
 
 clean_rom:
 	@make -C make_rom/make clean
