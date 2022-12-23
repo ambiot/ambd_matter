@@ -38,6 +38,7 @@ DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
+DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 
 vpath %.cpp $(DIR) $(shell find $(DIR) -type d)
 vpath %.c $(DIR) $(shell find $(DIR) -type d)
@@ -90,12 +91,15 @@ CPPSRC += $(CHIPDIR)/src/app/util/binding-table.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/DataModelHandler.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/ember-compatibility-functions.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/ember-print.cpp
+CPPSRC += $(CHIPDIR)/src/app/util/generic-callback-stubs.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/message.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/util.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/error-mapping.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/privilege-storage.cpp
 
-CPPSRC += $(shell cat $(ROOTDIR)/cluster-file.txt)
+CPPSRC += $(shell cat $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt)
+
+CPPSRC += $(BASEDIR)/tools/matter/codegen_helpers/gen/app/callback-stub.cpp
 
 CPPSRC += $(CHIPDIR)/src/app/reporting/Engine.cpp
 
@@ -103,7 +107,6 @@ CPPSRC += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders/IP.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
 
-CPPSRC += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated/callback-stub.cpp
 CPPSRC += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/chipinterface.cpp

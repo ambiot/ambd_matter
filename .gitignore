@@ -15,3 +15,6 @@ project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/asdk/lib/application/*
 project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp/asdk/lib/application/*
 
 project/realtek_amebaD_va0_example/inc/inc_hp/build_info.h
+
+tools/matter/codegen_helpers/gen/*
+tools/bluetooth/DebugAnalyzer/*.trace
