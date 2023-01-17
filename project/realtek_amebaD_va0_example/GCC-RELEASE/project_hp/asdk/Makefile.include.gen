@@ -370,6 +370,7 @@ GLOBAL_CFLAGS += -Wpointer-arith
 #GLOBAL_CFLAGS += -Wundef
 GLOBAL_CFLAGS += -Wno-write-strings
 GLOBAL_CFLAGS += -Wno-maybe-uninitialized
+GLOBAL_CFLAGS += -Wno-unused-label
 #GLOBAL_CFLAGS += --save-temps
 GLOBAL_CFLAGS += -c
 GLOBAL_CFLAGS += -MMD -MP
