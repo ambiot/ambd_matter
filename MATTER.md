@@ -41,15 +41,15 @@ Make sure ambz2_matter and connectedhomeip are on the same directory level
 
 ## Make project_lp
 
-    cd sdk_amebad_v6.2C-RC/project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp/
+    cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp/
     
     make all
 
 ## Make Matter Libraries
 
-    cd sdk_amebad_v6.2C-RC/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/
+    cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/
     
-    make -C asdk lib_all
+    make -C asdk all_clusters
     
 ## Make project_hp
 
