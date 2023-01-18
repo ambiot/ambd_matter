@@ -115,7 +115,6 @@ CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/DeviceCallbacks.cpp
 CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/CHIPDeviceManager.cpp
 CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/Globals.cpp
 CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/LEDWidget.cpp
-CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/DsoHack.cpp
 
 CPPSRC += $(CHIPDIR)/examples/platform/ameba/ota/OTAInitializer.cpp
 CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
