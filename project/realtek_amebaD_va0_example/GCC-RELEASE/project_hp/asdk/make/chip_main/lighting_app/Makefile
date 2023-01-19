@@ -26,6 +26,8 @@ include $(MAKE_INCLUDE_GEN)
 #*****************************************************************************#
 #                               VARIABLES	                              #
 #*****************************************************************************#
+OUTPUT_DIR = $(CHIPDIR)/examples/lighting-app/ameba/build/chip
+CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
@@ -39,12 +41,11 @@ DIR += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
 DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
+DIR += $(CODEGEN_DIR)/app
+DIR += $(CODEGEN_DIR)/zap-generated
 
 vpath %.cpp $(DIR) $(shell find $(DIR) -type d)
 vpath %.c $(DIR) $(shell find $(DIR) -type d)
-
-OUTPUT_DIR = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip
-CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 #*****************************************************************************#
 #                               CFLAGS                                        #
 #*****************************************************************************#
@@ -75,6 +76,7 @@ IFLAGS += -I$(CHIPDIR)/src/app/server/
 IFLAGS += -I$(CHIPDIR)/src/controller/data_model
 IFLAGS += -I$(CHIPDIR)/third_party/nlio/repo/include/
 IFLAGS += -I$(CHIPDIR)/third_party/nlunit-test/repo/src
+IFLAGS += -I$(CODEGEN_DIR)
 
 #*****************************************************************************#
 #                               Source FILE LIST                              #

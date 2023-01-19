@@ -26,6 +26,8 @@ include $(MAKE_INCLUDE_GEN)
 #*****************************************************************************#
 #                               VARIABLES	                              #
 #*****************************************************************************#
+OUTPUT_DIR = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip
+CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
@@ -39,13 +41,11 @@ DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/all-clusters-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
-DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
+DIR += $(CODEGEN_DIR)/app
+DIR += $(CODEGEN_DIR)/zap-generated
 
 vpath %.cpp $(DIR) $(shell find $(DIR) -type d)
 vpath %.c $(DIR) $(shell find $(DIR) -type d)
-
-OUTPUT_DIR = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip
-CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 #*****************************************************************************#
 #                               CFLAGS                                        #
 #*****************************************************************************#
