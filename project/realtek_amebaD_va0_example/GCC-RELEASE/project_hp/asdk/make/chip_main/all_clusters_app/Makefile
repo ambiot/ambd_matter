@@ -43,6 +43,9 @@ DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 
 vpath %.cpp $(DIR) $(shell find $(DIR) -type d)
 vpath %.c $(DIR) $(shell find $(DIR) -type d)
+
+OUTPUT_DIR = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip
+CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 #*****************************************************************************#
 #                               CFLAGS                                        #
 #*****************************************************************************#
@@ -75,6 +78,7 @@ IFLAGS += -I$(CHIPDIR)/src/app/server/
 IFLAGS += -I$(CHIPDIR)/src/controller/data_model
 IFLAGS += -I$(CHIPDIR)/third_party/nlio/repo/include/
 IFLAGS += -I$(CHIPDIR)/third_party/nlunit-test/repo/src
+IFLAGS += -I$(CODEGEN_DIR)
 
 
 #*****************************************************************************#
@@ -104,14 +108,13 @@ CPPSRC += $(CHIPDIR)/src/app/util/privilege-storage.cpp
 
 CPPSRC += $(CHIPDIR)/src/app/reporting/Engine.cpp
 
-CPPSRC += $(shell cat $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt)
+CPPSRC += $(shell cat $(CODEGEN_DIR)/cluster-file.txt)
 
-CPPSRC += $(BASEDIR)/tools/matter/codegen_helpers/gen/app/callback-stub.cpp
+CPPSRC += $(CODEGEN_DIR)/app/callback-stub.cpp
+CPPSRC += $(CODEGEN_DIR)/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/cluster-objects.cpp
-
-CPPSRC += $(CHIPDIR)/zzz_generated/all-clusters-app/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/bridged-actions-stub.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/static-supported-modes-manager.cpp

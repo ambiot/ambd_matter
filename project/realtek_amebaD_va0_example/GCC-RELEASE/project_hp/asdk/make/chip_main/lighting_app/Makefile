@@ -42,6 +42,9 @@ DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 
 vpath %.cpp $(DIR) $(shell find $(DIR) -type d)
 vpath %.c $(DIR) $(shell find $(DIR) -type d)
+
+OUTPUT_DIR = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip
+CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 #*****************************************************************************#
 #                               CFLAGS                                        #
 #*****************************************************************************#
@@ -98,17 +101,16 @@ CPPSRC += $(CHIPDIR)/src/app/util/util.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/error-mapping.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/privilege-storage.cpp
 
-CPPSRC += $(shell cat $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt)
+CPPSRC += $(shell cat $(CODEGEN_DIR)/cluster-file.txt)
 
-CPPSRC += $(BASEDIR)/tools/matter/codegen_helpers/gen/app/callback-stub.cpp
+CPPSRC += $(CODEGEN_DIR)/app/callback-stub.cpp
+CPPSRC += $(CODEGEN_DIR)/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/src/app/reporting/Engine.cpp
 
 CPPSRC += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders/IP.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
-
-CPPSRC += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/chipinterface.cpp
 CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/DeviceCallbacks.cpp

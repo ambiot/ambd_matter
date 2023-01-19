@@ -196,8 +196,12 @@ endif
 	@$(ROM_SYMBOL_GEN_PYTHON) 
 	@$(ROM_SYMBOL_S_GEN_PYTHON) 
 
-mkdir_codegen:
-	if [ ! -d $(BASEDIR)/tools/matter/codegen_helpers/gen ]; then mkdir $(BASEDIR)/tools/matter/codegen_helpers/gen; fi
+#*****************************************************************************#
+#                      RULES TO CHECK ZAP INSTALLATION                        #
+#*****************************************************************************#
+check_zap:
+	cd $(MATTER_TOOLDIR)/codegen_helpers && \
+	./check_zap.sh
 
 #*****************************************************************************#
 #                      RULES TO MAKE SUB DIRS                                 #
@@ -231,19 +235,27 @@ make_subdirs_bootloader:
 	@ rm -f $(RAM_OBJS_LIST)
 	@make -C make/bootloader all
 
-make_subdirs_lib_all_clusters:
+make_subdirs_lib_all_clusters: check_zap
 	@ rm -f $(RAM_OBJS_LIST)
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(BASEDIR)/tools/matter/codegen_helpers/gen --expected-outputs $(BASEDIR)/tools/matter/codegen_helpers/expected.outputs $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.zap > $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
-	python3 $(BASEDIR)/tools/matter/codegen_helpers/parse_clusters.py --cluster_file $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
+	export ZAP_INSTALL_PATH="$(MATTER_TOOLDIR)/codegen_helpers/zap" && \
+	mkdir -p $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/zap-generated && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl.json --output-dir examples/all-clusters-app/ameba/build/chip/codegen/zap-generated examples/all-clusters-app/all-clusters-common/all-clusters-app.zap && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/all-clusters-app/ameba/build/chip/codegen/zap-generated examples/all-clusters-app/all-clusters-common/all-clusters-app.zap && \
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.matter && \
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.zap > $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/cluster-file.txt && \
+	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
 	make -C make/chip/all_clusters_app all
 	make -C make/chip_main/all_clusters_app all
 
-make_subdirs_lib_lighting:
+make_subdirs_lib_lighting: check_zap
 	@ rm -f $(RAM_OBJS_LIST)
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(BASEDIR)/tools/matter/codegen_helpers/gen --expected-outputs $(BASEDIR)/tools/matter/codegen_helpers/expected.outputs $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap > $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
-	python3 $(BASEDIR)/tools/matter/codegen_helpers/parse_clusters.py --cluster_file $(BASEDIR)/tools/matter/codegen_helpers/gen/cluster-file.txt
+	export ZAP_INSTALL_PATH="$(MATTER_TOOLDIR)/codegen_helpers/zap" && \
+	mkdir -p $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/zap-generated && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl.json --output-dir examples/lighting-app/ameba/build/chip/codegen/zap-generated examples/lighting-app/lighting-common/lighting-app.zap && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/lighting-app/ameba/build/chip/codegen/zap-generated examples/lighting-app/lighting-common/lighting-app.zap && \
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.matter && \
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap > $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt && \
+	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
 	make -C make/chip/lighting_app all
 	make -C make/chip_main/lighting_app all
 
@@ -596,8 +608,8 @@ clean:
 	# make -C config clean
 	make -C $(SCRIPTSDIR)/lxdialog clean
 
-	make -C make/chip clean
 	make -C make/chip_main clean
+	make -C make/chip clean
 	rm -rf $(BASEDIR)/tools/matter/codegen_helpers/gen
 
 clean_rom:
