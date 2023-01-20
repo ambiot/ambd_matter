@@ -22,6 +22,7 @@ KM0_BUILDDIR	= $(ROOTDIR)/../../project_lp
 KM4_BUILDDIR	= $(ROOTDIR)/../../project_hp
 #CHIPDIR	    =$(BASEDIR)/third_party/connectedhomeip
 CHIPDIR         = $(BASEDIR)/third_party/connectedhomeip
+MATTER_TOOLDIR = $(BASEDIR)/tools/matter
 
 TARGETDIR	=$(BASEDIR)/component/soc/realtek/amebad
 BOOTLOADER	=$(BASEDIR)/component/soc/realtek/amebad/bootloader
