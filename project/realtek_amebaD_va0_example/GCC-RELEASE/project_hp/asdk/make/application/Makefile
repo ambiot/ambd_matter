@@ -19,6 +19,7 @@ endif
 ifeq ($(CONFIG_LINKKIT_AWSS),y)
 	@make -C linkkit all
 endif
+	@make -C matter all
 	#@make -C xmodem all
 	#@make -C airkiss all
 #*****************************************************************************#
@@ -27,6 +28,7 @@ endif
 clean:
 	@make -C baidu clean
 	@make -C mqtt clean
+	@make -C matter clean
 	#@make -C xmodem clean
 	#@make -C airkiss clean
 	#@make -C linkkit clean

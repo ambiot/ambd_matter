@@ -160,9 +160,9 @@ IFLAGS               += -I$(BASEDIR)/component/common/api/platform
 IFLAGS               += -I$(BASEDIR)/component/common/api/wifi
 IFLAGS               += -I$(BASEDIR)/component/common/api/network
 IFLAGS               += -I$(BASEDIR)/component/common/api/network/include
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/application
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/protobuf
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/protobuf/nanopb
+IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/port
+IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/protobuf
+IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/protobuf/nanopb
 IFLAGS               += -I$(BASEDIR)/component/common/audio
 IFLAGS               += -I$(BASEDIR)/component/common/test
 IFLAGS               += -I$(BASEDIR)/component/common/example
@@ -230,7 +230,7 @@ IFLAGS               += -I$(MBEDTLSDIR)/include/mbedtls
 IFLAGS               += -I$(MBEDTLSDIR)/library
 #mbedtlc_config
 IFLAGS               += -I$(CHIPDIR)/config/ameba
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/mbedtls
+IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls_ram_map/rom
 IFLAGS               += -I$(BASEDIR)/component/common/application/amazon/amazon-freertos/lib/include/private
 
@@ -290,7 +290,6 @@ endif
 #BT config
 IFLAGS               += -I$(BASEDIR)/component/common/bluetooth/realtek/sdk/example/bt_config
 IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/bluetooth/bt_matter_adapter
-IFLAGS               += -I$(BASEDIR)/tools/matter/codegen_helpers/gen
 
 
 #*****************************************************************************#

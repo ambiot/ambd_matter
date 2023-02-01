@@ -11,7 +11,6 @@ IFLAGS               += -I$(BASEDIR)/component/common/network/libcoap/include
 #                               VARIABLES	                              #
 #*****************************************************************************#
 DIR = $(BASEDIR)/component/common/api/at_cmd
-MATTER_DIR = $(BASEDIR)/component/common/application/matter/common
 
 vpath %.c $(DIR)
 
@@ -24,7 +23,6 @@ CSRC +=	$(DIR)/atcmd_sys.c \
 		$(DIR)/log_service.c \
 		$(DIR)/atcmd_mp.c \
 		$(DIR)/atcmd_mp_ext2.c \
-		$(MATTER_DIR)/atcmd_matter.c \
 
 ifeq ($(CONFIG_BT_EN), y)
 CSRC += $(DIR)/atcmd_bt.c
