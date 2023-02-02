@@ -41,6 +41,9 @@ DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
+DIR += $(BASEDIR)/component/common/application/matter/core
+DIR += $(BASEDIR)/component/common/application/matter/driver
+DIR += $(BASEDIR)/component/common/application/matter/example/light
 DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 DIR += $(CODEGEN_DIR)/app
 DIR += $(CODEGEN_DIR)/zap-generated
@@ -57,8 +60,15 @@ GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolv
 #*****************************************************************************#
 #                               Include FILE LIST                             #
 #*****************************************************************************#
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/bluetooth/bt_matter_adapter
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/port
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/core
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/driver
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/example/light
 
 #IFLAGS = -I$(DIR)./
+IFLAGS += -I$(CHIPDIR)/zzz_generated
 IFLAGS += -I$(CHIPDIR)/zzz_generated/app-common
 IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app
 IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app/zap-generated
@@ -115,17 +125,18 @@ CPPSRC += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders/IP.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
 
-CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/chipinterface.cpp
-CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/DeviceCallbacks.cpp
-CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/CHIPDeviceManager.cpp
-CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/Globals.cpp
-CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/LEDWidget.cpp
-
-CPPSRC += $(CHIPDIR)/examples/platform/ameba/ota/OTAInitializer.cpp
 CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
 
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
+
+# Custom light-app src files with porting layer
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/driver/led_driver.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/example/light/example_matter_light.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/example/light/matter_drivers.cpp
 
 #*****************************************************************************#
 #                               Object FILE LIST                              #

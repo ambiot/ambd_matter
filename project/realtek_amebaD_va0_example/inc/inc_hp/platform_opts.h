@@ -759,5 +759,7 @@ in lwip_opt.h for support uart adapter*/
 #endif
 
 #define CONFIG_EXAMPLE_MATTER 1
+#define CONFIG_EXAMPLE_MATTER_CHIPTEST 1
+#define CONFIG_EXAMPLE_MATTER_LIGHT 0
 
 #endif

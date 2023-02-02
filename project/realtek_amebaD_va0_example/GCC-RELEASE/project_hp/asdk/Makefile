@@ -176,6 +176,7 @@ mp_image3_s: build_target_folder copy_ld_img3 check_toolchain build_info.h make_
 bootloader: build_target_folder copy_ld_img1 check_toolchain build_info.h make_subdirs_bootloader linker_loader gen_rom_symbol
 all_clusters: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_all_clusters
 light: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_lighting
+light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_lighting_port
 
 #*****************************************************************************#
 #                      RULES TO CREATE DIRECTORY                              #
@@ -258,6 +259,18 @@ make_subdirs_lib_lighting: check_zap
 	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
 	make -C make/chip/lighting_app all
 	make -C make/chip_main/lighting_app all
+
+make_subdirs_lib_lighting_port: check_zap
+	@ rm -f $(RAM_OBJS_LIST)
+	export ZAP_INSTALL_PATH="$(MATTER_TOOLDIR)/codegen_helpers/zap" && \
+	mkdir -p $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/zap-generated && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl.json --output-dir examples/lighting-app/ameba/build/chip/codegen/zap-generated examples/lighting-app/lighting-common/lighting-app.zap && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/lighting-app/ameba/build/chip/codegen/zap-generated examples/lighting-app/lighting-common/lighting-app.zap && \
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.matter && \
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap > $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt && \
+	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
+	make -C make/chip/lighting_app all
+	make -C make/chip_main/lighting_port all
 
 #*****************************************************************************#
 #                      RULES TO LINKER IMAGE                                  #
