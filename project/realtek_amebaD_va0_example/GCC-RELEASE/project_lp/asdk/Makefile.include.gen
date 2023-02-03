@@ -186,7 +186,7 @@ IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/polarssl-1.3.8
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/ssl_ram_map/rom
 
 #MBEDTLS
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/mbedtls
+IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls-2.4.0/include/mbedtls
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls-2.4.0/include
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls_ram_map/rom

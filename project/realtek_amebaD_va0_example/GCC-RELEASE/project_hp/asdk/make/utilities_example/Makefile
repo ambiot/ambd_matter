@@ -49,7 +49,6 @@ endif
 #                               VARIABLES	                              #
 #*****************************************************************************#
 DIR = $(BASEDIR)/component/common/example
-MATTER_EXAMPLE_DIR = $(BASEDIR)/component/common/application/matter/application
 RM_DIRS = 'example/audio_mp3|example/audio_amr|example/audio_helix_aac|example/audio_helix_mp3|example/audio_m4a_selfparse|example/audio_m4a|example/audio_pcm_upload|example/audio_hls'
 DIRS = $(shell find $(DIR) -maxdepth 3 -type d|grep -vE $(RM_DIRS))
 
@@ -192,7 +191,6 @@ ifeq ($(CONFIG_LINKKIT_AWSS), y)
 #CSRC += $(DIR)/linkkit/linkkit_awss_example.c
 endif
 
-CSRC += $(MATTER_EXAMPLE_DIR)/example_matter.c
 
 #*****************************************************************************#
 #                               Object FILE LIST                              #

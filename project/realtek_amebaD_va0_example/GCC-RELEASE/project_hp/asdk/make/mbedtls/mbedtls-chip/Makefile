@@ -5,18 +5,14 @@ include $(MAKE_INCLUDE_GEN)
 #*****************************************************************************#
 #                               VARIABLES	                              #
 #*****************************************************************************#
-DIR = $(BASEDIR)/component/common/application/matter/mbedtls
 MATTER_MBEDTLS_DIR = $(BASEDIR)/component/common/network/ssl/mbedtls-matter/library
 
-
-vpath %.c $(DIR) $(shell find $(DIR) -type d)
 vpath %.c $(MATTER_MBEDTLS_DIR) $(shell find $(MATTER_MBEDTLS_DIR) -type d)
 
 #*****************************************************************************#
 #                               Source FILE LIST                              #
 #*****************************************************************************#
-CSRC = $(DIR)/net_sockets.c		\
-       $(MATTER_MBEDTLS_DIR)/aes.c			\
+CSRC = $(MATTER_MBEDTLS_DIR)/aes.c			\
        $(MATTER_MBEDTLS_DIR)/aesni.c			\
 	   $(MATTER_MBEDTLS_DIR)/arc4.c			\
        $(MATTER_MBEDTLS_DIR)/aria.c		\
