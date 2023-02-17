@@ -43,7 +43,6 @@ GLOBAL_CFLAGS += -I$(BASEDIR)/component/common/bluetooth/realtek/sdk/example/bt_
 all: GENERATE_NINJA
 
 GENERATE_NINJA:
-	export ZAP_INSTALL_PATH="$(MATTER_TOOLDIR)/codegen_helpers/zap" && \
 	echo "INSTALL CHIP..." && \
 	mkdir -p $(OUTPUT_DIR) && \
 	echo                                   > $(OUTPUT_DIR)/args.gn && \
