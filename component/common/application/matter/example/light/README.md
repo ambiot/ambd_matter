@@ -18,8 +18,10 @@ The initialization of the button sets up an IRQ that is triggered whenever the b
 
 ### Button Press
 Whenever the button is pressed, the interrupt handler will be invoked.
-The interrupt handler will post an event to the downlink queue, which will be received by the interaction handler.
-The interaction handler will be responsible for updating the On/Off attribute of the LED.
+The interrupt handler will post an event to the downlink queue, which will be handled by `matter_driver_downlink_update_handler`.
+
+To implement this, under `matter_drivers.cpp`, setup your GPIO interrupt callback to create and post events to the downlink queue. See `matter_driver_button_callback` for reference.
+When creating the event to post to downlink queue, create a handler function for the event that will update the attributes on the Matter stack. See `matter_driver_downlink_update_handler` for reference.
 
 ### Matter Attribute Change Callback
 Whenever the Matter controller changes the On/Off attribute of the LED, 2 types of callbacks will be invoked:
@@ -27,12 +29,13 @@ Whenever the Matter controller changes the On/Off attribute of the LED, 2 types 
   2. MatterPostAttributeChangeCallback - Toggle the LED after updating the On/Off attribute
 
 These callbacks are defined in `core/matter_interaction.cpp`.
-These callbacks will post an event to the uplink queue, which will be received by the interaction handler.
-The interaction handler will be responsible for toggling the LED.
+These callbacks will post an event to the uplink queue, which will be handled by `matter_driver_uplink_update_handler` in `matter_drivers.cpp`.
+The driver codes will be called to carry out your actions (On/Off LED in this case) depending on the Cluster and Attribute ID received.
+You may add clusters and attributes handling in `matter_driver_uplink_update_handler` if they are not present. 
 
 ## How to build
 
-## Configurations
+### Configurations
 Enable `CONFIG_EXAMPLE_MATTER` and `CONFIG_EXAMPLE_MATTER_LIGHT` in `platform_opts.h`.
 Ensure that `CONFIG_EXAMPLE_MATTER_CHIPTEST` is disabled.
 
@@ -40,7 +43,7 @@ Ensure that `CONFIG_EXAMPLE_MATTER_CHIPTEST` is disabled.
   
     cd connectedhomeip
     source scripts/activate.sh
-
+  
 ### Build Matter Libraries
 
     cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp
@@ -55,3 +58,8 @@ Ensure that `CONFIG_EXAMPLE_MATTER_CHIPTEST` is disabled.
     
 ### Flash the Image
 Refer to this [guide](https://github.com/ambiot/ambd_matter/blob/main/tools/AmebaD/Image_Tool_Linux/README.txt) to flash the image with the Linux Image Tool
+
+### Clean Matter Libraries and Firmware
+
+    cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp
+    make clean
