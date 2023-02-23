@@ -761,5 +761,6 @@ in lwip_opt.h for support uart adapter*/
 #define CONFIG_EXAMPLE_MATTER 1
 #define CONFIG_EXAMPLE_MATTER_CHIPTEST 1
 #define CONFIG_EXAMPLE_MATTER_LIGHT 0
+#define CONFIG_EXAMPLE_MATTER_THERMOSTAT 0
 
 #endif

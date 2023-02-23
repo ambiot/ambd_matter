@@ -26,24 +26,24 @@ include $(MAKE_INCLUDE_GEN)
 #*****************************************************************************#
 #                               VARIABLES	                              #
 #*****************************************************************************#
-OUTPUT_DIR = $(CHIPDIR)/examples/lighting-app/ameba/build/chip
+OUTPUT_DIR = $(CHIPDIR)/examples/thermostat/ameba/build/chip
 CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
 DIR += $(CHIPDIR)/src/app/server
 DIR += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders
-DIR += $(CHIPDIR)/examples/lighting-app/lighting-common
-DIR += $(CHIPDIR)/examples/lighting-app/ameba/main
+DIR += $(CHIPDIR)/examples/thermostat/thermostat-common
+DIR += $(CHIPDIR)/examples/thermostat/ameba/main
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
 DIR += $(CHIPDIR)/examples/providers
-DIR += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated
+DIR += $(CHIPDIR)/zzz_generated/thermostat/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
 DIR += $(BASEDIR)/component/common/application/matter/core
 DIR += $(BASEDIR)/component/common/application/matter/driver
-DIR += $(BASEDIR)/component/common/application/matter/example/light
+DIR += $(BASEDIR)/component/common/application/matter/example/thermostat
 DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 DIR += $(CODEGEN_DIR)/app
 DIR += $(CODEGEN_DIR)/zap-generated
@@ -65,16 +65,16 @@ IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/port
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/core
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/driver
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/example/light
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/example/thermostat
 
 #IFLAGS = -I$(DIR)./
 IFLAGS += -I$(CHIPDIR)/zzz_generated
 IFLAGS += -I$(CHIPDIR)/zzz_generated/app-common
-IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app
-IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app/zap-generated
-IFLAGS += -I$(CHIPDIR)/examples/lighting-app/lighting-common
-IFLAGS += -I$(CHIPDIR)/examples/lighting-app/ameba/main/include
-IFLAGS += -I$(CHIPDIR)/examples/lighting-app/ameba/build/chip/gen/include
+IFLAGS += -I$(CHIPDIR)/zzz_generated/thermostat
+IFLAGS += -I$(CHIPDIR)/zzz_generated/thermostat/zap-generated
+IFLAGS += -I$(CHIPDIR)/examples/thermostat/thermostat-common
+IFLAGS += -I$(CHIPDIR)/examples/thermostat/ameba/main/include
+IFLAGS += -I$(CHIPDIR)/examples/thermostat/ameba/build/chip/gen/include
 IFLAGS += -I$(CHIPDIR)/examples/platform/ameba
 IFLAGS += -I$(CHIPDIR)/examples/providers
 IFLAGS += -I$(CHIPDIR)/src/include/
@@ -129,13 +129,14 @@ CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 
-# Custom light-app src files with porting layer
+# Custom thermostat-app src files with porting layer
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/driver/led_driver.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/example/light/example_matter_light.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/example/light/matter_drivers.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/driver/thermostat.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/driver/thermostat_ui.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/example/thermostat/example_matter_thermostat.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/example/thermostat/matter_drivers.cpp
 
 #*****************************************************************************#
 #                               Object FILE LIST                              #
@@ -172,11 +173,11 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.o
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.i
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.s
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.d
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.su
+	rm -f $(ROOTDIR)/make/chip_main/thermostat_port/*.o
+	rm -f $(ROOTDIR)/make/chip_main/thermostat_port/*.i
+	rm -f $(ROOTDIR)/make/chip_main/thermostat_port/*.s
+	rm -f $(ROOTDIR)/make/chip_main/thermostat_port/*.d
+	rm -f $(ROOTDIR)/make/chip_main/thermostat_port/*.ii
+	rm -f $(ROOTDIR)/make/chip_main/thermostat_port/*.su
 
 -include $(DEPS)
