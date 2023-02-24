@@ -177,6 +177,7 @@ bootloader: build_target_folder copy_ld_img1 check_toolchain build_info.h make_s
 all_clusters: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_all_clusters
 light: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_lighting
 light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_lighting_port
+thermostat_port: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_thermostat_port
 
 #*****************************************************************************#
 #                      RULES TO CREATE DIRECTORY                              #
@@ -261,6 +262,17 @@ make_subdirs_lib_lighting_port:
 	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
 	make -C make/chip/lighting_app all
 	make -C make/chip_main/lighting_port all
+
+make_subdirs_lib_thermostat_port:
+	@ rm -f $(RAM_OBJS_LIST)
+	mkdir -p $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/zap-generated && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl.json --output-dir examples/thermostat/ameba/build/chip/codegen/zap-generated examples/thermostat/thermostat-common/thermostat.zap && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/thermostat/ameba/build/chip/codegen/zap-generated examples/thermostat/thermostat-common/thermostat.zap && \
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.matter && \
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.zap > $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt && \
+	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
+	make -C make/chip/thermostat_app all
+	make -C make/chip_main/thermostat_port all
 
 #*****************************************************************************#
 #                      RULES TO LINKER IMAGE                                  #

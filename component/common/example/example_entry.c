@@ -940,8 +940,9 @@ example_hilink();
 #if defined(CONFIG_EXAMPLE_MATTER_CHIPTEST) && (CONFIG_EXAMPLE_MATTER_CHIPTEST == 1)
     example_matter_task();
 #elif defined(CONFIG_EXAMPLE_MATTER_LIGHT) && (CONFIG_EXAMPLE_MATTER_LIGHT == 1)
-    // extern void example_matter_light();
     example_matter_light();
+#elif defined(CONFIG_EXAMPLE_MATTER_THERMOSTAT) && (CONFIG_EXAMPLE_MATTER_THERMOSTAT == 1)
+    example_matter_thermostat();
 #endif
 #endif
 
