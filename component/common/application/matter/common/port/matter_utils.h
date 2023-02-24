@@ -5,9 +5,8 @@
  *
  * @note rmtp is ignored, as signals are not implemented.
  */
-
-#ifndef __MATTER_UTILS_H_
-#define __MATTER_UTILS_H_
+#ifndef MATTER_UTILS_H_
+#define MATTER_UTILS_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,11 +68,11 @@ typedef struct
 } FactoryData;
 
 // Functions
-uint32_t ReadFactory(uint8_t *buffer, uint16_t *pfactorydata_len);
-uint32_t DecodeFactory(uint8_t *buffer, FactoryData *fdp, uint16_t data_len);
+int32_t ReadFactory(uint8_t *buffer, uint16_t *pfactorydata_len);
+int32_t DecodeFactory(uint8_t *buffer, FactoryData *fdp, uint16_t data_len);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __MATTER_UTILS_H_
+#endif // MATTER_UTILS_H_
