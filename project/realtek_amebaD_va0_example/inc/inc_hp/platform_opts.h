@@ -114,14 +114,15 @@
 #define MATTER_KVS_BEGIN_ADDR           0x001CC000  // 96K (4*24), DCT begin address of flash, ex: 0x100000 = 1M
 #define MATTER_KVS_MODULE_NUM           13           // max number of module
 #define MATTER_KVS_VARIABLE_NAME_SIZE   32          // max size of the variable name
-#define MATTER_KVS_VARIABLE_VALUE_SIZE  64 + 4      // max size of the variable value
-                                                    // max value number in moudle = 4024 / (32 + 64+4) = 40
+#define MATTER_KVS_VARIABLE_VALUE_SIZE  64          // max size of the variable value
+                                                    // max value number in moudle = floor(4024 / (32 + 64)) = 41
+                                                    
 // MATTER KVS2, for key length large than 64 (Fabric1 ~ FabricF)
 #define MATTER_KVS_BEGIN_ADDR2	        0x003B6000  // 20K (4*5)
 #define MATTER_KVS_MODULE_NUM2          6          // max number of module
 #define MATTER_KVS_VARIABLE_NAME_SIZE2  32          // max size of the variable name
-#define MATTER_KVS_VARIABLE_VALUE_SIZE2 400 + 4    // max size of the variable value
-                                                    // max value number in moudle = 4024 / (32 + 1860+4) = 2
+#define MATTER_KVS_VARIABLE_VALUE_SIZE2 400        // max size of the variable value
+                                                    // max value number in moudle = floor(4024 / (32 + 400)) = 9
 // Matter Factory Data
 #define MATTER_FACTORY_DATA             0x003FF000 
 
