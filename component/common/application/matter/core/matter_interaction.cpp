@@ -7,6 +7,8 @@
 #include <app-common/zap-generated/ids/Attributes.h>
 #include <app-common/zap-generated/ids/Clusters.h>
 
+#include <app/server/Server.h>
+
 using namespace ::chip;
 using namespace ::chip::app;
 
@@ -166,4 +168,14 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
 
     uplink_event.mHandler = matter_driver_uplink_update_handler;
     PostUplinkEvent(&uplink_event);
+}
+
+void matter_get_fabric_index(void)
+{
+    for (auto it = chip::Server::GetInstance().GetFabricTable().begin(); 
+        it != chip::Server::GetInstance().GetFabricTable().end(); ++it)
+    {
+            auto fabric = it->GetFabricIndex();
+            ChipLogError(DeviceLayer, "Fabric Index = %d", it->GetFabricIndex());
+    }
 }

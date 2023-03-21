@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #include "matter_core.h"
+#include "matter_interaction.h"
 #include "matter_ota.h"
 #include <DeviceInfoProviderImpl.h>
 
@@ -53,6 +54,7 @@ void matter_core_device_callback_internal(const ChipDeviceEvent * event, intptr_
 #endif
         if (event->InternetConnectivityChange.IPv4 == kConnectivity_Established)
         {
+            matter_get_fabric_index();
             ChipLogProgress(DeviceLayer, "IPv4 Server ready...");
             chip::app::DnssdServer::Instance().StartServer();
         }
