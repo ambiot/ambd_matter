@@ -41,6 +41,7 @@ DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/thermostat/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
+DIR += $(BASEDIR)/component/common/application/matter/api
 DIR += $(BASEDIR)/component/common/application/matter/core
 DIR += $(BASEDIR)/component/common/application/matter/driver
 DIR += $(BASEDIR)/component/common/application/matter/example/thermostat
@@ -60,6 +61,7 @@ GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolv
 #*****************************************************************************#
 #                               Include FILE LIST                             #
 #*****************************************************************************#
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/api
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/bluetooth/bt_matter_adapter
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/port
@@ -130,6 +132,7 @@ CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 
 # Custom thermostat-app src files with porting layer
+CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota.cpp
