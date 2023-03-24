@@ -178,6 +178,7 @@ all_clusters: build_target_folder copy_ld_img2 check_toolchain build_info.h make
 light: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_lighting
 light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_lighting_port
 thermostat_port: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_thermostat_port
+bridge_port: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs_lib_bridge_port
 
 #*****************************************************************************#
 #                      RULES TO CREATE DIRECTORY                              #
@@ -273,6 +274,17 @@ make_subdirs_lib_thermostat_port:
 	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
 	make -C make/chip/thermostat_app all
 	make -C make/chip_main/thermostat_port all
+
+make_subdirs_lib_bridge_port:
+	@ rm -f $(RAM_OBJS_LIST)
+	mkdir -p $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated examples/bridge-app/bridge-common/bridge-app.zap && \
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated examples/bridge-app/bridge-common/bridge-app.zap && \
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/bridge-app/bridge-common/bridge-app.matter && \
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/bridge-app/bridge-common/bridge-app.zap > $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt && \
+	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR) && \
+	make -C make/chip/bridge_app all
+	make -C make/chip_main/bridge_port all
 
 #*****************************************************************************#
 #                      RULES TO LINKER IMAGE                                  #

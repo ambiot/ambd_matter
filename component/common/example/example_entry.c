@@ -943,6 +943,8 @@ example_hilink();
     example_matter_light();
 #elif defined(CONFIG_EXAMPLE_MATTER_THERMOSTAT) && (CONFIG_EXAMPLE_MATTER_THERMOSTAT == 1)
     example_matter_thermostat();
+#elif defined(CONFIG_EXAMPLE_MATTER_BRIDGE) && (CONFIG_EXAMPLE_MATTER_BRIDGE == 1)
+	example_matter_bridge();
 #endif
 #endif
 
