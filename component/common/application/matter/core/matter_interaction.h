@@ -7,5 +7,4 @@
 void PostDownlinkEvent(const AppEvent * aEvent);
 CHIP_ERROR matter_interaction_start_downlink(void);
 CHIP_ERROR matter_interaction_start_uplink(void);
-void matter_get_fabric_index(void)
 // void matter_interaction_onoff_handler(AppEvent *aEvent);
