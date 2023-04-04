@@ -11,11 +11,10 @@ The goal of this porting layer is to make it easier for users to design their ow
 | example | Matter application examples for reference, according to device types |
 
 ## How to design your own custom Matter application with the porting layer
-1. You do not need to modify/add files under `common` or `core`
-2. Under `driver`, place your peripheral driver code, see existing driver files for reference
-3. Under `example`, you may create your new custom example directory, or modify an existing one
+1. Under `driver`, place your peripheral driver code, see existing driver files for reference
+2. Under `example`, you may create your new custom example directory, or modify an existing one
   - Your example should at least have the following files:
     - Main task (see `light/example_matter_light.cpp`)
     - Driver interface (see `light/matter_drivers.cpp`)
     - Makefiles to build the Matter libraries
-4. More details on how it works will be explained in the examples themselves
+3. More details on how it works will be explained in the examples' README
