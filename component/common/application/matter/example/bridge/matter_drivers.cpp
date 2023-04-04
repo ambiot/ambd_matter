@@ -232,6 +232,7 @@ EmberAfStatus HandleWriteOnOffAttribute(MatterBridge * dev, chip::AttributeId at
         {
             dev->Set(false);
         }
+        // TODO: We need to store the attribute values in a database
     }
     else
     {
