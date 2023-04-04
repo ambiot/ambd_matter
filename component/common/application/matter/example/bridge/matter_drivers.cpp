@@ -108,7 +108,7 @@ DataVersion gLight4DataVersions[ArraySize(bridgedLightClusters)];
 #define ZCL_ON_OFF_CLUSTER_REVISION (4u)
 
 #define SERVER_PORT        5000
-int onoff_trigger = 0;
+static struct bridge_table bridge_table[CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT];
 
 const EmberAfDeviceType gBridgedOnOffDeviceTypes[] = { { DEVICE_TYPE_LO_ON_OFF_LIGHT, DEVICE_VERSION_DEFAULT },
                                                        { DEVICE_TYPE_BRIDGED_NODE, DEVICE_VERSION_DEFAULT } };
@@ -138,7 +138,7 @@ int AddDeviceEndpoint(MatterBridge * dev, EmberAfEndpointType * ep, const Span<c
                 {
                     return -1;
                 }
-                ChipLogProgress(DeviceLayer, "Device[%d]: return here\n", index);
+
                 // Handle wrap condition
                 if (++gCurrentEndpointId < gFirstDynamicEndpointId)
                 {
@@ -205,7 +205,6 @@ EmberAfStatus HandleReadOnOffAttribute(MatterBridge * dev, chip::AttributeId att
     if ((attributeId == OnOff::Attributes::OnOff::Id) && (maxReadLength == 1))
     {
         *buffer = dev->IsTurnedOn() ? 1 : 0;
-        onoff_trigger = dev->IsTurnedOn() ? 1 : 0;
     }
     else if ((attributeId == OnOff::Attributes::ClusterRevision::Id) && (maxReadLength == 2))
     {
@@ -227,12 +226,10 @@ EmberAfStatus HandleWriteOnOffAttribute(MatterBridge * dev, chip::AttributeId at
     {
         if (*buffer)
         {
-            onoff_trigger = 1;
             dev->Set(true);
         }
         else
         {
-            onoff_trigger = 0;
             dev->Set(false);
         }
     }
@@ -292,6 +289,29 @@ EmberAfStatus emberAfExternalAttributeWriteCallback(EndpointId endpoint, Cluster
     return ret;
 }
 
+void matter_driver_bridge_send_callback (MatterBridge * dev)
+{
+    int send_size, i = 0;
+    char sendmsg[2][15] = {"Device Turn 0","Device Turn 1"};
+
+    for(i = 0; i < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT; i++) {
+        if(dev->GetEndpointId() == bridge_table[i].bridge_endpoint){
+            // Send data
+            printf("\r\n[BRIDGE] Sending to table[%d]: sock_conn(%d) endpoint(%d) ==> %s\n", i,
+            bridge_table[i].sock_conn,
+            bridge_table[i].bridge_endpoint,
+            inet_ntoa(bridge_table[i].bridged_device_addr));
+            send_size = write(bridge_table[i].sock_conn, sendmsg[dev->IsTurnedOn()], strlen(sendmsg[dev->IsTurnedOn()]));
+            if(send_size > 0)
+            {
+                printf("\r\n[BRIDGE] Send data < %d bytes>: %s\n", send_size, sendmsg[dev->IsTurnedOn()]);
+            }
+            else
+                printf("\r\n[BRIDGE] Error: write\n");
+        }
+    }
+}
+
 namespace {
 void CallReportingCallback(intptr_t closure)
 {
@@ -304,6 +324,7 @@ void ScheduleReportingCallback(MatterBridge * dev, ClusterId cluster, AttributeI
 {
     auto * path = Platform::New<app::ConcreteAttributePath>(dev->GetEndpointId(), cluster, attribute);
     PlatformMgr().ScheduleWork(CallReportingCallback, reinterpret_cast<intptr_t>(path));
+    matter_driver_bridge_send_callback(dev);
 }
 } // anonymous namespace
 
@@ -364,23 +385,25 @@ void matter_driver_bridge_endpoint_assign(void)
     AddDeviceEndpoint(&ALight1, &bridgedLightEndpoint, Span<const EmberAfDeviceType>(gBridgedOnOffDeviceTypes),
                   Span<DataVersion>(gLight1DataVersions), 1);
 
+    AddDeviceEndpoint(&ALight2, &bridgedLightEndpoint, Span<const EmberAfDeviceType>(gBridgedOnOffDeviceTypes),
+                  Span<DataVersion>(gLight2DataVersions), 1);
+
     chip::DeviceLayer::PlatformMgr().UnlockChipStack();
 }
 
 void matter_driver_bridge_server_thread(void *param)
 {
-    int server_fd = -1, conn_fd = -1;
-    int check_onoff = 0;
+    int server_fd = -1, conn_fd = -1, i;
+    int check_onoff = 0, current_endpoint = gFirstDynamicEndpointId;
     struct sockaddr_in server_addr, client_addr, local_name, remote_name;
     socklen_t addrlen = sizeof(struct sockaddr_in);
-    int send_size;
-    char sendmsg[2][15] = {"Device Turn 0","Device Turn 1"};
 
     while(wifi_is_ready_to_transceive(RTW_STA_INTERFACE) != RTW_SUCCESS){
         vTaskDelay(2000);
     }
 
     // Set server address
+    memset(&bridge_table,  0, sizeof(bridge_table));
     memset(&server_addr, 0, addrlen);
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
@@ -391,56 +414,53 @@ void matter_driver_bridge_server_thread(void *param)
         // Create a TCP socket
         if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         {
-            printf("\nError: socket\n");
+            printf("\r\n[BRIDGE] Error: socket\n");
             break;
         }
         
         // Bind the socket to a local address
         if(bind(server_fd, (struct sockaddr *) &server_addr, addrlen) != 0)
         {
-            printf("\nError: bind\n");
+            printf("\r\n[BRIDGE] Error: bind\n");
             break;
         }
         
         // Listen for socket connection
         if(listen(server_fd, 3) != 0)
         {
-            printf("\nError: listen\n");
+            printf("\r\n[BRIDGE] Error: listen\n");
             break;
         }
-        printf("\nSocket is listening on port: %d\n", SERVER_PORT);
+        printf("\r\n[BRIDGE] Socket is listening on port: %d\n", SERVER_PORT);
         
         while(1)
         {
             // Accept socket connection
             if((conn_fd = accept(server_fd, (struct sockaddr *) &client_addr, &addrlen)) >= 0)
-            {                
+            {
                 // Get address of locally-bound socket and connected peer socket
                 getsockname(conn_fd, (struct sockaddr *)&local_name, &addrlen);
                 getpeername(conn_fd, (struct sockaddr *)&remote_name, &addrlen);
-                printf("\nLocal server: %s:%d\n", inet_ntoa(local_name.sin_addr.s_addr), (int) ntohs(local_name.sin_port));
-                printf("\nRemote client: %s:%d\n", inet_ntoa(remote_name.sin_addr.s_addr), (int) ntohs(remote_name.sin_port));
 
-                while(1)
-                {
-                    if(onoff_trigger != check_onoff) {
-                        // Send data
-                        send_size = write(conn_fd, sendmsg[onoff_trigger], strlen(sendmsg[onoff_trigger]));
-                        if(send_size > 0)
-                        {
-                            printf("\nSend data < %d bytes>: %s\n", send_size, sendmsg[onoff_trigger]);
-                        }
-                        else
-                            printf("\nError: write\n");
+                for(i = 0; i < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT; i ++) {
+                    if(bridge_table[i].bridge_endpoint == NULL)
+                    {
+                        bridge_table[i].bridge_endpoint = current_endpoint;
+                        current_endpoint++;
+                        bridge_table[i].bridged_device_addr = remote_name.sin_addr.s_addr;
+                        bridge_table[i].sock_conn = conn_fd;
+                        printf("\r\n[BRIDGE] Add into table[%d]: sock_conn(%d) endpoint(%d) ==> %s\n", i,
+                        bridge_table[i].sock_conn,
+                        bridge_table[i].bridge_endpoint,
+                        inet_ntoa(bridge_table[i].bridged_device_addr));
+                        break;
                     }
-                    check_onoff = onoff_trigger;
-                    vTaskDelay(1000);
                 }
+
             }
             else
-                printf("\nError: accept\n");
+                printf("\r\n[BRIDGE] Error: accept\n");
         }
-    
     } while(0);
 }
 
