@@ -226,11 +226,11 @@ EmberAfStatus HandleWriteOnOffAttribute(MatterBridge * dev, chip::AttributeId at
     {
         if (*buffer)
         {
-            dev->Set(true);
+            dev->Set(true, true);
         }
         else
         {
-            dev->Set(false);
+            dev->Set(false, true);
         }
         // TODO: We need to store the attribute values in a database
     }
@@ -298,17 +298,17 @@ void matter_driver_bridge_send_callback (MatterBridge * dev)
     for(i = 0; i < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT; i++) {
         if(dev->GetEndpointId() == bridge_table[i].bridge_endpoint){
             // Send data
-            printf("\r\n[BRIDGE] Sending to table[%d]: sock_conn(%d) endpoint(%d) ==> %s\n", i,
+            printf("[BRIDGE] Sending to table[%d]: sock_conn(%d) endpoint(%d) ==> %s\n", i,
             bridge_table[i].sock_conn,
             bridge_table[i].bridge_endpoint,
             inet_ntoa(bridge_table[i].bridged_device_addr));
             send_size = write(bridge_table[i].sock_conn, sendmsg[dev->IsTurnedOn()], strlen(sendmsg[dev->IsTurnedOn()]));
             if(send_size > 0)
             {
-                printf("\r\n[BRIDGE] Send data < %d bytes>: %s\n", send_size, sendmsg[dev->IsTurnedOn()]);
+                printf("[BRIDGE] Send data < %d bytes>: %s\n", send_size, sendmsg[dev->IsTurnedOn()]);
             }
             else
-                printf("\r\n[BRIDGE] Error: write\n");
+                printf("[BRIDGE] Error: write\n");
         }
     }
 }
@@ -392,6 +392,42 @@ void matter_driver_bridge_endpoint_assign(void)
     chip::DeviceLayer::PlatformMgr().UnlockChipStack();
 }
 
+void matter_driver_bridge_recv_thread (void *param)
+{
+    int recv_size, i = 0;
+    int client_fd = -1;
+    char sendmsg[2][15] = {"Turning On","Turning Off"};
+    char buf[100];
+    printf("[BRIDGE] RX thread starts\n");
+
+    // Receive data
+    while(1){
+        for(i = 0; i < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT; i++) {
+            recv_size = read(bridge_table[i].sock_conn, buf, sizeof(buf));
+            if(recv_size > 0)
+            {
+                buf[recv_size] = 0;
+                printf("[BRIDGE] Recv data < %d bytes>: %s from Endpoint(%d)\n", recv_size, buf, bridge_table[i].bridge_endpoint);
+                
+                MatterBridge * dev = gDevices[bridge_table[i].bridge_endpoint - gFirstDynamicEndpointId];
+                if(memcmp(buf, sendmsg[0], recv_size) == 0)
+                {
+                    dev->Set(true, false);
+                } 
+                else
+                {
+                    dev->Set(false, false);
+                }
+            }
+            else if(recv_size == 0)
+                 printf("[BRIDGE] Socket disconnected\n");
+
+            vTaskDelay(1000);
+        }
+    }
+
+}
+
 void matter_driver_bridge_server_thread(void *param)
 {
     int server_fd = -1, conn_fd = -1, i;
@@ -415,24 +451,24 @@ void matter_driver_bridge_server_thread(void *param)
         // Create a TCP socket
         if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         {
-            printf("\r\n[BRIDGE] Error: socket\n");
+            printf("[BRIDGE] Error: socket\n");
             break;
         }
         
         // Bind the socket to a local address
         if(bind(server_fd, (struct sockaddr *) &server_addr, addrlen) != 0)
         {
-            printf("\r\n[BRIDGE] Error: bind\n");
+            printf("[BRIDGE] Error: bind\n");
             break;
         }
         
         // Listen for socket connection
         if(listen(server_fd, 3) != 0)
         {
-            printf("\r\n[BRIDGE] Error: listen\n");
+            printf("[BRIDGE] Error: listen\n");
             break;
         }
-        printf("\r\n[BRIDGE] Socket is listening on port: %d\n", SERVER_PORT);
+        printf("[BRIDGE] Socket is listening on port: %d\n", SERVER_PORT);
         
         while(1)
         {
@@ -450,7 +486,7 @@ void matter_driver_bridge_server_thread(void *param)
                         current_endpoint++;
                         bridge_table[i].bridged_device_addr = remote_name.sin_addr.s_addr;
                         bridge_table[i].sock_conn = conn_fd;
-                        printf("\r\n[BRIDGE] Add into table[%d]: sock_conn(%d) endpoint(%d) ==> %s\n", i,
+                        printf("[BRIDGE] Add into table[%d]: sock_conn(%d) endpoint(%d) ==> %s\n", i,
                         bridge_table[i].sock_conn,
                         bridge_table[i].bridge_endpoint,
                         inet_ntoa(bridge_table[i].bridged_device_addr));
@@ -460,7 +496,7 @@ void matter_driver_bridge_server_thread(void *param)
 
             }
             else
-                printf("\r\n[BRIDGE] Error: accept\n");
+                printf("[BRIDGE] Error: accept\n");
         }
     } while(0);
 }
@@ -470,7 +506,13 @@ void matter_driver_bridge_setup_server(void)
     if(xTaskCreate(matter_driver_bridge_server_thread, ((const char*)"matter_driver_bridge_server_thread"), 1024, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
         printf("\n\r%s xTaskCreate(matter_driver_bridge_server_thread) failed\n", __FUNCTION__);
 }
-    
+
+void matter_driver_bridge_recv_server(void)
+{
+    if(xTaskCreate(matter_driver_bridge_recv_thread, ((const char*)"matter_driver_bridge_recv_thread"), 1024, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
+        printf("\n\r%s xTaskCreate(matter_driver_bridge_recv_thread) failed\n", __FUNCTION__);
+}
+
 void matter_driver_uplink_update_handler(AppEvent *aEvent)
 {
 exit:

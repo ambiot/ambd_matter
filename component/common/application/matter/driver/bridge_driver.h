@@ -20,7 +20,7 @@ public:
 
     void Init(const char * szDeviceName, const char * szLocation);
     bool IsTurnedOn(void);
-    void Set(bool state);
+    void Set(bool state, int call_callback);
     bool IsReachable(void);
     void SetReachable(bool aReachable);
     void SetName(const char * szDeviceName);

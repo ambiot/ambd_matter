@@ -18,7 +18,7 @@ bool MatterBridge::IsTurnedOn()
     return this->mState;
 }
 
-void MatterBridge::Set(bool state)
+void MatterBridge::Set(bool state, int call_callback)
 {
     bool changed;
 
@@ -27,7 +27,7 @@ void MatterBridge::Set(bool state)
 
     ChipLogProgress(DeviceLayer, "Device[%s]: %s", mName, state ? "ON" : "OFF");
 
-    if ((changed) && (mChanged_CB))
+    if ((changed) && (mChanged_CB && call_callback))
     {
         mChanged_CB(this, kChanged_State);
     }
