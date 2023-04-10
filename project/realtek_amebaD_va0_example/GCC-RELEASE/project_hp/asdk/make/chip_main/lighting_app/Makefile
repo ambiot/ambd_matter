@@ -41,6 +41,7 @@ DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
+DIR += $(BASEDIR)/component/common/application/matter/api
 DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 DIR += $(CODEGEN_DIR)/app
 DIR += $(CODEGEN_DIR)/zap-generated
@@ -59,6 +60,7 @@ GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolv
 #*****************************************************************************#
 
 #IFLAGS = -I$(DIR)./
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/api
 IFLAGS += -I$(CHIPDIR)/zzz_generated/app-common
 IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app
 IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app/zap-generated
@@ -122,6 +124,8 @@ CPPSRC += $(CHIPDIR)/examples/lighting-app/ameba/main/LEDWidget.cpp
 
 CPPSRC += $(CHIPDIR)/examples/platform/ameba/ota/OTAInitializer.cpp
 CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
+
+CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
 
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
