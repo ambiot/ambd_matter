@@ -396,7 +396,7 @@ void matter_driver_bridge_recv_thread (void *param)
 {
     int recv_size, i = 0;
     int client_fd = -1;
-    char sendmsg[2][15] = {"Turning On","Turning Off"};
+    char sendmsg[2][15] = {"On","Off"};
     char buf[100];
     printf("[BRIDGE] RX thread starts\n");
 
@@ -480,7 +480,7 @@ void matter_driver_bridge_server_thread(void *param)
                 getpeername(conn_fd, (struct sockaddr *)&remote_name, &addrlen);
 
                 for(i = 0; i < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT; i ++) {
-                    if(bridge_table[i].bridge_endpoint == NULL)
+                    if(bridge_table[i].bridged_device_addr == NULL)
                     {
                         bridge_table[i].bridge_endpoint = current_endpoint;
                         current_endpoint++;
@@ -490,6 +490,23 @@ void matter_driver_bridge_server_thread(void *param)
                         bridge_table[i].sock_conn,
                         bridge_table[i].bridge_endpoint,
                         inet_ntoa(bridge_table[i].bridged_device_addr));
+
+                        int send_size;
+						char sendmsg[15] = "Read status";
+
+						// Read from bridged device current status
+						printf("[BRIDGE] Read status from table[%d]: sock_conn(%d) endpoint(%d) ==> %s\n", i,
+						bridge_table[i].sock_conn,
+						bridge_table[i].bridge_endpoint,
+						inet_ntoa(bridge_table[i].bridged_device_addr));
+						send_size = write(bridge_table[i].sock_conn, sendmsg, sizeof(sendmsg));
+						if(send_size > 0)
+						{
+							printf("[BRIDGE] Send data < %d bytes>: %s\n", send_size, sendmsg);
+						}
+						else
+							printf("[BRIDGE] Error: write\n");
+
                         break;
                     }
                 }
