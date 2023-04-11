@@ -1,6 +1,9 @@
 #include "bridge_driver.h"
 #include <support/logging/CHIPLogging.h>
 #include <algorithm>
+#include <platform/KeyValueStoreManager.h>
+
+using chip::DeviceLayer::PersistedStorage::KeyValueStoreMgr;
 
 void MatterBridge::Init(const char * szDeviceName, const char * szLocation)
 {
@@ -31,6 +34,10 @@ void MatterBridge::Set(bool state, int call_callback)
     {
         mChanged_CB(this, kChanged_State);
     }
+
+    char key[64];
+    sprintf(key, "%d/6/0", mEndpointId); // endpoint_id/cluster_id/attribute_id
+    KeyValueStoreMgr().Put(key, state);
 }
 
 bool MatterBridge::IsReachable()
