@@ -36,5 +36,6 @@ clean: CLEAN_OBJS
 	make -C all_clusters_app clean
 	make -C lighting_app clean
 	make -C thermostat_app clean
-
+	make -C bridge_app clean
+	
 -include $(DEPS)
