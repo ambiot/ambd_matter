@@ -148,9 +148,9 @@ void matter_scan_networks_with_ssid(const unsigned char *ssid, size_t length)
     }
 }
 
-void matter_get_scan_results(rtw_scan_result_t *result_buf, uint8_t scanned_num)
+rtw_scan_result_t *matter_get_scan_results()
 {
-    memcpy(result_buf, matter_userdata, sizeof(rtw_scan_result_t) * scanned_num);
+    return matter_userdata;
 }
 
 static int matter_find_ap_from_scan_buf(char*buf, int buflen, char *target_ssid, void *user_data)
@@ -253,6 +253,11 @@ int matter_wifi_connect(
     err = wifi_connect(ssid, security_type, password, strlen(ssid), strlen(password), key_id, NULL);
 
     return err;
+}
+
+int matter_get_sta_wifi_info(rtw_wifi_setting_t *pSetting)
+{
+    return wifi_get_setting((u8*)WLAN0_NAME, pSetting);
 }
 
 int matter_wifi_disconnect(void)
