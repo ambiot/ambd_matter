@@ -19,6 +19,7 @@ public:
     } Changed;
 
     void Init(const char * szDeviceName, const char * szLocation);
+    void SetLastStoredValue(void);
     bool IsTurnedOn(void);
     void Set(bool state, int call_callback);
     bool IsReachable(void);

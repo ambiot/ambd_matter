@@ -390,6 +390,9 @@ void matter_driver_bridge_endpoint_assign(void)
                   Span<DataVersion>(gLight2DataVersions), 1);
 
     chip::DeviceLayer::PlatformMgr().UnlockChipStack();
+
+    ALight1.SetLastStoredValue();
+    ALight2.SetLastStoredValue();
 }
 
 void matter_driver_bridge_recv_thread (void *param)

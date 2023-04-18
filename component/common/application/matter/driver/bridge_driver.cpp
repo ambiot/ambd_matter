@@ -2,7 +2,13 @@
 #include <support/logging/CHIPLogging.h>
 #include <algorithm>
 #include <platform/KeyValueStoreManager.h>
+#include <app-common/zap-generated/attribute-type.h>
+#include <app-common/zap-generated/attributes/Accessors.h>
+#include <app-common/zap-generated/ids/Attributes.h>
+#include <app-common/zap-generated/ids/Clusters.h>
+#include <platform/CHIPDeviceLayer.h>
 
+using namespace ::chip::app;
 using chip::DeviceLayer::PersistedStorage::KeyValueStoreMgr;
 
 void MatterBridge::Init(const char * szDeviceName, const char * szLocation)
@@ -14,6 +20,28 @@ void MatterBridge::Init(const char * szDeviceName, const char * szLocation)
     mReachable  = false;
     mEndpointId = 0;
     mChanged_CB = nullptr;
+}
+
+void MatterBridge::SetLastStoredValue()
+{
+    char key[64];
+    bool state;
+    size_t len;
+    sprintf(key, "%d/6/0", mEndpointId);
+    KeyValueStoreMgr().Get(key, &state, sizeof(uint8_t), &len, 0);
+
+    // don't trigger callback, just change the state
+    mState = state;
+
+    // update the state to matter
+    chip::DeviceLayer::PlatformMgr().LockChipStack();
+    EmberAfStatus status = Clusters::OnOff::Attributes::OnOff::Set(mEndpointId, mState);
+
+    if (status != EMBER_ZCL_STATUS_SUCCESS)
+    {
+        ChipLogError(DeviceLayer, "Updating on/off cluster failed: %x", status);
+    }
+    chip::DeviceLayer::PlatformMgr().UnlockChipStack();
 }
 
 bool MatterBridge::IsTurnedOn()
