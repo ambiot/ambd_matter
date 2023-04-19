@@ -57,6 +57,7 @@ GENERATE_NINJA:
 	echo chip_enable_ota_requestor = "true" >> $(OUTPUT_DIR)/args.gn && \
 	echo chip_build_libshell = "true" >> $(OUTPUT_DIR)/args.gn && \
 	echo chip_support_enable_storage_api_audit = "false" >> $(OUTPUT_DIR)/args.gn && \
+	echo chip_use_transitional_commissionable_data_provider = "true" >> $(OUTPUT_DIR)/args.gn && \
 	cd $(CHIPDIR) && PW_ENVSETUP_QUIET=1 . scripts/activate.sh && \
 	mkdir -p $(CHIPDIR)/config/ameba/components/chip && \
 	cd $(CHIPDIR)/config/ameba/components/chip && gn gen --check --fail-on-unused-args $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip && \
