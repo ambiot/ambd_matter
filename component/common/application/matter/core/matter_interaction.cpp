@@ -55,7 +55,7 @@ void DownlinkTask(void * pvParameter)
     // Loop here and keep listening on the queue for Downlink (Firmware application to matter)
     while (true)
     {
-        BaseType_t eventReceived = xQueueReceive(DownlinkEventQueue, &event, pdMS_TO_TICKS(10));
+        BaseType_t eventReceived = xQueueReceive(DownlinkEventQueue, &event, portMAX_DELAY);
         while (eventReceived == pdTRUE)
         {
             DispatchDownlinkEvent(&event);
@@ -117,7 +117,7 @@ void UplinkTask(void * pvParameter)
     // Loop here and keep listening on the queue for Uplink (matter to Firmware application)
     while (true)
     {
-        BaseType_t eventReceived = xQueueReceive(UplinkEventQueue, &event, pdMS_TO_TICKS(10));
+        BaseType_t eventReceived = xQueueReceive(UplinkEventQueue, &event, portMAX_DELAY);
         while (eventReceived == pdTRUE)
         {
             DispatchUplinkEvent(&event);
@@ -155,13 +155,22 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
     {
         memcpy(&uplink_event.value._u16, value, size);
     }
-    else if (size == 3)
+    else if (size <= 4)
     {
         memcpy(&uplink_event.value._u32, value, size);
     }
-    else // TODO: check max attribute length
+    else if (size <= 8)
     {
-        memcpy(&uplink_event.value._u64, value, size);
+        memcpy(&uplink_event.value._u32, value, size);
+    }
+    else if (size <= 256) // TODO: check max attribute length
+    {
+        memcpy(&uplink_event.value._str, value, size);
+    }
+    else
+    {
+        ChipLogError(DeviceLayer, "Data size is too large to put into the event, please increase the value buffer size");
+        return;
     }
 
     uplink_event.mHandler = matter_driver_uplink_update_handler;
