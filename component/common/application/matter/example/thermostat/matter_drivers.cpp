@@ -11,6 +11,9 @@
 
 using namespace ::chip::app;
 
+uint32_t identifyTimerCount;
+constexpr uint32_t kIdentifyTimerDelayMS     = 250;
+
 MatterThermostatUI ui;
 MatterThermostat thermostat;
 
@@ -49,6 +52,24 @@ void matter_driver_on_trigger_effect(Identify * identify)
         ChipLogProgress(Zcl, "No identifier effect");
         return;
     }
+}
+
+void IdentifyTimerHandler(chip::System::Layer * systemLayer, void * appState, CHIP_ERROR error)
+{
+    if (identifyTimerCount)
+    {
+        identifyTimerCount--;
+    }
+}
+
+void matter_driver_OnIdentifyPostAttributeChangeCallback(uint8_t * value)
+{
+    // timerCount represents the number of callback executions before we stop the timer.
+    // value is expressed in seconds and the timer is fired every 250ms, so just multiply value by 4.
+    // Also, we want timerCount to be odd number, so the ligth state ends in the same state it starts.
+    identifyTimerCount = (*value) * 4;
+exit:
+    return;
 }
 
 CHIP_ERROR matter_driver_thermostat_init()
@@ -112,6 +133,7 @@ void matter_driver_uplink_update_handler(AppEvent *aEvent)
     switch(path.mClusterId)
     {
     case Clusters::Identify::Id:
+        matter_driver_OnIdentifyPostAttributeChangeCallback(&(aEvent->value._u8));
         break;
     case Clusters::Thermostat::Id:
         if(path.mAttributeId == Clusters::Thermostat::Attributes::LocalTemperature::Id)
