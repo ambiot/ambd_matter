@@ -14,6 +14,43 @@ using namespace ::chip::app;
 MatterThermostatUI ui;
 MatterThermostat thermostat;
 
+// Set identify cluster and its callback on ep1
+static Identify gIdentify1 = {
+    chip::EndpointId{ 1 }, matter_driver_on_identify_start, matter_driver_on_identify_stop, EMBER_ZCL_IDENTIFY_IDENTIFY_TYPE_VISIBLE_LED, matter_driver_on_trigger_effect,
+};
+
+void matter_driver_on_identify_start(Identify * identify)
+{
+    ChipLogProgress(Zcl, "OnIdentifyStart");
+}
+
+void matter_driver_on_identify_stop(Identify * identify)
+{
+    ChipLogProgress(Zcl, "OnIdentifyStop");
+}
+
+void matter_driver_on_trigger_effect(Identify * identify)
+{
+    switch (identify->mCurrentEffectIdentifier)
+    {
+    case EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_BLINK:
+        ChipLogProgress(Zcl, "EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_BLINK");
+        break;
+    case EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_BREATHE:
+        ChipLogProgress(Zcl, "EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_BREATHE");
+        break;
+    case EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_OKAY:
+        ChipLogProgress(Zcl, "EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_OKAY");
+        break;
+    case EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_CHANNEL_CHANGE:
+        ChipLogProgress(Zcl, "EMBER_ZCL_IDENTIFY_EFFECT_IDENTIFIER_CHANNEL_CHANGE");
+        break;
+    default:
+        ChipLogProgress(Zcl, "No identifier effect");
+        return;
+    }
+}
+
 CHIP_ERROR matter_driver_thermostat_init()
 {
     thermostat.Init();
