@@ -25,7 +25,7 @@ typedef int (*chip_connmgr_callback)(void *object);
 void chip_connmgr_set_callback_func(chip_connmgr_callback p, void *data);
 void matter_scan_networks(void);
 void matter_scan_networks_with_ssid(const unsigned char *ssid, size_t length);
-rtw_scan_result_t *matter_get_scan_results();
+rtw_scan_result_t *matter_get_scan_results(void);
 int matter_wifi_connect(
     char              *ssid,
     rtw_security_t    security_type,
@@ -39,7 +39,17 @@ int matter_wifi_disconnect(void);
 int matter_wifi_on(rtw_mode_t mode);
 int matter_wifi_set_mode(rtw_mode_t mode);
 int matter_wifi_is_connected_to_ap(void);
-uint8_t matter_lwip_dhcp(uint8_t idx, uint8_t dhcp_state);
+void matter_lwip_dhcp(void);
+void matter_lwip_dhcp6(void);
+void matter_lwip_releaseip(void);
+int matter_wifi_get_ap_bssid(unsigned char*);
+int matter_wifi_get_network_mode(rtw_network_mode_t *pmode);
+int matter_wifi_get_security_type(const char *ifname, uint16_t *alg, uint8_t *key_idx, uint8_t *passphrase);
+int matter_wifi_get_wifi_channel_number(const char *ifname, uint8_t *ch);
+int matter_wifi_get_rssi(int *prssi);
+int matter_wifi_get_mac_address(char *mac);
+int matter_wifi_get_last_error(void);
+
 #ifdef __cplusplus
 }
 #endif

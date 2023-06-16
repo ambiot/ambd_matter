@@ -95,6 +95,8 @@ IFLAGS += -I$(CODEGEN_DIR)
 #                               Source FILE LIST                              #
 #*****************************************************************************#
 
+CPPSRC += $(CHIPDIR)/src/app/server/AclStorage.cpp
+CPPSRC += $(CHIPDIR)/src/app/server/DefaultAclStorage.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/Server.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/Dnssd.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/EchoHandler.cpp
