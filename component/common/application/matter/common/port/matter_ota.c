@@ -17,14 +17,12 @@
 #define MATTER_OTA_SIGNATURE_SIZE 8
 #define MATTER_OTA_HEADER_SIZE (32 + MATTER_OTA_SIGNATURE_SIZE)
 #define MATTER_OTA_SECTOR_SIZE 4096
-// #define MATTER_OTA_FIRMWARE_LENGTH   0x1AC000
 
 update_ota_target_hdr targetHeader;
 bool matter_ota_first_sector_written = false;
 uint32_t matter_ota_flash_sector_base;
 uint32_t matter_ota_new_firmware_addr;
 
-// uint8_t matter_ota_signature[MATTER_OTA_SIGNATURE_SIZE];
 uint8_t matter_ota_header[MATTER_OTA_HEADER_SIZE];
 uint8_t matter_ota_header_size = 0; // variable to track size of ota header
 uint8_t matter_ota_buffer[MATTER_OTA_SECTOR_SIZE]; // 4KB buffer to be written to one sector
