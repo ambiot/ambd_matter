@@ -35,6 +35,7 @@ CSRC += $(BTDIR)/bt_matter_adapter_service.c
 CSRC += $(BTDIR)/bt_matter_adapter_wifi.c
 CSRC += $(MBEDDIR)/net_sockets.c
 CSRC += $(PORTDIR)/matter_dcts.c
+CSRC += $(PORTDIR)/matter_ota.c
 CSRC += $(PORTDIR)/matter_timers.c
 CSRC += $(PORTDIR)/matter_utils.c
 CSRC += $(PORTDIR)/matter_wifis.c
