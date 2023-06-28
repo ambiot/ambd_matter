@@ -194,7 +194,7 @@ void matter_ota_platform_reset()
 
 static void matter_ota_abort_task(void *pvParameters)
 {
-    uint32_t newFWBlkSize = (MATTER_OTA_HEADER_SIZE + targetHeader.FileImgHdr->ImgLen - 1) / 4096 + 1;
+    uint32_t newFWBlkSize = (MATTER_OTA_HEADER_SIZE + targetHeader.FileImgHdr->ImgLen - 1) / MATTER_OTA_SECTOR_SIZE + 1;
     printf("Cleaning up aborted OTA\r\n");
     printf("Erasing %d sectors\r\n", newFWBlkSize);
 
@@ -202,7 +202,7 @@ static void matter_ota_abort_task(void *pvParameters)
     {
         for (size_t i=0; i<newFWBlkSize; i++)
         {
-            erase_ota_target_flash(matter_ota_new_firmware_addr + SPI_FLASH_BASE + (i * 4096), MATTER_OTA_SECTOR_SIZE);
+            erase_ota_target_flash(matter_ota_new_firmware_addr + SPI_FLASH_BASE + (i * MATTER_OTA_SECTOR_SIZE), MATTER_OTA_SECTOR_SIZE);
         }
     }
 
