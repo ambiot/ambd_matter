@@ -103,11 +103,6 @@ int8_t matter_ota_flash_burst_write(uint8_t *data, uint32_t size)
         size -= bufferRemainSize;
     }
 
-    printf("matter_ota_flash_sector_base: %02x\r\n", matter_ota_flash_sector_base);
-    printf("sectorBase: %02x\r\n", sectorBase);
-    printf("writeLength: %d\r\n", writeLength);
-    printf("matter_ota_buffer_size: %d\r\n", matter_ota_buffer_size);
-
     if (matter_ota_buffer_size == writeLength)
     {
         // buffer is full, time to erase sector and write buffer data to flash
