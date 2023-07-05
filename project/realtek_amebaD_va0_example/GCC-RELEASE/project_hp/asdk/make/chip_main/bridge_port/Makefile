@@ -133,7 +133,7 @@ CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 # Custom bridge-app src files with porting layer
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota_initializer.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/driver/bridge_driver.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge_port/example_matter_bridge.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge/matter_drivers.cpp
