@@ -118,6 +118,7 @@ CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attribute
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/cluster-objects.cpp
 
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/bridged-actions-stub.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/smco-stub.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/static-supported-modes-manager.cpp
 
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/chipinterface.cpp
