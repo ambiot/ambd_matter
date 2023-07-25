@@ -78,6 +78,7 @@ log_item_t at_matter_items[] = {
 
 void at_matter_init(void)
 {
+    shell_queue = xQueueCreate(3, 256); // backlog 3 commands max
 	log_service_add_table(at_matter_items, sizeof(at_matter_items)/sizeof(at_matter_items[0]));
 }
 
