@@ -8,6 +8,11 @@ jobs:
         runs-on: ubuntu-latest
         
         steps:
+            - name: free disk space
+              run: |
+                    rm -rf *
+                    df -h
+
             - name: checkout connectedhomeip master branch
               uses: actions/checkout@v3
               with:
