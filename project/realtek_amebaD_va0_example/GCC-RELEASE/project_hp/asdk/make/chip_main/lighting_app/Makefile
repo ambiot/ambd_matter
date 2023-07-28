@@ -93,11 +93,11 @@ CPPSRC += $(CHIPDIR)/src/app/server/EchoHandler.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/OnboardingCodesUtil.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/CommissioningWindowManager.cpp
 
+CPPSRC += $(CHIPDIR)/src/app/icd/IcdMonitoringTable.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-storage.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-table.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-size-util.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/binding-table.cpp
-CPPSRC += $(CHIPDIR)/src/app/util/IcdMonitoringTable.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/DataModelHandler.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/ember-compatibility-functions.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/generic-callback-stubs.cpp
