@@ -118,6 +118,13 @@ CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attribute
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/cluster-objects.cpp
 
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/bridged-actions-stub.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/dishwasher-alarm-stub.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/dishwasher-mode.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/fan-stub.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/operational-state-delegate-impl.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/operational-state-delegates.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/resource-monitoring-instances.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/rvc-modes.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/smco-stub.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/static-supported-modes-manager.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/static-supported-temperature-levels.cpp

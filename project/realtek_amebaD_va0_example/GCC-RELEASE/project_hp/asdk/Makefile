@@ -157,7 +157,7 @@ endif
 
 #LINK_APP_LIB += $(ROOTDIR)/lib/application/lib_main.a
 #LINK_APP_LIB += $(ROOTDIR)/lib/application/libCHIP.a
-LINK_APP_LIB_MATTER += -Wl,--start-group $(ROOTDIR)/lib/application/lib_main.a $(ROOTDIR)/lib/application/libCHIP.a -Wl,--end-group
+LINK_APP_LIB_MATTER += -Wl,--start-group -Wl,--whole-archive $(ROOTDIR)/lib/application/lib_main.a -Wl,--no-whole-archive $(ROOTDIR)/lib/application/libCHIP.a -Wl,--end-group
 
 
 ifeq ($(CONFIG_LINKKIT_AWSS), y)
