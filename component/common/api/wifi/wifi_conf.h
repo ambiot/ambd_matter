@@ -1167,6 +1167,13 @@ int wifi_ap_switch_chl_and_inform(unsigned char new_channel);
  */
 int wifi_set_igi(uint8_t igi, uint8_t enable);
 
+/**
+ * @brief  Get station security type
+ * @return  Station security type
+ */
+int wifi_get_sta_security_type(void);
+
+
 #ifdef __cplusplus
   }
 #endif
