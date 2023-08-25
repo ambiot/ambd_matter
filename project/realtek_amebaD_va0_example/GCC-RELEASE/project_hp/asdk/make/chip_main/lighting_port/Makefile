@@ -103,6 +103,7 @@ CPPSRC += $(CHIPDIR)/src/app/server/EchoHandler.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/OnboardingCodesUtil.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/CommissioningWindowManager.cpp
 
+CPPSRC += $(CHIPDIR)/src/app/icd/IcdManagementServer.cpp
 CPPSRC += $(CHIPDIR)/src/app/icd/IcdMonitoringTable.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-storage.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-table.cpp
@@ -113,7 +114,6 @@ CPPSRC += $(CHIPDIR)/src/app/util/ember-compatibility-functions.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/generic-callback-stubs.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/message.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/util.cpp
-CPPSRC += $(CHIPDIR)/src/app/util/error-mapping.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/privilege-storage.cpp
 
 CPPSRC += $(shell cat $(CODEGEN_DIR)/cluster-file.txt)
