@@ -157,7 +157,7 @@ endif
 
 #LINK_APP_LIB += $(ROOTDIR)/lib/application/lib_main.a
 #LINK_APP_LIB += $(ROOTDIR)/lib/application/libCHIP.a
-LINK_APP_LIB_MATTER += -Wl,--start-group -Wl,--whole-archive $(ROOTDIR)/lib/application/lib_main.a -Wl,--no-whole-archive $(ROOTDIR)/lib/application/libCHIP.a -Wl,--end-group
+LINK_APP_LIB_MATTER += -Wl,--start-group -Wl,--whole-archive $(ROOTDIR)/lib/application/lib_main.a -Wl,--no-whole-archive $(ROOTDIR)/lib/application/libCHIP.a -Wl,--end-group # --whole-archive forces linker to override weak functions with strong ones
 
 
 ifeq ($(CONFIG_LINKKIT_AWSS), y)
