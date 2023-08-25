@@ -391,8 +391,7 @@ CPPFLAGS = $(GLOBAL_CFLAGS)
 #*****************************************************************************#
 #                           MATTER ADD
 #*****************************************************************************#
-CPPFLAGS += -std=gnu++11
-CPPFLAGS += -std=c++14
+CPPFLAGS += -std=gnu++17
 CPPFLAGS += -fno-rtti
 
 GLOBAL_CFLAGS += -DMBEDTLS_CONFIG_FILE=\"mbedtls_config.h\"
