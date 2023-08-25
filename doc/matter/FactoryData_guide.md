@@ -24,7 +24,7 @@ Install python dependency
 
     pip3 install protobuf==4.21.9
 
-Make sure your firmware is built with `CONFIG_ENABLE_AMEBA_FACTORY_DATA` enabled in the **chip** and **chip_main** Matter library makefile
+Make sure your firmware is built with `DCONFIG_ENABLE_AMEBA_FACTORY_DATA` enabled in the `Makefile.include.gen` under`ambd_matter/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/asdk`
 
 ### Generating your own Certificates and Keys
 
