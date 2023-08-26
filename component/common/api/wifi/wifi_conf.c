@@ -3106,8 +3106,7 @@ static void wifi_autoreconnect_thread(void *param)
 		assoc_by_bssid = 1;
 	}
 
-#ifdef CONFIG_SAE_SUPPORT
-#if CONFIG_ENABLE_WPS
+#if defined(CONFIG_SAE_SUPPORT) && (CONFIG_ENABLE_WPS==1)
 	unsigned char is_wpa3_disable=0;
 	if((strncmp(wps_profile_ssid, reconnect_param->ssid, reconnect_param->ssid_len) == 0) &&
 		(strncmp(wps_profile_password, reconnect_param->password, reconnect_param->password_len) == 0) &&
@@ -3116,14 +3115,6 @@ static void wifi_autoreconnect_thread(void *param)
 		is_wpa3_disable=1;
 	}
 #endif
-#ifdef CONFIG_PMKSA_CACHING
-	unsigned char is_pmk_disable=0;
-	if(reconnect_param->security_type == RTW_SECURITY_WPA3_AES_PSK) {
-		wifi_set_pmk_cache_enable(DISABLE);
-		is_pmk_disable=1;
-	}
-#endif
-#endif //CONFIG_SAE_SUPPORT
 	
 	if(assoc_by_bssid){
 		ret = wifi_connect_bssid(saved_bssid, reconnect_param->ssid, reconnect_param->security_type,
@@ -3134,16 +3125,10 @@ static void wifi_autoreconnect_thread(void *param)
 							reconnect_param->ssid_len, reconnect_param->password_len, reconnect_param->key_id, NULL);
 	}
 
-#ifdef CONFIG_SAE_SUPPORT
-#if CONFIG_ENABLE_WPS
+#if defined(CONFIG_SAE_SUPPORT) && (CONFIG_ENABLE_WPS==1)
 	if(is_wpa3_disable)
 		wext_set_support_wpa3(ENABLE);
 #endif
-#ifdef CONFIG_PMKSA_CACHING
-	if(is_pmk_disable)
-		wifi_set_pmk_cache_enable(ENABLE);
-#endif
-#endif //CONFIG_SAE_SUPPORT
 
 #if CONFIG_LWIP_LAYER
 	if(ret == RTW_SUCCESS) {
