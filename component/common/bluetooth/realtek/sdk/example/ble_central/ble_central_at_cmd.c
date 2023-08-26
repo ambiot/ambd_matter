@@ -726,6 +726,7 @@ int ble_central_at_cmd_write(int argc, char **argv)
 	u8 write_type;
 	u16 handle;
 	int length;
+	int data_count;
 
 	conn_id = atoi(argv[1]);
 	write_type = atoi(argv[2]);
@@ -738,8 +739,12 @@ int ble_central_at_cmd_write(int argc, char **argv)
 	}
 	u8 *data = (u8 *)os_mem_alloc(0,length * sizeof(u8));
 
-	for(u8 i = 0; i < length; ++ i){
-		data[i] = hex_str_to_int(strlen(argv[i + 5]), (s8 *)argv[i + 5]);
+	data_count = argc - 5;
+	for (u8 i = 0; i < length; ++ i) {
+		if (i < data_count)
+			data[i] = hex_str_to_int(strlen(argv[i + 5]), (s8 *)argv[i + 5]);
+		else
+			data[i] = 0xff;
 	}
 	
 	T_GAP_CAUSE ret = gcs_attr_write(conn_id, (T_GATT_WRITE_TYPE)write_type, handle,
