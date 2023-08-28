@@ -44,8 +44,6 @@ ALL_CLUSTERS_FILE = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codege
 ALL_CLUSTERS_ZAP = $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.zap
 LIGHTING_FILE = $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt
 LIGHTING_ZAP = $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap
-LIGHTING_PORT_FILE = $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt
-LIGHTING_PORT_ZAP = $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap
 THERMOSTAT_PORT_FILE = $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt
 THERMOSTAT_PORT_ZAP = $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.zap
 BRIDGE_PORT_FILE = $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
@@ -197,7 +195,11 @@ light: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_
 	make -C make/chip/lighting_app all
 	make -C make/chip_main/lighting_app all
 
-light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_PORT_FILE)
+light_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE)
+	make -C make/chip/lighting_app all
+	make -C make/chip_main/lighting_dm_app all
+
+light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE)
 	make -C make/chip/lighting_app all
 	make -C make/chip_main/lighting_port all
 
