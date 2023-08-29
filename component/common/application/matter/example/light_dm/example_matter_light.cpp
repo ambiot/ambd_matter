@@ -92,6 +92,22 @@ static void example_matter_light_task(void *pvParameters)
     vTaskDelete(NULL);
 }
 
+// let new and delete operators use psram for more memory by overloading these operators
+// remember to enable psram in rtl8721dhp_intfcfg.c
+extern "C" void *Psram_reserve_malloc(int size);
+extern "C" void Psram_reserve_free(void *ptr);
+
+void *operator new(size_t size)
+{
+    void* ptr = Psram_reserve_malloc(size);
+    return ptr;
+}
+
+void operator delete(void *p)
+{
+    Psram_reserve_free(p);
+}
+
 extern "C" void example_matter_light(void)
 {
     if(xTaskCreate(example_matter_light_task, ((const char*)"example_matter_task_thread"), 2048, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
