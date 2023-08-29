@@ -3749,7 +3749,9 @@ int wifi_get_sta_security_type(void)
 	if(join_user_data != NULL)
 	{
 		return join_user_data->network_info.security_type;
-	} else {
+	} 
+	else 
+	{
 		return -1;
 	}
 }
