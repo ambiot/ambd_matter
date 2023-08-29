@@ -338,7 +338,9 @@ int matter_wifi_connect(
 
     matter_wifi_trigger = 1;
     matter_set_autoreconnect(1);
-    return wifi_connect(ssid, security_type, password, strlen(ssid), strlen(password), key_id, NULL);
+    wifi_connect(ssid, security_type, password, strlen(ssid), strlen(password), key_id, NULL);
+
+    return RTW_SUCCESS;
 }
 
 int matter_get_sta_wifi_info(rtw_wifi_setting_t *pSetting)
