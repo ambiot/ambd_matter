@@ -54,5 +54,5 @@ Refer to this [guide](https://github.com/ambiot/ambd_matter/blob/main/tools/Ameb
 
 ### Clean Matter Libraries
 
-    cd ambd_matter/component/common/application/matter/example/light
+    cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/
     make clean
