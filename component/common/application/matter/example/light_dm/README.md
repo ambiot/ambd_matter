@@ -36,18 +36,18 @@ In `rtl8721dhp_intfcfg.c`, set the below configurations
   
 ### Build Matter Libraries
 
-    cd ambz2_matter/component/common/application/matter/example/light
+    cd ambd_matter/component/common/application/matter/example/light
     make light
     
 ### Build the Final Firmware
 
-    cd ambz2_matter/project/realtek_amebaz2_v0_example/GCC-RELEASE/
+    cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/
     make is_matter
     
 ### Flash the Image
-Refer to this [guide](https://github.com/ambiot/ambz2_matter/blob/main/tools/AmebaZ2/Image_Tool_Linux/README.md) to flash the image with the Linux Image Tool
+Refer to this [guide](https://github.com/ambiot/ambd_matter/blob/main/tools/AmebaD/Image_Tool_Linux/README.txt) to flash the image with the Linux Image Tool
 
 ### Clean Matter Libraries
 
-    cd ambz2_matter/component/common/application/matter/example/light
+    cd ambd_matter/component/common/application/matter/example/light
     make clean
