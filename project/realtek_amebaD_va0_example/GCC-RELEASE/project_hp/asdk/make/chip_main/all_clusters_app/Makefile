@@ -122,6 +122,7 @@ CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/dishwashe
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/dishwasher-mode.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/fan-stub.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/laundry-washer-mode.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/laundry-washer-controls-delegate-impl.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/operational-state-delegate-impl.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/resource-monitoring-instances.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/rvc-modes.cpp
