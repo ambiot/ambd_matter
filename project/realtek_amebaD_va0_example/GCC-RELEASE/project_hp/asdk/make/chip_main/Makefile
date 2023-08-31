@@ -34,6 +34,7 @@ CORE_TARGETS: $(OBJS)
 clean: CLEAN_OBJS 
 	make -C all_clusters_app clean
 	make -C lighting_app clean
+	make -C lighting_dm_app clean
 	make -C lighting_port clean
 	make -C thermostat_port clean
 	make -C bridge_port clean
