@@ -37,7 +37,7 @@ static void example_matter_bridge_task(void *pvParameters)
 
     matter_driver_bridge_recv_server();
 
-    while(1);
+    vTaskDelete(NULL);
 }
 
 extern "C" void example_matter_bridge(void)
