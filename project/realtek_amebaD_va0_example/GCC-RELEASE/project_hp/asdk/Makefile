@@ -211,6 +211,10 @@ bridge_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRI
 	make -C make/chip/bridge_app all
 	make -C make/chip_main/bridge_port all
 
+bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRIDGE_PORT_FILE) copy_gen_files_bridge_dm
+	make -C make/chip/bridge_app all
+	make -C make/chip_main/bridge_dm_app all
+
 #*****************************************************************************#
 #                      RULES TO CREATE DIRECTORY                              #
 #*****************************************************************************#
@@ -301,6 +305,10 @@ $(BRIDGE_PORT_FILE): $(BRIDGE_PORT_ZAP)
 copy_gen_files_light_dm:
 	cp $(BASEDIR)/component/common/application/matter/example/light_dm/endpoint_config.h $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/zap-generated
 	cp $(BASEDIR)/component/common/application/matter/example/light_dm/gen_config.h $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/zap-generated
+
+copy_gen_files_bridge_dm:
+	cp $(BASEDIR)/component/common/application/matter/example/bridge_dm/endpoint_config.h $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
+	cp $(BASEDIR)/component/common/application/matter/example/bridge_dm/gen_config.h $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
 
 #*****************************************************************************#
 #                      RULES TO LINKER IMAGE                                  #

@@ -43,7 +43,7 @@ DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
 DIR += $(BASEDIR)/component/common/application/matter/core
 DIR += $(BASEDIR)/component/common/application/matter/driver
-DIR += $(BASEDIR)/component/common/application/matter/example/bridge
+DIR += $(BASEDIR)/component/common/application/matter/example/bridge_dm
 DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 DIR += $(CODEGEN_DIR)/app
 DIR += $(CODEGEN_DIR)/zap-generated
@@ -65,7 +65,7 @@ IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/port
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/core
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/driver
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/example/bridge
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/example/bridge_dm
 
 #IFLAGS = -I$(DIR)./
 IFLAGS += -I$(CHIPDIR)/zzz_generated
@@ -133,10 +133,11 @@ CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 # Custom bridge-app src files with porting layer
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
-#CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota_initializer.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_data_model.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_data_model_presets.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/driver/bridge_driver.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge_port/example_matter_bridge.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge/matter_drivers.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge_dm/example_matter_bridge.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge_dm/matter_drivers.cpp
 
 #*****************************************************************************#
 #                               Object FILE LIST                              #
@@ -173,11 +174,11 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/bridge_port/*.o
-	rm -f $(ROOTDIR)/make/chip_main/bridge_port/*.i
-	rm -f $(ROOTDIR)/make/chip_main/bridge_port/*.s
-	rm -f $(ROOTDIR)/make/chip_main/bridge_port/*.d
-	rm -f $(ROOTDIR)/make/chip_main/bridge_port/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/bridge_port/*.su
+	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.o
+	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.i
+	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.s
+	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.d
+	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.ii
+	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.su
 
 -include $(DEPS)
