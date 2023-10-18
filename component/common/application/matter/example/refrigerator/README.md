@@ -3,8 +3,8 @@ This example is an implementation of the *Refrigerator* device type. Peripherals
 
 | Peripheral | Pin |
 | ----------- | ----------- |
-| LED | PA_19 |
-| Button | PA_17 |
+| LED | PB_4 |
+| Button | PA_28 |
 
 Note that these driver codes are meant to be just the skeleton, you should replace them and implement your own.
 
