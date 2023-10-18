@@ -12,6 +12,8 @@ struct AppEvent
         kEventType_Uplink = 0,
         kEventType_Downlink_OnOff,
         kEventType_Downlink_Identify,
+        kEventType_Downlink_Refrigerator_Mode,
+        kEventType_Downlink_Refrigerator_Alarm_State,
     };
 
     uint16_t Type;
