@@ -945,6 +945,8 @@ example_hilink();
     example_matter_thermostat();
 #elif defined(CONFIG_EXAMPLE_MATTER_BRIDGE) && (CONFIG_EXAMPLE_MATTER_BRIDGE == 1)
 	example_matter_bridge();
+#elif defined(CONFIG_EXAMPLE_MATTER_REFRIGERATOR) && (CONFIG_EXAMPLE_MATTER_REFRIGERATOR == 1)
+	example_matter_refrigerator();
 #endif
 #endif
 

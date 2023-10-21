@@ -39,5 +39,6 @@ clean: CLEAN_OBJS
 	make -C thermostat_port clean
 	make -C bridge_port clean
 	make -C bridge_dm_app clean
+	make -C refrigerator_port clean
 
 -include $(DEPS)
