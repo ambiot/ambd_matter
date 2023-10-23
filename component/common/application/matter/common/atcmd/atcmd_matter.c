@@ -6,9 +6,6 @@
 
 #include <sys_api.h>
 #include "log_service.h"
-#if CHIP_ALL_CLUSTERS_APP
-extern void ChipTestShutdown(void);
-#endif
 extern u32 deinitPref(void);
 #if MATTER_OTA_REQUESTOR_APP
 extern void amebaQueryImageCmdHandler();
@@ -69,14 +66,6 @@ void fATmattershell(void *arg)
     } 
 }
 
-void fATreboot(void *arg)
-{
-#if CHIP_ALL_CLUSTERS_APP
-    ChipTestShutdown();
-#endif
-    sys_reset();
-}
-
 log_item_t at_matter_items[] = {
 #ifndef CONFIG_INIC_NO_FLASH
 #if ATCMD_VER == ATVER_1
@@ -84,7 +73,6 @@ log_item_t at_matter_items[] = {
     {"ATM%", fATchipapp1, {NULL, NULL}},
     {"ATM^", fATchipapp2, {NULL, NULL}},
     {"ATMS", fATmattershell, {NULL, NULL}},
-    {"ATMR", fATreboot, {NULL, NULL}},
 #endif // end of #if ATCMD_VER == ATVER_1
 #endif
 };
