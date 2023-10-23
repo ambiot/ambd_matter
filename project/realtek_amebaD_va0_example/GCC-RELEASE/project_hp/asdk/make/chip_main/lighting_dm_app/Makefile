@@ -29,6 +29,8 @@ include $(MAKE_INCLUDE_GEN)
 OUTPUT_DIR = $(CHIPDIR)/examples/lighting-app/ameba/build/chip
 CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
+CHIP_ENABLE_OTA_REQUESTOR = $(shell grep 'chip_enable_ota_requestor' $(OUTPUT_DIR)/args.gn | cut -d' ' -f3)
+
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
 DIR += $(CHIPDIR)/src/app/server
@@ -138,7 +140,9 @@ CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_data_model.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_data_model_presets.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
+ifeq ($(CHIP_ENABLE_OTA_REQUESTOR), true)
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota_initializer.cpp
+endif
 CPPSRC += $(BASEDIR)/component/common/application/matter/driver/led_driver.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/light_dm/example_matter_light.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/light_dm/matter_drivers.cpp
