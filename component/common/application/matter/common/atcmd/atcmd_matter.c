@@ -6,8 +6,9 @@
 
 #include <sys_api.h>
 #include "log_service.h"
-
+#if CHIP_ALL_CLUSTERS_APP
 extern void ChipTestShutdown(void);
+#endif
 extern u32 deinitPref(void);
 #if MATTER_OTA_REQUESTOR_APP
 extern void amebaQueryImageCmdHandler();
@@ -70,7 +71,9 @@ void fATmattershell(void *arg)
 
 void fATreboot(void *arg)
 {
+#if CHIP_ALL_CLUSTERS_APP
     ChipTestShutdown();
+#endif
     sys_reset();
 }
 
