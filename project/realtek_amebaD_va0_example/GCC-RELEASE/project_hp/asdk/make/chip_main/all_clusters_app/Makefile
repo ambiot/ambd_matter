@@ -29,6 +29,8 @@ include $(MAKE_INCLUDE_GEN)
 OUTPUT_DIR = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip
 CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
+CHIP_ENABLE_OTA_REQUESTOR = $(shell grep 'chip_enable_ota_requestor' $(OUTPUT_DIR)/args.gn | cut -d' ' -f3)
+
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
 DIR += $(CHIPDIR)/src/app/server
@@ -141,7 +143,9 @@ CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/CHIPDeviceManager.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/Globals.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/LEDWidget.cpp
 
+ifeq ($(CHIP_ENABLE_OTA_REQUESTOR), true)
 CPPSRC += $(CHIPDIR)/examples/platform/ameba/ota/OTAInitializer.cpp
+endif
 CPPSRC += $(CHIPDIR)/examples/platform/ameba/shell/launch_shell.cpp
 CPPSRC += $(CHIPDIR)/examples/platform/ameba/test_event_trigger/AmebaTestEventTriggerDelegate.cpp
 CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp

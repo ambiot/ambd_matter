@@ -29,6 +29,8 @@ include $(MAKE_INCLUDE_GEN)
 OUTPUT_DIR = $(CHIPDIR)/examples/refrigerator-app/ameba/build/chip
 CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
+CHIP_ENABLE_OTA_REQUESTOR = $(shell grep 'chip_enable_ota_requestor' $(OUTPUT_DIR)/args.gn | cut -d' ' -f3)
+
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
 DIR += $(CHIPDIR)/src/app/server
@@ -136,7 +138,9 @@ CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
+ifeq ($(CHIP_ENABLE_OTA_REQUESTOR), true)
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota_initializer.cpp
+endif
 CPPSRC += $(BASEDIR)/component/common/application/matter/driver/tcc_mode.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/driver/refrigerator_driver.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/refrigerator/example_matter_refrigerator.cpp
