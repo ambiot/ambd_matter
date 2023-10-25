@@ -38,5 +38,6 @@ clean: CLEAN_OBJS
 	make -C thermostat_app clean
 	make -C bridge_app clean
 	make -C refrigerator_app clean
+	make -C air_purifier_app clean
 	
 -include $(DEPS)
