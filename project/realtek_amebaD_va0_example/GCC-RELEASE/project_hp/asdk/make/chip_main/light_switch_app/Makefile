@@ -26,7 +26,7 @@ include $(MAKE_INCLUDE_GEN)
 #*****************************************************************************#
 #                               VARIABLES	                              #
 #*****************************************************************************#
-OUTPUT_DIR = $(CHIPDIR)/examples/lighting-app/ameba/build/chip
+OUTPUT_DIR = $(CHIPDIR)/examples/light-switch-app/ameba/build/chip
 CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
 CHIP_ENABLE_OTA_REQUESTOR = $(shell grep 'chip_enable_ota_requestor' $(OUTPUT_DIR)/args.gn | cut -d' ' -f3)
@@ -35,18 +35,15 @@ DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
 DIR += $(CHIPDIR)/src/app/server
 DIR += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders
-DIR += $(CHIPDIR)/examples/lighting-app/lighting-common
-DIR += $(CHIPDIR)/examples/lighting-app/ameba/main
+DIR += $(CHIPDIR)/examples/light-switch-app/light-switch-common
+DIR += $(CHIPDIR)/examples/light-switch-app/ameba/main
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
 DIR += $(CHIPDIR)/examples/providers
-DIR += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated
+DIR += $(CHIPDIR)/zzz_generated/light-switch-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
 DIR += $(BASEDIR)/component/common/application/matter/api
-DIR += $(BASEDIR)/component/common/application/matter/core
-DIR += $(BASEDIR)/component/common/application/matter/driver
-DIR += $(BASEDIR)/component/common/application/matter/example/light
 DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 DIR += $(CODEGEN_DIR)/app
 DIR += $(CODEGEN_DIR)/zap-generated
@@ -63,22 +60,15 @@ GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolv
 #*****************************************************************************#
 #                               Include FILE LIST                             #
 #*****************************************************************************#
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/api
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/bluetooth/bt_matter_adapter
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/port
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/core
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/driver
-IFLAGS += -I$(BASEDIR)/component/common/application/matter/example/light
 
 #IFLAGS = -I$(DIR)./
-IFLAGS += -I$(CHIPDIR)/zzz_generated
+IFLAGS += -I$(BASEDIR)/component/common/application/matter/api
 IFLAGS += -I$(CHIPDIR)/zzz_generated/app-common
-IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app
-IFLAGS += -I$(CHIPDIR)/zzz_generated/lighting-app/zap-generated
-IFLAGS += -I$(CHIPDIR)/examples/lighting-app/lighting-common
-IFLAGS += -I$(CHIPDIR)/examples/lighting-app/ameba/main/include
-IFLAGS += -I$(CHIPDIR)/examples/lighting-app/ameba/build/chip/gen/include
+IFLAGS += -I$(CHIPDIR)/zzz_generated/light-switch-app
+IFLAGS += -I$(CHIPDIR)/zzz_generated/light-switch-app/zap-generated
+IFLAGS += -I$(CHIPDIR)/examples/light-switch-app/light-switch-common
+IFLAGS += -I$(CHIPDIR)/examples/light-switch-app/ameba/main/include
+IFLAGS += -I$(CHIPDIR)/examples/light-switch-app/ameba/build/chip/gen/include
 IFLAGS += -I$(CHIPDIR)/examples/platform/ameba
 IFLAGS += -I$(CHIPDIR)/examples/providers
 IFLAGS += -I$(CHIPDIR)/src/include/
@@ -127,21 +117,21 @@ CPPSRC += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders/IP.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
 
+CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/chipinterface.cpp
+CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/DeviceCallbacks.cpp
+CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/CHIPDeviceManager.cpp
+CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/Globals.cpp
+CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/LEDWidget.cpp
+
+ifeq ($(CHIP_ENABLE_OTA_REQUESTOR), true)
+CPPSRC += $(CHIPDIR)/examples/platform/ameba/ota/OTAInitializer.cpp
+endif
 CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
+
+CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
 
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
-
-# Custom light-app src files with porting layer
-CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
-ifeq ($(CHIP_ENABLE_OTA_REQUESTOR), true)
-CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota_initializer.cpp
-endif
-CPPSRC += $(BASEDIR)/component/common/application/matter/driver/led_driver.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/example/light/example_matter_light.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/example/light/matter_drivers.cpp
 
 #*****************************************************************************#
 #                               Object FILE LIST                              #
@@ -178,11 +168,11 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.o
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.i
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.s
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.d
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.su
+	rm -f $(ROOTDIR)/make/chip_main/light-switch_app/*.o
+	rm -f $(ROOTDIR)/make/chip_main/light-switch_app/*.i
+	rm -f $(ROOTDIR)/make/chip_main/light-switch_app/*.s
+	rm -f $(ROOTDIR)/make/chip_main/light-switch_app/*.d
+	rm -f $(ROOTDIR)/make/chip_main/light-switch_app/*.ii
+	rm -f $(ROOTDIR)/make/chip_main/light-switch_app/*.su
 
 -include $(DEPS)
