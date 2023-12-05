@@ -37,8 +37,10 @@ DIR += $(CHIPDIR)/src/app/server
 DIR += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders
 DIR += $(CHIPDIR)/examples/thermostat/thermostat-common
 DIR += $(CHIPDIR)/examples/thermostat/ameba/main
+DIR += $(CHIPDIR)/examples/light-switch-app/ameba/main
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
+DIR += $(CHIPDIR)/examples/platform/ameba/shell
 DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/thermostat/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
@@ -59,10 +61,12 @@ vpath %.c $(DIR) $(shell find $(DIR) -type d)
 
 GLOBAL_CFLAGS += -DCHIP_PROJECT=1
 GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolve/AddressResolve_DefaultImpl.h\"
+GLOBAL_CFLAGS += -DCONFIG_ENABLE_CHIP_SHELL=1
 
 #*****************************************************************************#
 #                               Include FILE LIST                             #
 #*****************************************************************************#
+IFLAGS += -I$(CHIPDIR)/examples/light-switch-app/ameba/main/include
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/api
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/bluetooth/bt_matter_adapter
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
@@ -132,6 +136,8 @@ CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 
+CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/BindingHandler.cpp
+CPPSRC += $(CHIPDIR)/examples/platform/ameba/shell/launch_shell.cpp
 # Custom thermostat-app src files with porting layer
 CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp

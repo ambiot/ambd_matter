@@ -36,6 +36,7 @@
 #include <core/ErrorStr.h>
 
 #if CONFIG_ENABLE_CHIP_SHELL
+#include "BindingHandler.h"
 #include <shell/launch_shell.h>
 #endif
 
@@ -132,6 +133,7 @@ void matter_core_init_server(intptr_t context)
     }
 
 #if CONFIG_ENABLE_CHIP_SHELL
+    chip::LaunchShell();
     InitBindingHandler();
 #endif
 
