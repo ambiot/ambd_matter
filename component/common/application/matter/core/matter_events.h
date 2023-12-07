@@ -42,3 +42,59 @@ struct AppEvent
     } value;
     EventHandler mHandler;
 };
+
+namespace chip {
+namespace DeviceLayer {
+namespace DeviceEventType {
+
+/**
+ * Enumerates for Fabric Event
+ */
+enum
+{
+    /**
+     * Indicating the Commissioning session has been established
+     */
+    kCommissioningSessionEstablishmentStarted = kRange_PublicPlatformSpecific + 0x1000,
+    /**
+     * Indicating that Commissioning session has started
+     */
+    kCommissioningSessionStarted,
+    /**
+     * Indicating the established Commissioning session encountered an error
+     */
+    kCommissioningSessionEstablishmentError,
+    /**
+     * Indicating that Commissioning session has stopped
+     */
+    kCommissioningSessionStopped,
+    /**
+     * Indicating that Commissioning window is now opened
+     */
+    kCommissioningWindowOpened,
+    /**
+     * Indicating that Commissioning window is now closed
+     */
+    kCommissioningWindowClosed,
+    /**
+     * Indicating that a fabric is about to be removed
+     */
+    kFabricWillBeRemoved,
+    /**
+     * Indicating that a fabric is removed
+     */
+    kFabricRemoved,
+    /**
+     * Indicating that a fabric in Fabric Table is persisted to storage, by CommitPendingFabricData
+     */
+    kFabricCommitted,
+    /**
+     * Indicating that operational credentials are changed, which may not be persistent
+     * Can be used to affect what is needed for UpdateNOC prior to commit
+    */
+    kFabricUpdated,
+};
+
+} // DeviceEventType
+} // DeviceLayer
+} // chip

@@ -4,6 +4,7 @@
 #include "matter_events.h"
 #include <platform/CHIPDeviceLayer.h>
 
+void PostEvent(uint16_t eventType);
 void PostDownlinkEvent(const AppEvent * aEvent);
 CHIP_ERROR matter_interaction_start_downlink(void);
 CHIP_ERROR matter_interaction_start_uplink(void);

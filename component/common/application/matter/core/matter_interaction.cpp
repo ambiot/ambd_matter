@@ -80,6 +80,17 @@ CHIP_ERROR matter_interaction_start_downlink()
     return (xReturned == pdPASS) ? CHIP_NO_ERROR : CHIP_ERROR_NO_MEMORY;
 }
 
+void PostEvent(uint16_t eventType)
+{
+    chip::DeviceLayer::ChipDeviceEvent event;
+    event.Type = eventType;
+    CHIP_ERROR error = chip::DeviceLayer::PlatformMgr().PostEvent(&event);
+    if (error != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "Failed to post event for event type:%x, err:%" CHIP_ERROR_FORMAT, eventType, error.Format());
+    }
+}
+
 void PostUplinkEvent(const AppEvent * aEvent)
 {
     if (UplinkEventQueue != NULL)

@@ -2,7 +2,10 @@
 #include <stdint.h>
 
 #include "matter_core.h"
+#include "matter_events.h"
+#include "matter_interaction.h"
 #include "matter_ota_initializer.h"
+#include "matter_fabric_observer.h"
 #include <DeviceInfoProviderImpl.h>
 
 #include <app-common/zap-generated/attributes/Accessors.h>
@@ -105,6 +108,9 @@ void matter_core_device_callback_internal(const ChipDeviceEvent * event, intptr_
         ChipLogProgress(DeviceLayer, "Commissioning Complete");
         chip::DeviceLayer::Internal::AmebaUtils::SetCurrentProvisionedNetwork();
         break;
+    case DeviceEventType::kCommissioningWindowOpened:
+        ChipLogProgress(DeviceLayer, "Commissioning window is opened");
+        break;
     }
 }
 
@@ -113,8 +119,11 @@ void matter_core_init_server(intptr_t context)
     xTaskHandle task_to_notify = reinterpret_cast<xTaskHandle>(context);
     // Init ZCL Data Model and CHIP App Server
     static chip::CommonCaseDeviceServerInitParams initParams;
+    static AmebaObserver sAmebaObserver;
+    initParams.appDelegate = &sAmebaObserver;
     initParams.InitializeStaticResourcesBeforeServerInit();
     chip::Server::GetInstance().Init(initParams);
+
     gExampleDeviceInfoProvider.SetStorageDelegate(&Server::GetInstance().GetPersistentStorage());
     // TODO: Use our own DeviceInfoProvider
     chip::DeviceLayer::SetDeviceInfoProvider(&gExampleDeviceInfoProvider);
