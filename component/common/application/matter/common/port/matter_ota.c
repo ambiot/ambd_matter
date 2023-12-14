@@ -165,7 +165,7 @@ int8_t matter_ota_flush_last()
 int8_t matter_ota_update_signature()
 {
     uint32_t targetIndex;
-    if (matter_ota_new_firmware_addr = LS_IMG2_OTA2_ADDR - SPI_FLASH_BASE)
+    if (matter_ota_new_firmware_addr == LS_IMG2_OTA2_ADDR - SPI_FLASH_BASE)
     {
         targetIndex = OTA_INDEX_2;
     }
