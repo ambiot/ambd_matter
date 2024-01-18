@@ -947,6 +947,12 @@ example_hilink();
 	example_matter_bridge();
 #elif defined(CONFIG_EXAMPLE_MATTER_REFRIGERATOR) && (CONFIG_EXAMPLE_MATTER_REFRIGERATOR == 1)
 	example_matter_refrigerator();
+#elif defined(CONFIG_EXAMPLE_MATTER_AIRCON) && (CONFIG_EXAMPLE_MATTER_AIRCON == 1)
+	example_matter_aircon();
+#elif defined(CONFIG_EXAMPLE_MATTER_DISHWASHER) && (CONFIG_EXAMPLE_MATTER_DISHWASHER == 1)
+	example_matter_dishwasher();
+#elif defined(CONFIG_EXAMPLE_MATTER_LAUNDRYWASHER) && (CONFIG_EXAMPLE_MATTER_LAUNDRYWASHER == 1)
+	example_matter_laundrywasher();
 #endif
 #endif
 

@@ -42,5 +42,8 @@ clean: CLEAN_OBJS
 	make -C bridge_dm_app clean
 	make -C refrigerator_port clean
 	make -C air_purifier_app clean
+	make -C aircon_port clean
+	make -C dishwasher_port clean
+	make -C laundrywasher_port clean
 
 -include $(DEPS)
