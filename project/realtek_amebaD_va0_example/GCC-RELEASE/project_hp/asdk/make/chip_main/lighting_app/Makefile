@@ -109,6 +109,7 @@ CPPSRC += $(CHIPDIR)/src/app/util/privilege-storage.cpp
 CPPSRC += $(shell cat $(CODEGEN_DIR)/cluster-file.txt)
 
 CPPSRC += $(CODEGEN_DIR)/app/callback-stub.cpp
+CPPSRC += $(CODEGEN_DIR)/app/cluster-init-callback.cpp
 CPPSRC += $(CODEGEN_DIR)/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/src/app/reporting/Engine.cpp

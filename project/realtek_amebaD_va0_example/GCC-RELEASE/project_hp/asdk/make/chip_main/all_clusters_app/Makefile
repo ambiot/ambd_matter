@@ -113,6 +113,7 @@ CPPSRC += $(CHIPDIR)/src/app/reporting/Engine.cpp
 CPPSRC += $(shell cat $(CODEGEN_DIR)/cluster-file.txt)
 
 CPPSRC += $(CODEGEN_DIR)/app/callback-stub.cpp
+CPPSRC += $(CODEGEN_DIR)/app/cluster-init-callback.cpp
 CPPSRC += $(CODEGEN_DIR)/zap-generated/IMClusterCommandHandler.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
@@ -124,7 +125,8 @@ CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/dishwashe
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/fan-stub.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/laundry-washer-mode.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/laundry-washer-controls-delegate-impl.cpp
-# CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/operational-state-delegate-impl.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/operational-state-delegate-impl.cpp
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/rvc-operational-state-delegate-impl.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/resource-monitoring-delegates.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/rvc-modes.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/smco-stub.cpp
@@ -133,7 +135,6 @@ CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/static-su
 
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/chipinterface.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/BindingHandler.cpp
-CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/OperationalStateManager.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/ManualOperationCommand.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/DeviceCallbacks.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/ameba/main/SmokeCOAlarmManager.cpp
