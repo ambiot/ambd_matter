@@ -50,6 +50,8 @@ THERMOSTAT_PORT_FILE = $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/c
 THERMOSTAT_PORT_ZAP = $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.zap
 BRIDGE_PORT_FILE = $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
 BRIDGE_PORT_ZAP = $(CHIPDIR)/examples/bridge-app/bridge-common/bridge-app.zap
+BRIDGE_DM_FILE = $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
+BRIDGE_DM_ZAP = $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.zap
 REFRIGERATOR_PORT_FILE = $(CHIPDIR)/examples/refrigerator-app/ameba/build/chip/codegen/cluster-file.txt
 REFRIGERATOR_PORT_ZAP = $(BASEDIR)/component/common/application/matter/example/refrigerator/refrigerator-app.zap
 AIR_PURIFIER_FILE = $(CHIPDIR)/examples/air-purifier-app/ameba/build/chip/codegen/cluster-file.txt
@@ -227,7 +229,7 @@ bridge_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRI
 	make -C make/chip/bridge_app all
 	make -C make/chip_main/bridge_port all
 
-bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRIDGE_PORT_FILE) copy_gen_files_bridge_dm
+bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRIDGE_DM_FILE) copy_gen_files_bridge_dm
 	make -C make/chip/bridge_app all
 	make -C make/chip_main/bridge_dm_app all
 
@@ -337,13 +339,22 @@ $(THERMOSTAT_PORT_FILE): $(THERMOSTAT_PORT_ZAP)
 	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.zap > $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt
 	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
 
-$(BRIDGE_PORT_FILE): $(BRIDGE_PORT_ZAP)
+$(BRIDGE_DM_FILE): $(BRIDGE_DM_ZAP)
 	@ rm -f $(RAM_OBJS_LIST)
 	mkdir -p $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
 	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
 	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/bridge-app/bridge-common/bridge-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/bridge-app/bridge-common/bridge-app.zap > $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.matter
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.zap > $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
+	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
+
+$(BRIDGE_DM_FILE): $(BRIDGE_DM_ZAP)
+	@ rm -f $(RAM_OBJS_LIST)
+	mkdir -p $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
+	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
+	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.matter
+	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.zap > $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
 	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
 
 $(REFRIGERATOR_PORT_FILE): $(REFRIGERATOR_PORT_ZAP)

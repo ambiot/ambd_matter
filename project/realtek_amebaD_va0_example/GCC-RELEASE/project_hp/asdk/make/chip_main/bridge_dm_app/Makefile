@@ -101,7 +101,7 @@ CPPSRC += $(CHIPDIR)/src/app/server/EchoHandler.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/OnboardingCodesUtil.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/CommissioningWindowManager.cpp
 
-CPPSRC += $(CHIPDIR)/src/app/icd/ICDMonitoringTable.cpp
+CPPSRC += $(CHIPDIR)/src/app/icd/server/ICDMonitoringTable.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-storage.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-table.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/binding-table.cpp
@@ -134,7 +134,7 @@ CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_data_model.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_data_model_presets.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/driver/bridge_driver.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/driver/bridge_dm_driver.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge_dm/example_matter_bridge.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/bridge_dm/matter_drivers.cpp
 
