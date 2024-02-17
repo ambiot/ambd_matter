@@ -66,11 +66,19 @@ void mbedtls_free( void * ptr )
     (*mbedtls_free_func)( ptr );
 }
 
+extern int platform_set_malloc_free( void * (*malloc_func)( size_t ), void (*free_func)( void * ) );
 int mbedtls_platform_set_calloc_free( void * (*calloc_func)( size_t, size_t ),
                               void (*free_func)( void * ) )
 {
     mbedtls_calloc_func = calloc_func;
     mbedtls_free_func = free_func;
+
+    /* Realtek added to initialize HW crypto function pointers
+     * mbedtls RAM codes use function pointers in platform memory implementation
+     * Not use malloc/free in ssl ram map for mbedtls RAM codes
+     */
+    platform_set_malloc_free( (void*(*)( size_t ))calloc_func, free_func);
+
     return( 0 );
 }
 #endif /* MBEDTLS_PLATFORM_MEMORY &&
