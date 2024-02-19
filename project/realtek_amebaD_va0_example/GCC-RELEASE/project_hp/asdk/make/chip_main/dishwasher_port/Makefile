@@ -34,6 +34,8 @@ CHIP_ENABLE_OTA_REQUESTOR = $(shell grep 'chip_enable_ota_requestor' $(OUTPUT_DI
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
 DIR += $(CHIPDIR)/src/app/server
+DIR += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common
+DIR += $(CHIPDIR)/examples/all-clusters-app/ameba/main
 DIR += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
@@ -67,6 +69,8 @@ IFLAGS += -I$(BASEDIR)/component/common/application/matter/common/port
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/core
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/driver
 IFLAGS += -I$(BASEDIR)/component/common/application/matter/example/dishwasher
+IFLAGS += -I$(CHIPDIR)/examples/all-clusters-app/all-clusters-common
+IFLAGS += -I$(CHIPDIR)/examples/all-clusters-app/all-clusters-common/include
 
 #IFLAGS = -I$(DIR)./
 IFLAGS += -I$(CHIPDIR)/zzz_generated
@@ -98,7 +102,7 @@ CPPSRC += $(CHIPDIR)/src/app/server/EchoHandler.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/OnboardingCodesUtil.cpp
 CPPSRC += $(CHIPDIR)/src/app/server/CommissioningWindowManager.cpp
 
-CPPSRC += $(CHIPDIR)/src/app/icd/ICDMonitoringTable.cpp
+CPPSRC += $(CHIPDIR)/src/app/icd/server/ICDMonitoringTable.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-storage.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-table.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/binding-table.cpp
@@ -126,6 +130,8 @@ CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/operational-state-delegate-impl.cpp
+
 # Custom dishwasher-app src files with porting layer
 CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
@@ -135,7 +141,6 @@ CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota_initial
 endif
 CPPSRC += $(BASEDIR)/component/common/application/matter/driver/dishwasher_driver.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/driver/dishwasher_mode.cpp
-CPPSRC += $(BASEDIR)/component/common/application/matter/driver/opstate_driver.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/dishwasher/example_matter_dishwasher.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/example/dishwasher/matter_drivers.cpp
 

@@ -12,7 +12,7 @@
 #include "matter_data_model_presets.h"
 #include "matter_drivers.h"
 #include "matter_interaction.h"
-#include "bridge_driver.h"
+#include "bridge_dm_driver.h"
 
 #include <app/ConcreteAttributePath.h>
 #include <app/reporting/reporting.h>
