@@ -2,7 +2,7 @@
 
 ## Get Ameba SDK & Matter SDK
 
-    Tested on Ubuntu 20.04
+    Tested on Ubuntu 22.04
     
 Create a common directory for Ameba and Matter SDK
 
