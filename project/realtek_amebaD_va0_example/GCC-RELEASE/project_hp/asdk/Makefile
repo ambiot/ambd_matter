@@ -5,6 +5,7 @@
 
 ABS_ROOTDIR		= $(shell pwd)
 MAKE_INCLUDE_GEN	= $(ABS_ROOTDIR)/Makefile.include.gen
+MATTER_DIR 		= $(ABS_ROOTDIR)/../../../../../component/common/application/matter
 
 CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
           else if [ -x /bin/bash ]; then echo /bin/bash; \
@@ -305,6 +306,7 @@ make_subdirs_bootloader:
 	@make -C make/bootloader all
 
 $(ALL_CLUSTERS_FILE): $(ALL_CLUSTERS_ZAP)
+	@cp $(MATTER_DIR)/example/chiptest/all-clusters-app.zap $(ALL_CLUSTERS_ZAP)
 	@ rm -f $(RAM_OBJS_LIST)
 	mkdir -p $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/zap-generated
 	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/all-clusters-app/ameba/build/chip/codegen/zap-generated $^
