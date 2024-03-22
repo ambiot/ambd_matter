@@ -623,6 +623,8 @@ uint8_t LwIP_DHCP6(uint8_t idx, uint8_t dhcp6_state)
 	uint8_t DHCP6_state;
 	struct netif *pnetif = NULL;
 	struct dhcp6 *dhcp6 = NULL;
+	int dhcp6_handler_trigger = 0;
+
 	err_t err;
 
 	DHCP6_state = dhcp6_state;
@@ -677,10 +679,16 @@ uint8_t LwIP_DHCP6(uint8_t idx, uint8_t dhcp6_state)
 
 				/* Read the new IPv6 address */
 				ipv6_global = LwIP_GetIPv6_global(pnetif);
-                ip6_addr_t zero_address;
+				ip6_addr_t zero_address;
 				ip6_addr_set_any(&zero_address);
 
-                if(!ip6_addr_cmp(&zero_address, netif_ip6_addr(pnetif, 1))){
+				if (ip6_addr_isvalid(netif_ip6_addr_state(pnetif, 0)) && (dhcp6_handler_trigger == 0))
+				{
+					wifi_indication(WIFI_EVENT_DHCP6_DONE, NULL, 0, 0);
+					dhcp6_handler_trigger = 1;
+				}
+
+				if(!ip6_addr_cmp(&zero_address, netif_ip6_addr(pnetif, 1))){
 
 					DHCP6_state = DHCP6_ADDRESS_ASSIGNED;
 
@@ -694,7 +702,10 @@ uint8_t LwIP_DHCP6(uint8_t idx, uint8_t dhcp6_state)
 					ipv6_global[12], ipv6_global[13], ipv6_global[14], ipv6_global[15]);
 
 					/*Todo: error_flag for DHCPv6*/
-					wifi_indication(WIFI_EVENT_DHCP6_DONE, NULL, 0, 0);
+
+					if (!dhcp6_handler_trigger)
+						wifi_indication(WIFI_EVENT_DHCP6_DONE, NULL, 0, 0);
+
 					return DHCP6_ADDRESS_ASSIGNED;
 				}
 
@@ -713,7 +724,9 @@ uint8_t LwIP_DHCP6(uint8_t idx, uint8_t dhcp6_state)
 						if(idx == NET_IF_NUM -1) // This is the ethernet interface, set it up for static ip address
 							netif_set_up(pnetif);
 #endif
-						wifi_indication(WIFI_EVENT_DHCP6_DONE, NULL, 0, 0);
+						if (!dhcp6_handler_trigger)
+							wifi_indication(WIFI_EVENT_DHCP6_DONE, NULL, 0, 0);
+
 						return DHCP6_TIMEOUT;
 					}
 				}
