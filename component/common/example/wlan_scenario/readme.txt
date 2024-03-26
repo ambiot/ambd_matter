@@ -12,9 +12,12 @@ Configuration:
 Modify the argument of example_wlan_scenario() in example_entry.c to switch example cases.
 [platform_opts.h]
 	#define CONFIG_ENABLE_WPS		1
-	#define CONFIG_ENABLE_P2P		1	
+	#define CONFIG_ENABLE_P2P		1
 	#define CONFIG_EXAMPLE_WLAN_FAST_CONNECT	0
 	#define CONFIG_EXAMPLE_WLAN_SCENARIO	1
+
+For Ameba-D & Ameba-z2, P2P not supported and P2P related "M3"/"M5"/"S1"/"S2"/"S3"/"S4" argument options not valid
+	#define CONFIG_ENABLE_P2P		0
 
 Execution:
 The Wi-Fi example thread will be started automatically when booting.
@@ -52,10 +55,10 @@ The currently argument options are:
 
     "M5" for mode switch case 5:
       - Mode switching time between P2P autonomous GO and STA
-    
+
     "M6" for mode switch case 6:
       - Mode switch to infrastructure (AP mode with hidden SSID)
-    
+
     "M7" for mode switch case 7:
       - Mode switching between concurrent mode and STA
 
@@ -84,17 +87,17 @@ The currently argument options are:
         -> Connect to AP use STA mode (If failed, re-connect one time.)
         -> Disconnect from AP
         -> Disable Wi-Fi
-		
+
     "S5" for wlan scenario case 5: (Check connection result and RSSI value)
         Enable Wi-Fi with STA mode
         -> Connect to AP using STA mode, check the connection result based on error_flag
         -> Show Wi-Fi information
         -> Get AP's RSSI (also can refer ATWR)
-		
+
     "S6" for wlan scenario case 6: (Check scanned AP's RSSI, also can refer ATWS)
         Enable Wi-Fi with STA mode
         -> Scan network and handle the RSSI value (in dBm)
 
 [Supported List]
 	Supported :
-	    Ameba-1, Ameba-z, Ameba-pro, Ameba-z2
+	    Ameba-1, Ameba-z, Ameba-pro, Ameba-z2, Ameba-D

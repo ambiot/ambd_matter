@@ -53,10 +53,19 @@ Parameter Setting and Configuration
     Modify the http server host to connect to the local apache server IP address.
     Modify the IP/Port used in example_high_load_memory_use.c for udp sessions to make it work properly.
     If you want to use ECDHE as TLS cipher suite, you can modify:
-    [config_rsa.h] 
-        #define POLARSSL_KEY_EXCHANGE_ECDHE_RSA_ENABLED
-        #define POLARSSL_ECDH_C
-        #define POLARSSL_ECP_C
+    [config_rsa.h]
+        For POLARSSL:
+            #define POLARSSL_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+            #define POLARSSL_ECDH_C
+            #define POLARSSL_ECP_C
+        For MBEDTLS:
+            #define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+            #define MBEDTLS_ECDH_C
+            #define MBEDTLS_ECP_C
+    For Matter
+    [component/common/application/matter/common/mbedtls/mbedtls_config.h]
+            #define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+
 Note:
 Example work flow:
     Start heap monitor thread
