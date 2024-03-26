@@ -12,6 +12,10 @@ Modify SSL_MAX_CONTENT_LEN in SSL config and configTOTAL_HEAP_SIZE in freertos c
 	(ex. If using 16kbytes * 2 for ssl input/output buffer, heap should be increased from 60kbytes to 80kbytes.)
 [config_rsa.h]
 	#define SSL_MAX_CONTENT_LEN            16384
+For Matter:
+[component/common/application/matter/common/mbedtls/mbedtls_config.h]
+	#define MBEDTLS_SSL_MAX_CONTENT_LEN    16384
+
 [FreeRTOSConfig.h]
 	#define configTOTAL_HEAP_SIZE          ( ( size_t ) ( 80 * 1024 ) )
 
