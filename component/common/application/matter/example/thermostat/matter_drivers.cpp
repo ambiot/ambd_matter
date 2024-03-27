@@ -91,7 +91,7 @@ CHIP_ERROR matter_driver_thermostat_ui_set_startup_value()
     DataModel::Nullable<int16_t> temp;
     int16_t OccupiedCoolingSetpoint;
     int16_t OccupiedHeatingSetpoint;
-    uint8_t SystemMode;
+    chip::app::Clusters::Thermostat::SystemModeEnum SystemMode;
 
     chip::DeviceLayer::PlatformMgr().LockChipStack();
     getstatus = Clusters::Thermostat::Attributes::LocalTemperature::Get(1, temp);
@@ -111,7 +111,7 @@ CHIP_ERROR matter_driver_thermostat_ui_set_startup_value()
 
     ui.SetOccupiedCoolingSetpoint(OccupiedCoolingSetpoint);
     ui.SetOccupiedHeatingSetpoint(OccupiedHeatingSetpoint);
-    ui.SetSystemMode(SystemMode);
+    ui.SetSystemMode((uint8_t)SystemMode);
 
     ui.UpdateDisplay();
 
@@ -157,8 +157,6 @@ void matter_driver_uplink_update_handler(AppEvent *aEvent)
             thermostat.Do();
         }
         ui.UpdateDisplay();
-        break;
-    case Clusters::Scenes::Id:
         break;
     case Clusters::RelativeHumidityMeasurement::Id:
         break;

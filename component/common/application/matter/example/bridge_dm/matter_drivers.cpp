@@ -1,6 +1,6 @@
 #include "matter_drivers.h"
 #include "matter_interaction.h"
-#include "bridge_driver.h"
+#include "bridge_dm_driver.h"
 #include <lwip/sockets.h>
 #include "wifi_conf.h"
 
@@ -12,6 +12,7 @@
 #include <app-common/zap-generated/attributes/Accessors.h>
 #include <app-common/zap-generated/ids/Attributes.h>
 #include <app-common/zap-generated/ids/Clusters.h>
+#include <protocols/interaction_model/StatusCode.h>
 
 #include <lib/support/ZclString.h>
 
@@ -20,6 +21,7 @@ using namespace ::chip::app;
 using namespace ::chip::DeviceLayer;
 using namespace ::chip::Platform;
 using namespace ::chip::app::Clusters;
+using chip::Protocols::InteractionModel::Status;
 
 MatterBridgedDeviceOnOff ALight1("Light 1", "Office");
 
