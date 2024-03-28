@@ -39,12 +39,11 @@ DIR += $(CHIPDIR)/examples/light-switch-app/light-switch-common
 DIR += $(CHIPDIR)/examples/light-switch-app/ameba/main
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
+DIR += $(CHIPDIR)/examples/platform/ameba/shell
 DIR += $(CHIPDIR)/examples/providers
-DIR += $(CHIPDIR)/zzz_generated/light-switch-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
 DIR += $(BASEDIR)/component/common/application/matter/api
-DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 DIR += $(CODEGEN_DIR)/app
 DIR += $(CODEGEN_DIR)/zap-generated
 
@@ -56,6 +55,7 @@ vpath %.c $(DIR) $(shell find $(DIR) -type d)
 
 GLOBAL_CFLAGS += -DCHIP_PROJECT=1
 GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolve/AddressResolve_DefaultImpl.h\"
+GLOBAL_CFLAGS += -DCONFIG_ENABLE_CHIP_SHELL=1
 
 #*****************************************************************************#
 #                               Include FILE LIST                             #
@@ -121,6 +121,7 @@ CPPSRC += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders/IP.cpp
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
 
 CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/chipinterface.cpp
+CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/BindingHandler.cpp
 CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/DeviceCallbacks.cpp
 CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/CHIPDeviceManager.cpp
 CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/Globals.cpp
@@ -129,6 +130,7 @@ CPPSRC += $(CHIPDIR)/examples/light-switch-app/ameba/main/LEDWidget.cpp
 ifeq ($(CHIP_ENABLE_OTA_REQUESTOR), true)
 CPPSRC += $(CHIPDIR)/examples/platform/ameba/ota/OTAInitializer.cpp
 endif
+CPPSRC += $(CHIPDIR)/examples/platform/ameba/shell/launch_shell.cpp
 CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
 
 CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
