@@ -110,6 +110,7 @@ CPPSRC += $(CHIPDIR)/src/app/util/util.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/privilege-storage.cpp
 
 CPPSRC += $(CHIPDIR)/src/app/reporting/Engine.cpp
+CPPSRC += $(CHIPDIR)/src/app/reporting/reporting.cpp
 
 CPPSRC += $(shell cat $(CODEGEN_DIR)/cluster-file.txt)
 
