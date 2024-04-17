@@ -3211,13 +3211,13 @@ void wifi_autoreconnect_hdl(rtw_security_t security_type,
 
 int wifi_config_autoreconnect(__u8 mode, __u8 retry_times, __u16 timeout)
 {
-    if(mode == RTW_AUTORECONNECT_DISABLE)
+	if(mode == RTW_AUTORECONNECT_DISABLE)
 		p_wlan_autoreconnect_hdl = NULL;
 	else if (matter_wifi_trigger)
 		p_wlan_autoreconnect_hdl = matter_wifi_autoreconnect_hdl;
 	else
 		p_wlan_autoreconnect_hdl = wifi_autoreconnect_hdl;
-    return wext_set_autoreconnect(WLAN0_NAME, mode, retry_times, timeout);
+	return wext_set_autoreconnect(WLAN0_NAME, mode, retry_times, timeout);
 }
 
 int wifi_set_autoreconnect(__u8 mode)

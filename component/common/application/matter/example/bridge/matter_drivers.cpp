@@ -3,7 +3,7 @@
 #include "bridge_driver.h"
 #include <lwip/sockets.h>
 #include "wifi_conf.h"
-
+#include <app/util/endpoint-config-api.h>
 #include <app/ConcreteAttributePath.h>
 #include <app/reporting/reporting.h>
 #include <app/util/attribute-storage.h>
