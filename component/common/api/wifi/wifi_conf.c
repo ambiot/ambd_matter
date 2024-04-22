@@ -468,15 +468,6 @@ static void wifi_disconn_hdl( char* buf, int buf_len, int flags, void* userdata)
 		rtw_up_sema(&disconnect_sema);
 	}
 #endif
-
-	if(matter_wifi_trigger){
-		join_user_data = NULL;
-
-		wifi_unreg_event_handler(WIFI_EVENT_CONNECT, wifi_connected_hdl);
-		wifi_unreg_event_handler(WIFI_EVENT_NO_NETWORK,wifi_no_network_hdl);
-		wifi_unreg_event_handler(WIFI_EVENT_FOURWAY_HANDSHAKE_DONE, wifi_handshake_done_hdl);
-		rtw_join_status &= ~JOIN_CONNECTING;
-	}
 }
 
 #if CONFIG_EXAMPLE_WLAN_FAST_CONNECT || (defined(CONFIG_JD_SMART) && CONFIG_JD_SMART)
