@@ -192,6 +192,13 @@ endmenu
 
 comment '--------------WIFI FW Config End--------------'
 
+comment '--------------Matter Config Start--------------'
+mainmenu_option next_comment
+comment '< Matter Config '
+bool "Enable Matter"							CONFIG_MATTER_EN
+endmenu
+comment '--------------Matter Config End--------------'
+
 #===========================================================================
 #===========================================================================
 

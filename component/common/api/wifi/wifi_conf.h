@@ -1130,8 +1130,8 @@ int wifi_wowlan_set_pattern(wowlan_pattern_t pattern);
 #endif
 //-------------------------------------------------------------//
 #ifdef CONFIG_APP_CTRL_RF_ONOFF
-extern void rtw_rf_cmd(uint32_t Status);
-extern uint32_t rtw_get_tsf(uint32_t Port);
+extern void rtw_rf_cmd(u32 Status);
+extern u32 rtw_get_tsf(u32 Port);
 #endif
 
 /*

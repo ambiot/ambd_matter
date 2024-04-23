@@ -5,7 +5,6 @@
 
 ABS_ROOTDIR		= $(shell pwd)
 MAKE_INCLUDE_GEN	= $(ABS_ROOTDIR)/Makefile.include.gen
-MATTER_DIR 		= $(ABS_ROOTDIR)/../../../../../component/common/application/matter
 
 CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
           else if [ -x /bin/bash ]; then echo /bin/bash; \
@@ -27,6 +26,10 @@ include $(MAKE_INCLUDE_GEN)
 
 export ABS_ROOTDIR MAKE_INCLUDE_GEN HOSTCC
 
+ifeq ($(CONFIG_MATTER_EN), y)
+MATTER_DIR = $(ABS_ROOTDIR)/../../../../../component/common/application/matter
+MATTER_BUILDDIR = $(MATTER_DIR)/project/amebad
+endif
 
 ifeq ($(COMPILEOS_CYGWIN),Cygwin)
 HOSTNAME_APP = /usr/bin/hostname
@@ -36,33 +39,6 @@ else
 HOSTNAME_APP = $(which hostname)
 PADTOOL      = $(UTILITYDIR)/imgpadl
 endif
-
-#*****************************************************************************#
-#                            MATTER ZAP files                                 #
-#*****************************************************************************#
-
-ALL_CLUSTERS_FILE = $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/cluster-file.txt
-ALL_CLUSTERS_ZAP = $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.zap
-LIGHTING_FILE = $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt
-LIGHTING_ZAP = $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap
-LIGHT_SWITCH_FILE = $(CHIPDIR)/examples/light-switch-app/ameba/build/chip/codegen/cluster-file.txt
-LIGHT_SWITCH_ZAP = $(CHIPDIR)/examples/light-switch-app/light-switch-common/light-switch-app.zap
-THERMOSTAT_PORT_FILE = $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt
-THERMOSTAT_PORT_ZAP = $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.zap
-BRIDGE_PORT_FILE = $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
-BRIDGE_PORT_ZAP = $(CHIPDIR)/examples/bridge-app/bridge-common/bridge-app.zap
-BRIDGE_DM_FILE = $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
-BRIDGE_DM_ZAP = $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.zap
-REFRIGERATOR_PORT_FILE = $(CHIPDIR)/examples/refrigerator-app/ameba/build/chip/codegen/cluster-file.txt
-REFRIGERATOR_PORT_ZAP = $(BASEDIR)/component/common/application/matter/example/refrigerator/refrigerator-app.zap
-AIR_PURIFIER_FILE = $(CHIPDIR)/examples/air-purifier-app/ameba/build/chip/codegen/cluster-file.txt
-AIR_PURIFIER_ZAP = $(CHIPDIR)/examples/air-purifier-app/air-purifier-common/air-purifier-app.zap
-AIRCON_PORT_FILE = $(BASEDIR)/component/common/application/matter/example/aircon/build/chip/codegen/cluster-file.txt
-AIRCON_PORT_ZAP = $(BASEDIR)/component/common/application/matter/example/aircon/aircon-app.zap
-DISHWASHER_PORT_FILE = $(BASEDIR)/component/common/application/matter/example/dishwasher/build/chip/codegen/cluster-file.txt
-DISHWASHER_PORT_ZAP = $(BASEDIR)/component/common/application/matter/example/dishwasher/dishwasher-app.zap
-LAUNDRYWASHER_PORT_FILE = $(BASEDIR)/component/common/application/matter/example/laundrywasher/build/chip/codegen/cluster-file.txt
-LAUNDRYWASHER_PORT_ZAP = $(BASEDIR)/component/common/application/matter/example/laundrywasher/laundrywasher-app.zap
 
 #.PHONY: all build_target_folder menuconfig clean
 
@@ -84,7 +60,11 @@ LINK_ROM_SYMBOL_BOOT = ./ld/rlx8721d_rom_symbol_empty.ld
 ifeq ($(CONFIG_LINK_ROM_SYMB),y) 
 LINK_ROM_LIB =
 LINK_ROM_LIB_NS =
+ifeq ($(CONFIG_MATTER_EN), y)
+LINK_ROM_SYMBOL_NS = ./ld/rlx8721d_rom_symbol_acut_matter.ld
+else
 LINK_ROM_SYMBOL_NS = ./ld/rlx8721d_rom_symbol_acut.ld
+endif
 LINK_ROM_SYMBOL_S = ./ld/rlx8721d_rom_symbol_acut_s.ld
 LINK_ROM_SYMBOL_BOOT = ./ld/rlx8721d_rom_symbol_acut_boot.ld
 endif
@@ -168,11 +148,6 @@ image2_ns:LINK_APP_LIB += $(ROOTDIR)/lib/application/lib_wlan.a $(ROOTDIR)/lib/a
 mp_image2_ns:LINK_APP_LIB += $(ROOTDIR)/lib/application/lib_wlan_mp.a $(ROOTDIR)/lib/application/lib_wps.a
 endif
 
-#LINK_APP_LIB += $(ROOTDIR)/lib/application/lib_main.a
-#LINK_APP_LIB += $(ROOTDIR)/lib/application/libCHIP.a
-LINK_APP_LIB_MATTER += -Wl,--start-group -Wl,--whole-archive $(ROOTDIR)/lib/application/lib_main.a -Wl,--no-whole-archive $(ROOTDIR)/lib/application/libCHIP.a -Wl,--end-group # --whole-archive forces linker to override weak functions with strong ones
-
-
 ifeq ($(CONFIG_LINKKIT_AWSS), y)
 LINK_APP_LIB += $(ROOTDIR)/lib/application/lib_aliiot.a
 endif
@@ -194,6 +169,12 @@ ifeq ($(CONFIG_EMWIN_EN),y)
 LINK_APP_LIB += $(BASEDIR)/component/common/ui/emwin/emWinLibrary/lib/rtl8721d/lib_emwin.a
 endif
 
+#matter lib
+ifeq ($(CONFIG_MATTER_EN), y)
+# --whole-archive forces linker to override weak functions with strong ones
+LINK_APP_LIB_MATTER += -Wl,--start-group -Wl,--whole-archive $(ROOTDIR)/lib/application/lib_main.a -Wl,--no-whole-archive $(ROOTDIR)/lib/application/libCHIP.a -Wl,--end-group 
+endif
+
 rom: build_target_folder copy_ld_rom check_toolchain build_info.h make_subdirs_rom package_prebuilt_rom_objs rom_linker 
 rom_ns: build_target_folder copy_ld_rom_ns check_toolchain build_info.h make_subdirs_rom_ns package_prebuilt_rom_objs rom_linker_ns 
 image2_ns: build_target_folder copy_ld_img2 check_toolchain build_info.h make_subdirs linker_image2_ns 
@@ -202,58 +183,49 @@ image3_s: build_target_folder copy_ld_img3 check_toolchain build_info.h make_sub
 mp_image3_s: build_target_folder copy_ld_img3 check_toolchain build_info.h make_subdirs_secure linker_image3
 bootloader: build_target_folder copy_ld_img1 check_toolchain build_info.h make_subdirs_bootloader linker_loader gen_rom_symbol
 
-all_clusters: build_target_folder copy_ld_img2 check_toolchain build_info.h $(ALL_CLUSTERS_FILE)
-	make -C make/chip/all_clusters_app all
-	make -C make/chip_main/all_clusters_app all
+#*****************************************************************************#
+#                         MATTER SUB DIRS                                     #
+#*****************************************************************************#
+ifeq ($(CONFIG_MATTER_EN), y)
+all_clusters: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) all_clusters
 
-light: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE)
-	make -C make/chip/lighting_app all
-	make -C make/chip_main/lighting_app all
+aircon_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) aircon_port
 
-light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE)
-	make -C make/chip/lighting_app all
-	make -C make/chip_main/lighting_port all
+air_purifier: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) air_purifier
 
-light_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE) copy_gen_files_light_dm 
-	make -C make/chip/lighting_app all
-	make -C make/chip_main/lighting_dm_app all
+bridge_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) bridge_port
 
-light_switch: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHT_SWITCH_FILE)
-	make -C make/chip/light_switch_app all
-	make -C make/chip_main/light_switch_app all
+bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) bridge_dm
 
-thermostat_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(THERMOSTAT_PORT_FILE)
-	make -C make/chip/thermostat_app all
-	make -C make/chip_main/thermostat_port all
+dishwasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) laundrywasher_port
 
-bridge_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRIDGE_PORT_FILE)
-	make -C make/chip/bridge_app all
-	make -C make/chip_main/bridge_port all
+laundrywasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) laundrywasher_port
 
-bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRIDGE_DM_FILE) copy_gen_files_bridge_dm
-	make -C make/chip/bridge_app all
-	make -C make/chip_main/bridge_dm_app all
+light: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) light
 
-refrigerator_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(REFRIGERATOR_PORT_FILE)
-	make -C make/chip/refrigerator_app all
-	make -C make/chip_main/refrigerator_port all
+light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) light_port
 
-air_purifier: build_target_folder copy_ld_img2 check_toolchain build_info.h $(AIR_PURIFIER_FILE)
-	make -C make/chip/air_purifier_app all
-	make -C make/chip_main/air_purifier_app all
+light_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) light_dm
 
-aircon_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(AIRCON_PORT_FILE)
-	make -C make/chip/aircon_app all
-	make -C make/chip_main/aircon_port all
+light_switch: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) light_switch
 
-dishwasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(DISHWASHER_PORT_FILE)
-	make -C make/chip/dishwasher_app all
-	make -C make/chip_main/dishwasher_port all
+refrigerator_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) refrigerator_port
 
-laundrywasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LAUNDRYWASHER_PORT_FILE)
-	make -C make/chip/laundrywasher_app all
-	make -C make/chip_main/laundrywasher_port all
-
+thermostat_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
+	make -C $(MATTER_BUILDDIR) thermostat_port
+endif
 #*****************************************************************************#
 #                      RULES TO CREATE DIRECTORY                              #
 #*****************************************************************************#
@@ -272,6 +244,7 @@ endif
 	@if [ -d $(BUILD_TARGET_ROM_FOLDER_NS) ]; then echo "$(BUILD_TARGET_ROM_FOLDER_NS) exist"; else $(MKDIR) $(BUILD_TARGET_ROM_FOLDER_NS); fi
 	@$(ROM_SYMBOL_GEN_PYTHON) 
 	@$(ROM_SYMBOL_S_GEN_PYTHON) 
+
 
 #*****************************************************************************#
 #                      RULES TO MAKE SUB DIRS                                 #
@@ -305,112 +278,6 @@ make_subdirs_bootloader:
 	@ rm -f $(RAM_OBJS_LIST)
 	@make -C make/bootloader all
 
-$(ALL_CLUSTERS_FILE): $(ALL_CLUSTERS_ZAP)
-	@cp $(MATTER_DIR)/example/chiptest/all-clusters-app.zap $(ALL_CLUSTERS_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/all-clusters-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/all-clusters-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/all-clusters-app.zap > $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/all-clusters-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(LIGHTING_FILE): $(LIGHTING_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/lighting-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/lighting-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/lighting-app/lighting-common/lighting-app.zap > $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(LIGHT_SWITCH_FILE): $(LIGHT_SWITCH_ZAP)
-	@mkdir -p $(CHIPDIR)/examples/light-switch-app/ameba/build/chip/codegen/zap-generated
-	@python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/light-switch-app/ameba/build/chip/codegen/zap-generated  $^
-	@python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/light-switch-app/ameba/build/chip/codegen/zap-generated $^
-	@python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/light-switch-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/light-switch-app/light-switch-common/light-switch-app.matter
-	@python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $^ > $(CHIPDIR)/examples/light-switch-app/ameba/build/chip/codegen/cluster-file.txt
-	@python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $@ --chip_path $(CHIPDIR)
-
-$(THERMOSTAT_PORT_FILE): $(THERMOSTAT_PORT_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/thermostat/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/thermostat/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/thermostat/thermostat-common/thermostat.zap > $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/thermostat/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(BRIDGE_DM_FILE): $(BRIDGE_DM_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.zap > $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(BRIDGE_DM_FILE): $(BRIDGE_DM_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/bridge-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/bridge_dm/bridge-app.zap > $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(REFRIGERATOR_PORT_FILE): $(REFRIGERATOR_PORT_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(CHIPDIR)/examples/refrigerator-app/ameba/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/refrigerator-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/refrigerator-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/refrigerator-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/refrigerator/refrigerator-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/refrigerator/refrigerator-app.zap > $(CHIPDIR)/examples/refrigerator-app/ameba/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/refrigerator-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(AIR_PURIFIER_FILE): $(AIR_PURIFIER_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(CHIPDIR)/examples/air-purifier-app/ameba/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir examples/air-purifier-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir examples/air-purifier-app/ameba/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(CHIPDIR)/examples/air-purifier-app/ameba/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(CHIPDIR)/examples/air-purifier-app/air-purifier-common/air-purifier-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(CHIPDIR)/examples/air-purifier-app/air-purifier-common/air-purifier-app.zap > $(CHIPDIR)/examples/air-purifier-app/ameba/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(CHIPDIR)/examples/air-purifier-app/ameba/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(AIRCON_PORT_FILE): $(AIRCON_PORT_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(BASEDIR)/component/common/application/matter/example/aircon/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir $(BASEDIR)/component/common/application/matter/example/aircon/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir $(BASEDIR)/component/common/application/matter/example/aircon/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(BASEDIR)/component/common/application/matter/example/aircon/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/aircon/aircon-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/aircon/aircon-app.zap > $(BASEDIR)/component/common/application/matter/example/aircon/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(BASEDIR)/component/common/application/matter/example/aircon/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(DISHWASHER_PORT_FILE): $(DISHWASHER_PORT_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(BASEDIR)/component/common/application/matter/example/dishwasher/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir $(BASEDIR)/component/common/application/matter/example/dishwasher/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir $(BASEDIR)/component/common/application/matter/example/dishwasher/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(BASEDIR)/component/common/application/matter/example/dishwasher/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/dishwasher/dishwasher-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/dishwasher/dishwasher-app.zap > $(BASEDIR)/component/common/application/matter/example/dishwasher/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(BASEDIR)/component/common/application/matter/example/dishwasher/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-$(LAUNDRYWASHER_PORT_FILE): $(LAUNDRYWASHER_PORT_ZAP)
-	@ rm -f $(RAM_OBJS_LIST)
-	mkdir -p $(BASEDIR)/component/common/application/matter/example/laundrywasher/build/chip/codegen/zap-generated
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/matter-idl-server.json --output-dir $(BASEDIR)/component/common/application/matter/example/laundrywasher/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/tools/zap/generate.py --no-prettify-output --templates src/app/zap-templates/app-templates.json --output-dir $(BASEDIR)/component/common/application/matter/example/laundrywasher/build/chip/codegen/zap-generated $^
-	python3 $(CHIPDIR)/scripts/codegen.py --generator cpp-app --output-dir $(BASEDIR)/component/common/application/matter/example/laundrywasher/build/chip/codegen --expected-outputs $(MATTER_TOOLDIR)/codegen_helpers/expected.outputs $(BASEDIR)/component/common/application/matter/example/laundrywasher/laundrywasher-app.matter
-	python3 $(CHIPDIR)/src/app/zap_cluster_list.py --zap_file $(BASEDIR)/component/common/application/matter/example/laundrywasher/laundrywasher-app.zap > $(BASEDIR)/component/common/application/matter/example/laundrywasher/build/chip/codegen/cluster-file.txt
-	python3 $(MATTER_TOOLDIR)/codegen_helpers/parse_clusters.py --cluster_file $(BASEDIR)/component/common/application/matter/example/laundrywasher/build/chip/codegen/cluster-file.txt --chip_path $(CHIPDIR)
-
-copy_gen_files_light_dm:
-	cp $(BASEDIR)/component/common/application/matter/example/light_dm/endpoint_config.h $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/zap-generated
-	cp $(BASEDIR)/component/common/application/matter/example/light_dm/gen_config.h $(CHIPDIR)/examples/lighting-app/ameba/build/chip/codegen/zap-generated
-
-copy_gen_files_bridge_dm:
-	cp $(BASEDIR)/component/common/application/matter/example/bridge_dm/endpoint_config.h $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
-	cp $(BASEDIR)/component/common/application/matter/example/bridge_dm/gen_config.h $(CHIPDIR)/examples/bridge-app/ameba/build/chip/codegen/zap-generated
 
 #*****************************************************************************#
 #                      RULES TO LINKER IMAGE                                  #
@@ -513,7 +380,11 @@ linker_image2:
 
 linker_image2_ns:
 	@echo "========= linker img2_ns start ========="
+ifeq ($(CONFIG_MATTER_EN), y)
 	$(LD) $(LD_ARG) target_img2.axf $(RAM_OBJS_LIST) $(LINK_ROM_LIB_NS) $(LINK_APP_LIB) $(LINK_APP_LIB_MATTER) -lm -lstdc++
+else
+	$(LD) $(LD_ARG) target_img2.axf $(RAM_OBJS_LIST) $(LINK_ROM_LIB_NS) $(LINK_APP_LIB)  -lm -lstdc++
+endif
 
 	$(MOVE) text.map $(IMAGE_TARGET_FOLDER)/text_image2_ns.map
 	$(MOVE) target_img2.axf $(IMAGE_TARGET_FOLDER)
@@ -761,9 +632,11 @@ clean:
 	# make -C config clean
 	make -C $(SCRIPTSDIR)/lxdialog clean
 
-	make -C make/chip_main clean
-	make -C make/chip clean
+ifeq ($(CONFIG_MATTER_EN), y)
+	make -C $(MATTER_BUILDDIR)/make/chip_main clean
+	make -C $(MATTER_BUILDDIR)/make/chip clean
 	rm -rf $(BASEDIR)/tools/matter/codegen_helpers/gen
+endif
 
 clean_rom:
 	@make -C make_rom/make clean

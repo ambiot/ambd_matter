@@ -212,14 +212,5 @@ void os_heap_init(void)
 
 #endif
 #endif
-		vPortDefineHeapRegions( xHeapRegions );
-}
-
-size_t xPortGetTotalHeapSize( void )
-{
-#if CONFIG_DYNAMIC_HEAP_SIZE
-	return configTOTAL_HEAP0_SIZE;
-#else
-	return configTOTAL_HEAP_SIZE;
-#endif
+		vPortDefineHeapRegions( xHeapRegions );	
 }

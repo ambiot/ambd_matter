@@ -46,13 +46,13 @@
 /** @defgroup PROTECTION_Exported_Functions OTF Exported Functions
   * @{
   */
-_LONG_CALL_ void RSIP_Cmd(uint32_t NewStatus);
-_LONG_CALL_ void RSIP_OTF_init(uint8_t* IV);
-_LONG_CALL_ void RSIP_OTF_Cmd(uint32_t NewStatus);
-_LONG_CALL_ void RSIP_OTF_Mask(uint32_t MaskIdx, uint32_t Addr, uint32_t Len, uint32_t NewStatus);
-_LONG_CALL_ uint32_t RSIP_KEY_Request(uint32_t KeyTypeBit);
-_LONG_CALL_ void RSIP_MMU_Config(uint32_t MMUIdx, uint32_t AddrStart, uint32_t AddrEnd, uint32_t IsMinus, uint32_t AddrOffset);
-_LONG_CALL_ void RSIP_MMU_Cmd(uint32_t MMUIdx, uint32_t NewStatus);
+_LONG_CALL_ void RSIP_Cmd(u32 NewStatus);
+_LONG_CALL_ void RSIP_OTF_init(u8* IV);
+_LONG_CALL_ void RSIP_OTF_Cmd(u32 NewStatus);
+_LONG_CALL_ void RSIP_OTF_Mask(u32 MaskIdx, u32 Addr, u32 Len, u32 NewStatus);
+_LONG_CALL_ u32 RSIP_KEY_Request(u32 KeyTypeBit);
+_LONG_CALL_ void RSIP_MMU_Config(u32 MMUIdx, u32 AddrStart, u32 AddrEnd, u32 IsMinus, u32 AddrOffset);
+_LONG_CALL_ void RSIP_MMU_Cmd(u32 MMUIdx, u32 NewStatus);
 /**
   * @}
   */
@@ -79,18 +79,18 @@ _LONG_CALL_ void RSIP_MMU_Cmd(uint32_t MMUIdx, uint32_t NewStatus);
  * @defgroup REG_OTF_DEC_CTRL
  * @{
  *****************************************************************************/
-#define OTF_FEN_OTFDEC				((uint32_t)0x00000001)			/*!<function enable of OTF decoder */
-#define OTF_DEC_IV_BYTE_SWAP		((uint32_t)0x00000002)			/*!<Big/little endian conversion for input OTF IV */
-#define OTF_DEC_KEY_BYTE_SWAP		((uint32_t)0x00000004)			/*!<Big/little endian conversion for input OTF KEY*/
-#define OTF_DEC_CIPHER_BYTE_SWAP	((uint32_t)0x00000008)			/*!Big/little endian conversion for calculated cipher*/
+#define OTF_FEN_OTFDEC				((u32)0x00000001)			/*!<function enable of OTF decoder */
+#define OTF_DEC_IV_BYTE_SWAP		((u32)0x00000002)			/*!<Big/little endian conversion for input OTF IV */
+#define OTF_DEC_KEY_BYTE_SWAP		((u32)0x00000004)			/*!<Big/little endian conversion for input OTF KEY*/
+#define OTF_DEC_CIPHER_BYTE_SWAP	((u32)0x00000008)			/*!Big/little endian conversion for calculated cipher*/
 /** @} */
 
 /**************************************************************************//**
  * @defgroup OTF_MASK_ENTRYx_CTRL
  * @{
  *****************************************************************************/
-#define OTF_DEC_BIT_MASK_EN			((uint32_t)0x00000001)			/*!<Decoder mask enable for address~address+length */
-#define OTF_DEC_BIT_MASK_SIZE			((uint32_t)0x000000FF)			/*!<Address range for decoder mask, unit is 4KB */
+#define OTF_DEC_BIT_MASK_EN			((u32)0x00000001)			/*!<Decoder mask enable for address~address+length */
+#define OTF_DEC_BIT_MASK_SIZE			((u32)0x000000FF)			/*!<Address range for decoder mask, unit is 4KB */
 #define OTF_DEC_BIT_SHIFT_SIZE			8
 #define IS_OTF_MASK_SIZE(SIZE) ((((SIZE) & ~OTF_DEC_BIT_MASK_SIZE) == 0x00) && (((SIZE) & OTF_DEC_BIT_MASK_SIZE) != 0x00))
 /** @} */
@@ -99,19 +99,19 @@ _LONG_CALL_ void RSIP_MMU_Cmd(uint32_t MMUIdx, uint32_t NewStatus);
  * @defgroup MMU_ENTRYx_CTRL
  * @{
  *****************************************************************************/
-#define MMU_BIT_ENTRY_VALID			((uint32_t)0x00000001)			/*!< MMU entry_x valid */
-#define MMU_BIT_ENTRY_OFFSET_MINUS	((uint32_t)0x00000002)			/*!< MMU_ENTRYx_OFFSET flag, 0 Plus, 1 Minus. */
+#define MMU_BIT_ENTRY_VALID			((u32)0x00000001)			/*!< MMU entry_x valid */
+#define MMU_BIT_ENTRY_OFFSET_MINUS	((u32)0x00000002)			/*!< MMU_ENTRYx_OFFSET flag, 0 Plus, 1 Minus. */
 /** @} */
 
 /**************************************************************************//**
  * @defgroup RDP_ERROR_STATUS
  * @{
  *****************************************************************************/
-#define RDP_SYSTEMBIN_WRONG		((uint32_t)0x00000001)            /*!<system.bin not load to flash */
-#define RDP_RDPBIN_WRONG			((uint32_t)0x00000002)            /*!<rdp.bin not load to flash */
-#define RDP_KEY_REQUEST_TIMEOUT	((uint32_t)0x00000003)            /*!<Key request timeout */
-#define RDP_NOT_ENABLE				((uint32_t)0x00000004)            /*!<RDP not enable in efuse */
-#define RDP_CHECKSUM_ERROR		((uint32_t)0x00000005)            /*!<Check sum error */
+#define RDP_SYSTEMBIN_WRONG		((u32)0x00000001)            /*!<system.bin not load to flash */
+#define RDP_RDPBIN_WRONG			((u32)0x00000002)            /*!<rdp.bin not load to flash */
+#define RDP_KEY_REQUEST_TIMEOUT	((u32)0x00000003)            /*!<Key request timeout */
+#define RDP_NOT_ENABLE				((u32)0x00000004)            /*!<RDP not enable in efuse */
+#define RDP_CHECKSUM_ERROR		((u32)0x00000005)            /*!<Check sum error */
 /** @} */
 
 /** @} */

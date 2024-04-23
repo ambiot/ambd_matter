@@ -19,17 +19,22 @@ endif
 ifeq ($(CONFIG_LINKKIT_AWSS),y)
 	@make -C linkkit all
 endif
-	@make -C matter all
-	#@make -C xmodem all
+	@make -C xmodem all
+	#@make -C azure_emb all
 	#@make -C airkiss all
+ifeq ($(CONFIG_MATTER_EN),y)
+	@make -C $(MATTER_BUILDDIR)/make/application all
+endif
 #*****************************************************************************#
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
 	@make -C baidu clean
 	@make -C mqtt clean
-	@make -C matter clean
-	#@make -C xmodem clean
+	@make -C xmodem clean
 	#@make -C airkiss clean
-	#@make -C linkkit clean
+	@make -C linkkit clean
+ifeq ($(CONFIG_MATTER_EN),y)
+	@make -C $(MATTER_BUILDDIR)/make/application clean
+endif
 -include $(DEPS)

@@ -78,14 +78,14 @@
 /** @defgroup BKUP_REG_Idx_definitions 
   * @{
   */ 
-#define BKUP_REG0				((uint32_t)0x00000000)	/*!< byte1 is used by system */
-#define BKUP_REG1				((uint32_t)0x00000001)	/*!< all bits can be used by user */
-#define BKUP_REG2				((uint32_t)0x00000002)	/*!< all bits can be used by user */
-#define BKUP_REG3				((uint32_t)0x00000003)	/*!< all bits can be used by user */
-#define BKUP_REG4				((uint32_t)0x00000004)	/*!< all bits can be used by user */
-#define BKUP_REG5				((uint32_t)0x00000005)	/*!< all bits can be used by user */
-#define BKUP_REG6				((uint32_t)0x00000006)	/*!< all bits can be used by user */
-#define BKUP_REG7				((uint32_t)0x00000007)	/*!< all bits can be used by user */
+#define BKUP_REG0				((u32)0x00000000)	/*!< byte1 is used by system */
+#define BKUP_REG1				((u32)0x00000001)	/*!< all bits can be used by user */
+#define BKUP_REG2				((u32)0x00000002)	/*!< all bits can be used by user */
+#define BKUP_REG3				((u32)0x00000003)	/*!< all bits can be used by user */
+#define BKUP_REG4				((u32)0x00000004)	/*!< all bits can be used by user */
+#define BKUP_REG5				((u32)0x00000005)	/*!< all bits can be used by user */
+#define BKUP_REG6				((u32)0x00000006)	/*!< all bits can be used by user */
+#define BKUP_REG7				((u32)0x00000007)	/*!< all bits can be used by user */
 #define IS_BKUP_REG(IDX)	(((IDX) == BKUP_REG0) || \
 							((IDX) == BKUP_REG1) ||\
 							((IDX) == BKUP_REG2) ||\
@@ -105,11 +105,11 @@
 /** @defgroup BKUP_REG_Exported_Functions BKUP_REG Exported Functions
   * @{
   */
-_LONG_CALL_ void BKUP_Write(uint32_t DwordIdx, uint32_t WriteVal);
-_LONG_CALL_ uint32_t BKUP_Read(uint32_t DwordIdx);
-_LONG_CALL_ void BKUP_Set(uint32_t DwordIdx, uint32_t BitMask);
-_LONG_CALL_ void BKUP_Clear(uint32_t DwordIdx, uint32_t BitMask);
-_LONG_CALL_ uint32_t BOOT_Reason(void);
+_LONG_CALL_ void BKUP_Write(u32 DwordIdx, u32 WriteVal);
+_LONG_CALL_ u32 BKUP_Read(u32 DwordIdx);
+_LONG_CALL_ void BKUP_Set(u32 DwordIdx, u32 BitMask);
+_LONG_CALL_ void BKUP_Clear(u32 DwordIdx, u32 BitMask);
+_LONG_CALL_ u32 BOOT_Reason(void);
 /**
   * @}
   */
@@ -124,7 +124,7 @@ _LONG_CALL_ uint32_t BOOT_Reason(void);
  * @{
  */
 
-#define BIT_MASK_FLASH_STRUCT_ADDR	((uint32_t)0xFFFFFFFF)  /*!< used to backup address of flash_init_para*/
+#define BIT_MASK_FLASH_STRUCT_ADDR	((u32)0xFFFFFFFF)  /*!< used to backup address of flash_init_para*/
 
 
 /** @} */
@@ -153,7 +153,7 @@ _LONG_CALL_ uint32_t BOOT_Reason(void);
 #define BIT_WDG_RESET_HAPPEN				BIT(1)	/*!<  km0 watchdog reset */
 #define BIT_SYS_RESET_HAPPEN				BIT(0)	/*!<  km0 system reset */
 
-#define BIT_MASK_BOOT_REASON				((uint32_t)0x0000001F)
+#define BIT_MASK_BOOT_REASON				((u32)0x0000001F)
 /** @} */
 /** @} */
 

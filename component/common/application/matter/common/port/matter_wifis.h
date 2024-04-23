@@ -15,7 +15,17 @@ extern "C" {
 #include <wifi_conf.h>
 #include <lwip_netconf.h>
 
+#define RTW_SECURITY_WPA_WPA2_MIXED RTW_SECURITY_WPA_WPA2_MIXED_PSK
+
 #define JOIN_HANDSHAKE_DONE (uint32_t)(1 << 7)
+
+/* struct iw_encode_ext ->alg */
+#define IW_ENCODE_ALG_NONE	0
+#define IW_ENCODE_ALG_WEP	1
+#define IW_ENCODE_ALG_TKIP	2
+#define IW_ENCODE_ALG_CCMP	3
+#define IW_ENCODE_ALG_PMK   4
+#define IW_ENCODE_ALG_AES_CMAC  5 //IGTK
 
 typedef enum{
     MATTER_WIFI_EVENT_CONNECT = 0,

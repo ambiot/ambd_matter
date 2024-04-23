@@ -28,6 +28,7 @@ CSRC =	$(DIR)/rtl8721dlp_pinmap.c \
 
 CSRC +=	$(CFGDIR)/rtl8721dlp_pinmapcfg.c \
 	$(CFGDIR)/rtl8721dlp_intfcfg.c \
+	$(CFGDIR)/rtl8721dlp_sleepcfg.c \
 	$(CFGDIR)/rtl8721dlp_flashcfg.c \
 	$(CFGDIR)/rtl8721d_ipccfg.c \
 	$(CFGDIR)/rtl8721d_wificfg.c \
