@@ -13,7 +13,7 @@
 #include <app-common/zap-generated/ids/Attributes.h>
 #include <app-common/zap-generated/ids/Clusters.h>
 #include <protocols/interaction_model/StatusCode.h>
-
+#include <app/CommandHandler.h>
 #include <lib/support/ZclString.h>
 
 using namespace ::chip;
@@ -346,6 +346,14 @@ void HandleDeviceStatusChanged(MatterBridge * dev, MatterBridge::Changed_t itemC
     {
         ScheduleReportingCallback(dev, BridgedDeviceBasicInformation::Id, BridgedDeviceBasicInformation::Attributes::NodeLabel::Id);
     }
+}
+
+bool emberAfActionsClusterInstantActionCallback(app::CommandHandler * commandObj, const app::ConcreteCommandPath & commandPath,
+                                                const Actions::Commands::InstantAction::DecodableType & commandData)
+{
+    // No actions are implemented, just return status NotFound.
+    commandObj->AddStatus(commandPath, Protocols::InteractionModel::Status::NotFound);
+    return true;
 }
 
 CHIP_ERROR matter_driver_bridge_light_init(void)

@@ -822,7 +822,6 @@ extern "C" {
 	#define portTICK_TYPE_IS_ATOMIC 0
 #endif
 
-#define configSUPPORT_STATIC_ALLOCATION 	1 // for matter all-cluster-app rpc
 #ifndef configSUPPORT_STATIC_ALLOCATION
 	/* Defaults to 0 for backward compatibility. */
 	#define configSUPPORT_STATIC_ALLOCATION 0

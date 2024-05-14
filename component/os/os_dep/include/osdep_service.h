@@ -181,14 +181,14 @@ struct task_struct {
 
 #ifdef CONFIG_THREAD_COMM_SIGNAL
 	const char *name;	/* I: workqueue thread name */
-	uint32_t queue_num;		/* total signal num */
-	uint32_t cur_queue_num;	/* cur signal num should < queue_num */
+	u32 queue_num;		/* total signal num */
+	u32 cur_queue_num;	/* cur signal num should < queue_num */
 #elif defined(CONFIG_THREAD_COMM_SEMA)
 	_sema wakeup_sema;    /* for internal use only */
 	_sema terminate_sema; /* for internal use only */
 #endif
-	uint32_t blocked;          /* for internal use only */
-	uint32_t callback_running; /* for internal use only */
+	u32 blocked;          /* for internal use only */
+	u32 callback_running; /* for internal use only */
 };
 
 typedef struct {
@@ -210,7 +210,7 @@ struct worker_timer_entry {
 	_timerHandle 		timer_hdl;
 	rtw_event_message_t	message;
 	rtw_worker_thread_t	*worker_thread;
-	uint32_t 				timeout; 
+	u32 				timeout; 
 };
 
 #ifdef CONFIG_THREAD_COMM_SIGNAL
@@ -218,7 +218,7 @@ struct work_struct;
 typedef void (*work_func_t)(void *context);
 struct work_struct {
 	_list list;
-	uint32_t data;
+	u32 data;
 	work_func_t func;
 	void *context;
 	struct task_struct *used_wq; 
@@ -295,13 +295,13 @@ int get_mem_usage(_list *pmem_table);
 
 
 /*************************** Memory Management *******************************/
-uint8_t*	_rtw_vmalloc(uint32_t sz);
-uint8_t*	_rtw_zvmalloc(uint32_t sz);
-void	_rtw_vmfree(uint8_t *pbuf, uint32_t sz);
-uint8_t*	_rtw_zmalloc(uint32_t sz);
-uint8_t*	_rtw_malloc(uint32_t sz);
-uint8_t* _rtw_calloc(uint32_t nelements, uint32_t elmentSize);
-void	_rtw_mfree(uint8_t *pbuf, uint32_t sz);
+u8*	_rtw_vmalloc(u32 sz);
+u8*	_rtw_zvmalloc(u32 sz);
+void	_rtw_vmfree(u8 *pbuf, u32 sz);
+u8*	_rtw_zmalloc(u32 sz);
+u8*	_rtw_malloc(u32 sz);
+u8* _rtw_calloc(u32 nelements, u32 elmentSize);
+void	_rtw_mfree(u8 *pbuf, u32 sz);
 #ifdef CONFIG_MEM_MONITOR
 
 /**
@@ -309,7 +309,7 @@ void	_rtw_mfree(uint8_t *pbuf, uint32_t sz);
  * @param[in] sz: The size of memory to be allocated.
  * @return	  The pointer to the beginning of the memory
  */
-uint8_t*	rtw_vmalloc(uint32_t sz);
+u8*	rtw_vmalloc(u32 sz);
 
 /**
  * @brief  This function allocates the virtually contiguous memory 
@@ -317,7 +317,7 @@ uint8_t*	rtw_vmalloc(uint32_t sz);
  * @param[in] sz: The size of memory to be allocated.
  * @return	  The pointer to the beginning of the memory
  */
-uint8_t*	rtw_zvmalloc(uint32_t sz);
+u8*	rtw_zvmalloc(u32 sz);
 
 /**
  * @brief  This function frees the virtually contiguous memory.
@@ -325,7 +325,7 @@ uint8_t*	rtw_zvmalloc(uint32_t sz);
  * @param[in] sz: The size of memory allocated.
  * @return	  None
  */
-void	rtw_vmfree(uint8_t *pbuf, uint32_t sz);
+void	rtw_vmfree(u8 *pbuf, u32 sz);
 
 /**
  * @brief  This function allocates the memory 
@@ -333,14 +333,14 @@ void	rtw_vmfree(uint8_t *pbuf, uint32_t sz);
  * @param[in] sz: The size of memory to be allocated.
  * @return	  The pointer to the beginning of the memory
  */
-uint8_t*	rtw_zmalloc(uint32_t sz);
+u8*	rtw_zmalloc(u32 sz);
 
 /**
  * @brief  This function allocates the memory.
  * @param[in] sz: The size of memory to be allocated.
  * @return	  The pointer to the beginning of the memory
  */
-uint8_t*	rtw_malloc(uint32_t sz);
+u8*	rtw_malloc(u32 sz);
 
 /**
  * @brief  This function allocates the memory, nlements*elementSize bytes in size.
@@ -348,7 +348,7 @@ uint8_t*	rtw_malloc(uint32_t sz);
  * @param[in] elementSize: The size of each element
  * @return	  The pointer to the beginning of the memory
  */
-uint8_t*	rtw_calloc(uint32_t nelements, uint32_t elmentSize);
+u8*	rtw_calloc(u32 nelements, u32 elmentSize);
 
 /**
  * @brief  This function frees the virtually contiguous memory.
@@ -356,7 +356,7 @@ uint8_t*	rtw_calloc(uint32_t nelements, uint32_t elmentSize);
  * @param[in] sz: The size of memory allocated.
  * @return	  None
  */
-void	rtw_mfree(uint8_t *pbuf, uint32_t sz);
+void	rtw_mfree(u8 *pbuf, u32 sz);
 #else
 #define	rtw_vmalloc		_rtw_vmalloc
 #define	rtw_zvmalloc		_rtw_zvmalloc
@@ -366,7 +366,7 @@ void	rtw_mfree(uint8_t *pbuf, uint32_t sz);
 #define rtw_calloc			_rtw_calloc
 #define	rtw_mfree   		_rtw_mfree
 #endif
-#define rtw_free(buf)		rtw_mfree((uint8_t *)buf, 0)
+#define rtw_free(buf)		rtw_mfree((u8 *)buf, 0)
 
 /**
  * @brief  This function allocates a 2 dimensional array memory.
@@ -395,7 +395,7 @@ void	rtw_mfree2d(void *pbuf, int h, int w, int size);
  * @param[in] sz: Size of memory to copy.
  * @return	  None
  */
-void	rtw_memcpy(void* dst, void* src, uint32_t sz);
+void	rtw_memcpy(void* dst, void* src, u32 sz);
 
 /**
  * @brief  This function compares the first "sz" bytes of the block of memory pointed by "dst"
@@ -407,7 +407,7 @@ void	rtw_memcpy(void* dst, void* src, uint32_t sz);
  * @return	0: The contents of both memory blocks are equal.
  * @return	<0: The first byte that does not match in both memory blocks has a greater value in dst than in src.
  */
-int	rtw_memcmp(void *dst, void *src, uint32_t sz);
+int	rtw_memcmp(void *dst, void *src, u32 sz);
 
 /**
  * @brief  This function sets the first "sz" bytes of the block of memory pointed by "pbuf" to the specified "c".
@@ -416,7 +416,7 @@ int	rtw_memcmp(void *dst, void *src, uint32_t sz);
  * @param[in] sz: Size of memory to be set to the value "c".
  * @return	  None
  */
-void	rtw_memset(void *pbuf, int c, uint32_t sz);
+void	rtw_memset(void *pbuf, int c, u32 sz);
 /*************************** End Memory Management *******************************/
 
 /*************************** List *******************************/
@@ -433,7 +433,7 @@ void	rtw_init_listhead(_list *list);
  * @param[in] phead: Pointer to the list to test.
  * @return	  _TRUE/_FALSE
  */
-uint32_t	rtw_is_list_empty(_list *phead);
+u32	rtw_is_list_empty(_list *phead);
 
 /**
  * @brief  This function adds a new entry after "phead" for the list.
@@ -500,7 +500,7 @@ void	rtw_up_sema_from_isr(_sema *sema);
  * @return	pdTRUE: The semaphore was obtained.
  * @return	pdFALSE: Obtain the semaphore failed.
  */
-uint32_t	rtw_down_sema(_sema *sema);
+u32	rtw_down_sema(_sema *sema);
 
 /**
  * @brief  This function acquires the semaphore. If no more tasks are allowed to acquire the semaphore,
@@ -510,7 +510,7 @@ uint32_t	rtw_down_sema(_sema *sema);
  * @return	pdTRUE: The semaphore was obtained.
  * @return	pdFALSE: Timeout without the semaphore becoming available.
  */
-uint32_t	rtw_down_timeout_sema(_sema *sema, uint32_t timeout);
+u32	rtw_down_timeout_sema(_sema *sema, u32 timeout);
 /*************************** End Semaphores *******************************/
 
 /*************************** Mutexes *******************************/
@@ -551,7 +551,7 @@ void	rtw_mutex_get(_mutex *pmutex);
  * @return	0: The semaphore was obtained.
  * @return	-1: Timeout without the semaphore becoming available.
  */
-int	rtw_mutex_get_timeout(_mutex *pmutex, uint32_t timeout_ms);
+int	rtw_mutex_get_timeout(_mutex *pmutex, u32 timeout_ms);
 /*************************** End Mutexes *******************************/
 
 /*************************** SchedulerControl *******************************/
@@ -702,7 +702,7 @@ void	rtw_spinunlock_irqsave(_lock *plock, _irqL *irqL);
  * @return	  0: Creating queue success
  * @return	  -1: Creating queue fail
  */
-int rtw_init_xqueue( _xqueue* queue, const char* name, uint32_t message_size, uint32_t number_of_messages );
+int rtw_init_xqueue( _xqueue* queue, const char* name, u32 message_size, u32 number_of_messages );
 
 /**
  * @brief  This function posts a message to the back of a queue.
@@ -715,7 +715,7 @@ int rtw_init_xqueue( _xqueue* queue, const char* name, uint32_t message_size, ui
  * @return	  0: The message was successfully posted.
  * @return	  -1: The message was not posted.
  */
-int rtw_push_to_xqueue( _xqueue* queue, void* message, uint32_t timeout_ms );
+int rtw_push_to_xqueue( _xqueue* queue, void* message, u32 timeout_ms );
 
 /**
  * @brief  This function receives a message from a queue.
@@ -728,9 +728,9 @@ int rtw_push_to_xqueue( _xqueue* queue, void* message, uint32_t timeout_ms );
  * @return	  0: A message was successfully received from the queue.
  * @return	  -1: No message was received from the queue.
  */
-int rtw_pop_from_xqueue( _xqueue* queue, void* message, uint32_t timeout_ms );
+int rtw_pop_from_xqueue( _xqueue* queue, void* message, u32 timeout_ms );
 
-int rtw_peek_from_xqueue( _xqueue* queue, void* message, uint32_t timeout_ms );
+int rtw_peek_from_xqueue( _xqueue* queue, void* message, u32 timeout_ms );
 
 /**
  * @brief  Delete a queue - freeing all the memory allocated for storing of messages placed on the queue.
@@ -747,14 +747,14 @@ int rtw_deinit_xqueue( _xqueue* queue );
  */
 void	rtw_init_queue(_queue	*pqueue);
 void	rtw_deinit_queue(_queue	*pqueue);
-uint32_t	rtw_is_queue_empty(_queue *pqueue);
+u32	rtw_is_queue_empty(_queue *pqueue);
 
 /**
  * @brief  This function tests whether the queue is empty.
  * @param[in] pqueue: The handle to the queue to be tested.
  * @return	 None
  */
-uint32_t	rtw_queue_empty(_queue	*pqueue);
+u32	rtw_queue_empty(_queue	*pqueue);
 
 /**
  * @brief  This function tests whether the "pelement" is at the "queue".
@@ -762,7 +762,7 @@ uint32_t	rtw_queue_empty(_queue	*pqueue);
  * @param[in] pelement: The element that to be tested.
  * @return	 _TRUE/_FALSE
  */
-uint32_t	rtw_end_of_queue_search(_list *queue, _list *pelement);
+u32	rtw_end_of_queue_search(_list *queue, _list *pelement);
 _list* rtw_get_queue_head(_queue	*queue);
 /*************************** End Queues *******************************/
 
@@ -772,42 +772,42 @@ _list* rtw_get_queue_head(_queue	*queue);
  * @brief  Get the count of ticks since the vTaskStartScheduler was called.
  * @return	The count of ticks since the vTaskStartScheduler was called.
  */
-uint32_t	rtw_get_current_time(void);
+u32	rtw_get_current_time(void);
 
 /**
  * @brief  Convert system time to milliseconds.
  * @param[in] systime: The system time to be converted.
  * @return : The milliseconds that converted by the system time.
  */
-uint32_t	rtw_systime_to_ms(uint32_t systime);
+u32	rtw_systime_to_ms(u32 systime);
 
 /**
  * @brief  Convert system time to seconds.
  * @param[in] systime: The system time to be converted.
  * @return : The seconds that converted by the system time.
  */
-uint32_t rtw_systime_to_sec(uint32_t systime);
+u32 rtw_systime_to_sec(u32 systime);
 
 /**
  * @brief  Convert milliseconds to system time.
  * @param[in] systime: The milliseconds to be converted.
  * @return : The system time that converted by the milliseconds.
  */
-uint32_t	rtw_ms_to_systime(uint32_t ms);
+u32	rtw_ms_to_systime(u32 ms);
 
 /**
  * @brief  Convert seconds to system time.
  * @param[in] systime: The seconds to be converted.
  * @return : The system time that converted by the seconds.
  */
-uint32_t	rtw_sec_to_systime(uint32_t sec);
+u32	rtw_sec_to_systime(u32 sec);
 
 /**
  * @brief  Get the passing time from the "start" in milliseconds.
  * @param[in] start: The start time which is in system time format.
  * @return : The passing time from "start" in milliseconds.
  */
-int32_t	rtw_get_passing_time_ms(uint32_t start);
+s32	rtw_get_passing_time_ms(u32 start);
 
 /**
  * @brief  Get the interval time from the "start" to "end" in milliseconds.
@@ -815,7 +815,7 @@ int32_t	rtw_get_passing_time_ms(uint32_t start);
  * @param[in] end: The end time which is in system time format.
  * @return : The interval time from "start" to "end" in milliseconds.
  */
-int32_t	rtw_get_time_interval_ms(uint32_t start, uint32_t end);
+s32	rtw_get_time_interval_ms(u32 start, u32 end);
 /*************************** End Time Management *******************************/
 
 /**
@@ -837,7 +837,7 @@ void	rtw_usleep_os(int us);
  * @param[in] s: The pointer to the string to be converted.
  * @return	  The converted value.
 */
-uint32_t 	rtw_atoi(uint8_t* s);
+u32 	rtw_atoi(u8* s);
 
 /**
  * @brief  This function delays a task for the giving time in milliseconds.
@@ -947,7 +947,7 @@ int 	ATOMIC_DEC_RETURN(ATOMIC_T *v);
 int ATOMIC_DEC_AND_TEST(ATOMIC_T *v);
 /*************************** End ATOMIC *******************************/
 
-uint64_t	rtw_modular64(uint64_t x, uint64_t y);
+u64	rtw_modular64(u64 x, u64 y);
 
 /**
  * @brief  This function generates random bytes.
@@ -955,13 +955,13 @@ uint64_t	rtw_modular64(uint64_t x, uint64_t y);
  * @param[in] size: The size of the random bytes.
  * @return	  0
 */
-int	rtw_get_random_bytes(void* dst, uint32_t size);
+int	rtw_get_random_bytes(void* dst, u32 size);
 
 /**
  * @brief  This function gets the available heap size.
  * @return	  The value of the available heap size.
 */
-uint32_t	rtw_getFreeHeapSize(void);
+u32	rtw_getFreeHeapSize(void);
 
 void	flush_signals_thread(void);
 
@@ -980,7 +980,7 @@ void	rtw_acquire_wakelock(void);
  *			or this API won't be effective.
  */
 void	rtw_release_wakelock(void);
-void rtw_wakelock_timeout(uint32_t timeout);
+void rtw_wakelock_timeout(u32 timeout);
 
 /*********************************** Thread related *****************************************/
 
@@ -998,7 +998,7 @@ void rtw_wakelock_timeout(uint32_t timeout);
  		  "rtw_TDMA_change_state_thread", "xmit_thread", "recv_thread", "rtw_recv_tasklet", "rtw_xmit_tasklet",
  		  "rtw_interrupt_thread", "cmd_thread", "usb_init", "MSC_BULK_CMD" and "MSC_BULK_DATA".
  */
-int	rtw_create_task(struct task_struct *task, const char *name, uint32_t  stack_size, uint32_t priority, thread_func_t func, void *thctx);
+int	rtw_create_task(struct task_struct *task, const char *name, u32  stack_size, u32 priority, thread_func_t func, void *thctx);
 
 /**
  * @brief  This function deletes a task.
@@ -1014,7 +1014,7 @@ void rtw_delete_task(struct task_struct * task);
  */
 void rtw_wakeup_task(struct task_struct *task);
 
-void rtw_set_priority_task(void* task, uint32_t NewPriority );
+void rtw_set_priority_task(void* task, u32 NewPriority );
 
 int rtw_get_priority_task(void* task);
 void rtw_suspend_task (void* task);
@@ -1029,7 +1029,7 @@ void rtw_resume_task (void* task);
  * @param[in] event_queue_size: The queue size of events.
  * @return  SUCCESS/FAIL.
  */
-int rtw_create_worker_thread( rtw_worker_thread_t* worker_thread, uint8_t priority, uint32_t stack_size, uint32_t event_queue_size );
+int rtw_create_worker_thread( rtw_worker_thread_t* worker_thread, u8 priority, u32 stack_size, u32 event_queue_size );
 
 /**
  * @brief  This function deletes a worker thread.
@@ -1041,7 +1041,7 @@ int rtw_delete_worker_thread( rtw_worker_thread_t* worker_thread );
 #if 0 //TODO
 void	rtw_init_delayed_work(struct delayed_work *dwork, work_func_t func, const char *name);
 void	rtw_deinit_delayed_work(struct delayed_work *dwork);
-int		rtw_queue_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork, uint32_t delay, void* context);
+int		rtw_queue_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork, u32 delay, void* context);
 BOOLEAN rtw_cancel_delayed_work(struct delayed_work *dwork);
 #endif
 
@@ -1064,14 +1064,14 @@ void	rtw_thread_exit(void);
  * @return  OS_SCHEDULER_RUNNING
  * @return  OS_SCHEDULER_SUSPENDED
  */
-uint8_t		rtw_get_scheduler_state(void);
+u8		rtw_get_scheduler_state(void);
 
 /**
  * @brief  This function creats secure stack for threads.
  * @param[in] secure_stack_size:  The size of the secure stack for this thread, the unit is byte.
  * @return  None
  */
-void rtw_create_secure_context(uint32_t secure_stack_size);
+void rtw_create_secure_context(u32 secure_stack_size);
 
 /*************************** End Threads *******************************/
 #ifdef PLATFORM_LINUX
@@ -1097,7 +1097,7 @@ void rtw_create_secure_context(uint32_t secure_stack_size);
  */
 _timerHandle rtw_timerCreate( const signed char *pcTimerName, 
 							  osdepTickType xTimerPeriodInTicks, 
-							  uint32_t uxAutoReload, 
+							  u32 uxAutoReload, 
 							  void * pvTimerID, 
 							  TIMER_FUN pxCallbackFunction );
 
@@ -1113,7 +1113,7 @@ _timerHandle rtw_timerCreate( const signed char *pcTimerName,
  * When the command is actually processed will depend on the priority of the
  * timer service/daemon task relative to other tasks in the system.
  */
-uint32_t rtw_timerDelete( _timerHandle xTimer, osdepTickType xBlockTime );
+u32 rtw_timerDelete( _timerHandle xTimer, osdepTickType xBlockTime );
 
 /**
  * @brief  This function queries a timer to see if it is active or dormant.
@@ -1124,7 +1124,7 @@ uint32_t rtw_timerDelete( _timerHandle xTimer, osdepTickType xBlockTime );
  *     1) It has been created but not started, or
  *     2) It is an expired one-shot timer that has not been restarted.
  */
-uint32_t rtw_timerIsTimerActive( _timerHandle xTimer );
+u32 rtw_timerIsTimerActive( _timerHandle xTimer );
 
 /**
  * @brief  This function stops a timer that was previously started.
@@ -1139,7 +1139,7 @@ uint32_t rtw_timerIsTimerActive( _timerHandle xTimer );
  * When the command is actually processed will depend on the priority of the
  * timer service/daemon task relative to other tasks in the system.  
  */
-uint32_t rtw_timerStop( _timerHandle xTimer, osdepTickType xBlockTime );
+u32 rtw_timerStop( _timerHandle xTimer, osdepTickType xBlockTime );
 
 /**
  * @brief  This function changes the period of a timer that was previously created.
@@ -1156,28 +1156,28 @@ uint32_t rtw_timerStop( _timerHandle xTimer, osdepTickType xBlockTime );
  * priority of the timer service/daemon task relative to other tasks in the
  * system.  
  */
-uint32_t rtw_timerChangePeriod( _timerHandle xTimer, 
+u32 rtw_timerChangePeriod( _timerHandle xTimer, 
 							   osdepTickType xNewPeriod, 
 							   osdepTickType xBlockTime );
 
 void *rtw_timerGetID( _timerHandle xTimer );
 
-uint32_t  rtw_timerStart( _timerHandle xTimer, osdepTickType xBlockTime );
+u32  rtw_timerStart( _timerHandle xTimer, osdepTickType xBlockTime );
 
-uint32_t  rtw_timerStartFromISR( _timerHandle xTimer, 
+u32  rtw_timerStartFromISR( _timerHandle xTimer, 
 								osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 
-uint32_t  rtw_timerStopFromISR( _timerHandle xTimer, 
+u32  rtw_timerStopFromISR( _timerHandle xTimer, 
 							   osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 
-uint32_t  rtw_timerResetFromISR( _timerHandle xTimer, 
+u32  rtw_timerResetFromISR( _timerHandle xTimer, 
 							   osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 
-uint32_t  rtw_timerChangePeriodFromISR( _timerHandle xTimer, 
+u32  rtw_timerChangePeriodFromISR( _timerHandle xTimer, 
 							   osdepTickType xNewPeriod, 
 							   osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 
-uint32_t  rtw_timerReset( _timerHandle xTimer, 
+u32  rtw_timerReset( _timerHandle xTimer, 
 						osdepTickType xBlockTime );
 
 
@@ -1193,54 +1193,54 @@ uint32_t  rtw_timerReset( _timerHandle xTimer,
 #define _RND(sz, r) ((((sz)+((r)-1))/(r))*(r))
 #define RND4(x)	(((x >> 2) + (((x & 3) == 0) ?  0: 1)) << 2)
 
-__inline static uint32_t _RND4(uint32_t sz)
+__inline static u32 _RND4(u32 sz)
 {
-	uint32_t	val;
+	u32	val;
 
 	val = ((sz >> 2) + ((sz & 3) ? 1: 0)) << 2;
 	
 	return val;
 }
 
-__inline static uint32_t _RND8(uint32_t sz)
+__inline static u32 _RND8(u32 sz)
 {
-	uint32_t	val;
+	u32	val;
 
 	val = ((sz >> 3) + ((sz & 7) ? 1: 0)) << 3;
 	
 	return val;
 }
 
-__inline static uint32_t _RND128(uint32_t sz)
+__inline static u32 _RND128(u32 sz)
 {
-	uint32_t	val;
+	u32	val;
 
 	val = ((sz >> 7) + ((sz & 127) ? 1: 0)) << 7;
 	
 	return val;
 }
 
-__inline static uint32_t _RND256(uint32_t sz)
+__inline static u32 _RND256(u32 sz)
 {
-	uint32_t	val;
+	u32	val;
 
 	val = ((sz >> 8) + ((sz & 255) ? 1: 0)) << 8;
 	
 	return val;
 }
 
-__inline static uint32_t _RND512(uint32_t sz)
+__inline static u32 _RND512(u32 sz)
 {
-	uint32_t	val;
+	u32	val;
 
 	val = ((sz >> 9) + ((sz & 511) ? 1: 0)) << 9;
 	
 	return val;
 }
 
-__inline static uint32_t bitshift(uint32_t bitmask)
+__inline static u32 bitshift(u32 bitmask)
 {
-	uint32_t i;
+	u32 i;
 
 	for (i = 0; i <= 31; i++)
 		if (((bitmask>>i) &  0x1) == 1) break;
@@ -1254,89 +1254,89 @@ __inline static uint32_t bitshift(uint32_t bitmask)
 
 /* Macros for handling unaligned memory accesses */
 
-#define RTW_GET_BE16(a) ((uint16_t) (((a)[0] << 8) | (a)[1]))
+#define RTW_GET_BE16(a) ((u16) (((a)[0] << 8) | (a)[1]))
 #define RTW_PUT_BE16(a, val)			\
 	do {					\
-		(a)[0] = ((uint16_t) (val)) >> 8;	\
-		(a)[1] = ((uint16_t) (val)) & 0xff;	\
+		(a)[0] = ((u16) (val)) >> 8;	\
+		(a)[1] = ((u16) (val)) & 0xff;	\
 	} while (0)
 
-#define RTW_GET_LE16(a) ((uint16_t) (((a)[1] << 8) | (a)[0]))
+#define RTW_GET_LE16(a) ((u16) (((a)[1] << 8) | (a)[0]))
 #define RTW_PUT_LE16(a, val)			\
 	do {					\
-		(a)[1] = ((uint16_t) (val)) >> 8;	\
-		(a)[0] = ((uint16_t) (val)) & 0xff;	\
+		(a)[1] = ((u16) (val)) >> 8;	\
+		(a)[0] = ((u16) (val)) & 0xff;	\
 	} while (0)
 
-#define RTW_GET_BE24(a) ((((uint32_t) (a)[0]) << 16) | (((uint32_t) (a)[1]) << 8) | \
-			 ((uint32_t) (a)[2]))			 
+#define RTW_GET_BE24(a) ((((u32) (a)[0]) << 16) | (((u32) (a)[1]) << 8) | \
+			 ((u32) (a)[2]))			 
 #define RTW_PUT_BE24(a, val)					\
 	do {							\
-		(a)[0] = (uint8_t) ((((uint32_t) (val)) >> 16) & 0xff);	\
-		(a)[1] = (uint8_t) ((((uint32_t) (val)) >> 8) & 0xff);	\
-		(a)[2] = (uint8_t) (((uint32_t) (val)) & 0xff);		\
+		(a)[0] = (u8) ((((u32) (val)) >> 16) & 0xff);	\
+		(a)[1] = (u8) ((((u32) (val)) >> 8) & 0xff);	\
+		(a)[2] = (u8) (((u32) (val)) & 0xff);		\
 	} while (0)
 
-#define RTW_GET_BE32(a) ((((uint32_t) (a)[0]) << 24) | (((uint32_t) (a)[1]) << 16) | \
-			 (((uint32_t) (a)[2]) << 8) | ((uint32_t) (a)[3]))			 
+#define RTW_GET_BE32(a) ((((u32) (a)[0]) << 24) | (((u32) (a)[1]) << 16) | \
+			 (((u32) (a)[2]) << 8) | ((u32) (a)[3]))			 
 #define RTW_PUT_BE32(a, val)					\
 	do {							\
-		(a)[0] = (uint8_t) ((((uint32_t) (val)) >> 24) & 0xff);	\
-		(a)[1] = (uint8_t) ((((uint32_t) (val)) >> 16) & 0xff);	\
-		(a)[2] = (uint8_t) ((((uint32_t) (val)) >> 8) & 0xff);	\
-		(a)[3] = (uint8_t) (((uint32_t) (val)) & 0xff);		\
+		(a)[0] = (u8) ((((u32) (val)) >> 24) & 0xff);	\
+		(a)[1] = (u8) ((((u32) (val)) >> 16) & 0xff);	\
+		(a)[2] = (u8) ((((u32) (val)) >> 8) & 0xff);	\
+		(a)[3] = (u8) (((u32) (val)) & 0xff);		\
 	} while (0)
 
-#define RTW_GET_LE32(a) ((((uint32_t) (a)[3]) << 24) | (((uint32_t) (a)[2]) << 16) | \
-			 (((uint32_t) (a)[1]) << 8) | ((uint32_t) (a)[0]))			 
+#define RTW_GET_LE32(a) ((((u32) (a)[3]) << 24) | (((u32) (a)[2]) << 16) | \
+			 (((u32) (a)[1]) << 8) | ((u32) (a)[0]))			 
 #define RTW_PUT_LE32(a, val)					\
 	do {							\
-		(a)[3] = (uint8_t) ((((uint32_t) (val)) >> 24) & 0xff);	\
-		(a)[2] = (uint8_t) ((((uint32_t) (val)) >> 16) & 0xff);	\
-		(a)[1] = (uint8_t) ((((uint32_t) (val)) >> 8) & 0xff);	\
-		(a)[0] = (uint8_t) (((uint32_t) (val)) & 0xff);		\
+		(a)[3] = (u8) ((((u32) (val)) >> 24) & 0xff);	\
+		(a)[2] = (u8) ((((u32) (val)) >> 16) & 0xff);	\
+		(a)[1] = (u8) ((((u32) (val)) >> 8) & 0xff);	\
+		(a)[0] = (u8) (((u32) (val)) & 0xff);		\
 	} while (0)
 
-#define RTW_GET_BE64(a) ((((uint64_t) (a)[0]) << 56) | (((uint64_t) (a)[1]) << 48) | \
-			 (((uint64_t) (a)[2]) << 40) | (((uint64_t) (a)[3]) << 32) | \
-			 (((uint64_t) (a)[4]) << 24) | (((uint64_t) (a)[5]) << 16) | \
-			 (((uint64_t) (a)[6]) << 8) | ((uint64_t) (a)[7]))			 
+#define RTW_GET_BE64(a) ((((u64) (a)[0]) << 56) | (((u64) (a)[1]) << 48) | \
+			 (((u64) (a)[2]) << 40) | (((u64) (a)[3]) << 32) | \
+			 (((u64) (a)[4]) << 24) | (((u64) (a)[5]) << 16) | \
+			 (((u64) (a)[6]) << 8) | ((u64) (a)[7]))			 
 #define RTW_PUT_BE64(a, val)				\
 	do {						\
-		(a)[0] = (uint8_t) (((uint64_t) (val)) >> 56);	\
-		(a)[1] = (uint8_t) (((uint64_t) (val)) >> 48);	\
-		(a)[2] = (uint8_t) (((uint64_t) (val)) >> 40);	\
-		(a)[3] = (uint8_t) (((uint64_t) (val)) >> 32);	\
-		(a)[4] = (uint8_t) (((uint64_t) (val)) >> 24);	\
-		(a)[5] = (uint8_t) (((uint64_t) (val)) >> 16);	\
-		(a)[6] = (uint8_t) (((uint64_t) (val)) >> 8);	\
-		(a)[7] = (uint8_t) (((uint64_t) (val)) & 0xff);	\
+		(a)[0] = (u8) (((u64) (val)) >> 56);	\
+		(a)[1] = (u8) (((u64) (val)) >> 48);	\
+		(a)[2] = (u8) (((u64) (val)) >> 40);	\
+		(a)[3] = (u8) (((u64) (val)) >> 32);	\
+		(a)[4] = (u8) (((u64) (val)) >> 24);	\
+		(a)[5] = (u8) (((u64) (val)) >> 16);	\
+		(a)[6] = (u8) (((u64) (val)) >> 8);	\
+		(a)[7] = (u8) (((u64) (val)) & 0xff);	\
 	} while (0)
 
-#define RTW_GET_LE64(a) ((((uint64_t) (a)[7]) << 56) | (((uint64_t) (a)[6]) << 48) | \
-			 (((uint64_t) (a)[5]) << 40) | (((uint64_t) (a)[4]) << 32) | \
-			 (((uint64_t) (a)[3]) << 24) | (((uint64_t) (a)[2]) << 16) | \
-			 (((uint64_t) (a)[1]) << 8) | ((uint64_t) (a)[0]))
+#define RTW_GET_LE64(a) ((((u64) (a)[7]) << 56) | (((u64) (a)[6]) << 48) | \
+			 (((u64) (a)[5]) << 40) | (((u64) (a)[4]) << 32) | \
+			 (((u64) (a)[3]) << 24) | (((u64) (a)[2]) << 16) | \
+			 (((u64) (a)[1]) << 8) | ((u64) (a)[0]))
 
 struct osdep_service_ops {
-	uint8_t* (*rtw_vmalloc)(uint32_t sz);
-	uint8_t* (*rtw_zvmalloc)(uint32_t sz);
-	void (*rtw_vmfree)(uint8_t *pbuf, uint32_t sz);
-	uint8_t* (*rtw_malloc)(uint32_t sz);
-	uint8_t* (*rtw_zmalloc)(uint32_t sz);
-	void (*rtw_mfree)(uint8_t *pbuf, uint32_t sz);
-	void (*rtw_memcpy)(void* dst, void* src, uint32_t sz);
-	int (*rtw_memcmp)(void *dst, void *src, uint32_t sz);
-	void (*rtw_memset)(void *pbuf, int c, uint32_t sz);
+	u8* (*rtw_vmalloc)(u32 sz);
+	u8* (*rtw_zvmalloc)(u32 sz);
+	void (*rtw_vmfree)(u8 *pbuf, u32 sz);
+	u8* (*rtw_malloc)(u32 sz);
+	u8* (*rtw_zmalloc)(u32 sz);
+	void (*rtw_mfree)(u8 *pbuf, u32 sz);
+	void (*rtw_memcpy)(void* dst, void* src, u32 sz);
+	int (*rtw_memcmp)(void *dst, void *src, u32 sz);
+	void (*rtw_memset)(void *pbuf, int c, u32 sz);
 	void (*rtw_init_sema)(_sema *sema, int init_val);
 	void (*rtw_free_sema)(_sema *sema);
 	void (*rtw_up_sema)(_sema *sema);
 	void (*rtw_up_sema_from_isr)(_sema *sema);
-	uint32_t (*rtw_down_timeout_sema)(_sema *sema, uint32_t timeout);
+	u32 (*rtw_down_timeout_sema)(_sema *sema, u32 timeout);
 	void (*rtw_mutex_init)(_mutex *pmutex);
 	void (*rtw_mutex_free)(_mutex *pmutex);
 	void (*rtw_mutex_get)(_mutex *pmutex);
-	int (*rtw_mutex_get_timeout)(_mutex *pmutex, uint32_t timeout_ms);
+	int (*rtw_mutex_get_timeout)(_mutex *pmutex, u32 timeout_ms);
 	void (*rtw_mutex_put)(_mutex *pmutex);
 	void (*rtw_enter_critical)(_lock *plock, _irqL *pirqL);
 	void (*rtw_exit_critical)(_lock *plock, _irqL *pirqL);
@@ -1354,16 +1354,16 @@ struct osdep_service_ops {
 	void (*rtw_spin_unlock)(_lock *plock);
 	void (*rtw_spinlock_irqsave)(_lock *plock, _irqL *irqL);
 	void (*rtw_spinunlock_irqsave)(_lock *plock, _irqL *irqL);
-	int (*rtw_init_xqueue)( _xqueue* queue, const char* name, uint32_t message_size, uint32_t number_of_messages );
-	int (*rtw_push_to_xqueue)( _xqueue* queue, void* message, uint32_t timeout_ms );
-	int (*rtw_pop_from_xqueue)( _xqueue* queue, void* message, uint32_t timeout_ms );
-	int (*rtw_peek_from_xqueue)( _xqueue* queue, void* message, uint32_t timeout_ms );
+	int (*rtw_init_xqueue)( _xqueue* queue, const char* name, u32 message_size, u32 number_of_messages );
+	int (*rtw_push_to_xqueue)( _xqueue* queue, void* message, u32 timeout_ms );
+	int (*rtw_pop_from_xqueue)( _xqueue* queue, void* message, u32 timeout_ms );
+	int (*rtw_peek_from_xqueue)( _xqueue* queue, void* message, u32 timeout_ms );
 	int (*rtw_deinit_xqueue)( _xqueue* queue );
-	uint32_t	(*rtw_get_current_time)(void);
-	uint32_t (*rtw_systime_to_ms)(uint32_t systime);
-	uint32_t (*rtw_systime_to_sec)(uint32_t systime);
-	uint32_t (*rtw_ms_to_systime)(uint32_t ms);
-	uint32_t	(*rtw_sec_to_systime)(uint32_t sec);
+	u32	(*rtw_get_current_time)(void);
+	u32 (*rtw_systime_to_ms)(u32 systime);
+	u32 (*rtw_systime_to_sec)(u32 systime);
+	u32 (*rtw_ms_to_systime)(u32 ms);
+	u32	(*rtw_sec_to_systime)(u32 sec);
 	void (*rtw_msleep_os)(int ms);
 	void (*rtw_usleep_os)(int us);
 	void (*rtw_mdelay_os)(int ms);
@@ -1379,13 +1379,13 @@ struct osdep_service_ops {
 	int (*ATOMIC_SUB_RETURN)(ATOMIC_T *v, int i);
 	int (*ATOMIC_INC_RETURN)(ATOMIC_T *v);
 	int (*ATOMIC_DEC_RETURN)(ATOMIC_T *v);
-	uint64_t (*rtw_modular64)(uint64_t x, uint64_t y);
-	int (*rtw_get_random_bytes)(void* dst, uint32_t size);
-	uint32_t (*rtw_getFreeHeapSize)(void);
-	int (*rtw_create_task)(struct task_struct *task, const char *name, uint32_t stack_size, uint32_t priority, thread_func_t func, void *thctx);
+	u64 (*rtw_modular64)(u64 x, u64 y);
+	int (*rtw_get_random_bytes)(void* dst, u32 size);
+	u32 (*rtw_getFreeHeapSize)(void);
+	int (*rtw_create_task)(struct task_struct *task, const char *name, u32 stack_size, u32 priority, thread_func_t func, void *thctx);
 	void (*rtw_delete_task)(struct task_struct *task);
 	void (*rtw_wakeup_task)(struct task_struct *task);
-	void (*rtw_set_priority_task)(void* task, uint32_t NewPriority);	
+	void (*rtw_set_priority_task)(void* task, u32 NewPriority);	
 	int (*rtw_get_priority_task)(void* task);
 	void (*rtw_suspend_task)(void* task);
 	void (*rtw_resume_task)(void* task);
@@ -1400,41 +1400,41 @@ struct osdep_service_ops {
 	void (*rtw_thread_exit)(void);
 	_timerHandle (*rtw_timerCreate)( const signed char *pcTimerName, 
 							  osdepTickType xTimerPeriodInTicks, 
-							  uint32_t uxAutoReload, 
+							  u32 uxAutoReload, 
 							  void * pvTimerID, 
 							  TIMER_FUN pxCallbackFunction );
-	uint32_t (*rtw_timerDelete)( _timerHandle xTimer, 
+	u32 (*rtw_timerDelete)( _timerHandle xTimer, 
 							   osdepTickType xBlockTime );
-	uint32_t (*rtw_timerIsTimerActive)( _timerHandle xTimer );
-	uint32_t (*rtw_timerStop)( _timerHandle xTimer, 
+	u32 (*rtw_timerIsTimerActive)( _timerHandle xTimer );
+	u32 (*rtw_timerStop)( _timerHandle xTimer, 
 							   osdepTickType xBlockTime );
-	uint32_t (*rtw_timerChangePeriod)( _timerHandle xTimer, 
+	u32 (*rtw_timerChangePeriod)( _timerHandle xTimer, 
 							   osdepTickType xNewPeriod, 
 							   osdepTickType xBlockTime );
 	void* (*rtw_timerGetID)( _timerHandle xTimer );	
-	uint32_t (*rtw_timerStart)( _timerHandle xTimer, 
+	u32 (*rtw_timerStart)( _timerHandle xTimer, 
 								osdepTickType xBlockTime );
-	uint32_t (*rtw_timerStartFromISR)( _timerHandle xTimer, 
+	u32 (*rtw_timerStartFromISR)( _timerHandle xTimer, 
 									osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 	
-	uint32_t (*rtw_timerStopFromISR)( _timerHandle xTimer, 
+	u32 (*rtw_timerStopFromISR)( _timerHandle xTimer, 
 								   osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 	
-	uint32_t  (*rtw_timerResetFromISR)( _timerHandle xTimer, 
+	u32  (*rtw_timerResetFromISR)( _timerHandle xTimer, 
 								   osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 	
-	uint32_t  (*rtw_timerChangePeriodFromISR)( _timerHandle xTimer, 
+	u32  (*rtw_timerChangePeriodFromISR)( _timerHandle xTimer, 
 								   osdepTickType xNewPeriod, 
 								   osdepBASE_TYPE *pxHigherPriorityTaskWoken );
 	
-	uint32_t  (*rtw_timerReset)( _timerHandle xTimer, 
+	u32  (*rtw_timerReset)( _timerHandle xTimer, 
 							osdepTickType xBlockTime );
 
 	void (*rtw_acquire_wakelock)(void);
 	void (*rtw_release_wakelock)(void);
-	void (*rtw_wakelock_timeout)(uint32_t timeoutMs);
-	uint8_t (*rtw_get_scheduler_state)(void);
-	void (*rtw_create_secure_context)(uint32_t secure_stack_size);
+	void (*rtw_wakelock_timeout)(u32 timeoutMs);
+	u8 (*rtw_get_scheduler_state)(void);
+	void (*rtw_create_secure_context)(u32 secure_stack_size);
 	void* (*rtw_get_current_TaskHandle)(void);
 };
 

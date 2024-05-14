@@ -73,6 +73,11 @@
 #undef  CONFIG_USER_CTRL_PS
 
 /*
+ * < Matter Config 
+ */
+#define CONFIG_MATTER_EN 1
+
+/*
  * To set debug msg flag
  */
 #define CONFIG_DEBUG_LOG 1

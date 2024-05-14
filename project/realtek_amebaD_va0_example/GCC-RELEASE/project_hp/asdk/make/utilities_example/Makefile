@@ -87,7 +87,7 @@ CSRC += $(DIR)/mqtt/example_mqtt.c
 #CSRC += $(DIR)/coap_client/example_coap_client.c
 #CSRC += $(DIR)/coap_server/example_coap_server.c
 CSRC += $(DIR)/httpd/example_httpd.c
-CSRC += $(DIR)/httpc/example_httpc.c
+CSRC += $(DIR)/httpd/example_httpc.c
 CSRC += $(DIR)/ota_http/example_ota_http.c
 #CSRC += $(DIR)/ota_https/example_ota_https.c
 CSRC += $(DIR)/ota_sdcard/example_ota_sdcard.c
@@ -191,11 +191,42 @@ ifeq ($(CONFIG_LINKKIT_AWSS), y)
 #CSRC += $(DIR)/linkkit/linkkit_awss_example.c
 endif
 
+#azure examples
+# CSRC += $(DIR)/azure_iothub_telemetry/example_azure_iothub_telemetry.c
+# CSRC += $(DIR)/azure_iothub_x509/example_azure_iothub_x509.c
 
+#azure embedded examples
+# CSRC += $(DIR)/azure/example_azure_iot_common.c
+# CSRC += $(DIR)/azure/example_azure_iot_entry.c
+# CSRC += $(DIR)/azure/example_azure_iot_hub_c2d.c
+# CSRC += $(DIR)/azure/example_azure_iot_hub_methods.c
+# CSRC += $(DIR)/azure/example_azure_iot_hub_pnp.c
+# CSRC += $(DIR)/azure/example_azure_iot_hub_pnp_component.c
+# CSRC += $(DIR)/azure/example_azure_iot_hub_sas_telemetry.c
+# CSRC += $(DIR)/azure/example_azure_iot_hub_telemetry.c
+# CSRC += $(DIR)/azure/example_azure_iot_hub_twin.c
+# CSRC += $(DIR)/azure/example_azure_iot_rtk_pnp_sas.c
+# CSRC += $(DIR)/azure/example_azure_iot_rtk_pnp_x509.c
+# CSRC += $(DIR)/azure/example_azure_iot_provisioning.c
+# CSRC += $(DIR)/azure/example_azure_iot_provisioning_sas.c
+# CSRC += $(DIR)/azure/pnp/pnp_mqtt_message.c
+# CSRC += $(DIR)/azure/pnp/pnp_protocol.c
+# CSRC += $(DIR)/azure/pnp/sample_component/pnp_device_info_component.c
+# CSRC += $(DIR)/azure/pnp/sample_component/pnp_thermostat_component.c
+# CSRC += $(DIR)/azure/pnp/rtk_message/pnp_common_message.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_audio.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_bluetooth.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_device_info.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_gpio.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_lcd.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_memory.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_system.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_video.c
+# CSRC += $(DIR)/azure/pnp/rtk_component/pnp_wireless.c
 #*****************************************************************************#
 #                               Object FILE LIST                              #
 #*****************************************************************************#
-OBJS = $(CSRC:.c=.o)
+OBJS = $(notdir $(CSRC:.c=.o))
 
 #*****************************************************************************#
 #                               Include Dependency                            #

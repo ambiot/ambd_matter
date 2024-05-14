@@ -9,9 +9,8 @@ __WEAK BaseType_t xTaskResumeAll( void );
 
 void vApplicationMallocFailedHook( void );
 NS_ENTRY void secure_heap_init( void );
-#endif
+#endif	
 
 void os_heap_init(void);
-size_t xPortGetTotalHeapSize( void );
 
 #endif /* __FREERTOS_HEAP5_CONFIG_H_ */

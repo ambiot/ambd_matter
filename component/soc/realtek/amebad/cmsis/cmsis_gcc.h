@@ -197,7 +197,11 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_xPSR(void)
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_PSP(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, psp"  : "=r" (result) );
   return(result);
@@ -212,7 +216,11 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_PSP(void)
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_PSP_NS(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, psp_ns"  : "=r" (result) );
   return(result);
@@ -251,7 +259,11 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_PSP_NS(uint32_t top
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_MSP(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, msp" : "=r" (result) );
   return(result);
@@ -266,7 +278,11 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_MSP(void)
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_MSP_NS(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, msp_ns" : "=r" (result) );
   return(result);
@@ -379,8 +395,8 @@ __attribute__((always_inline)) __STATIC_INLINE void __disable_fault_irq(void)
 
 /**
   \brief   Get Base Priority
-  \details Returns the current value of the Base Priority .
-  \return               Base Priority  value
+  \details Returns the current value of the Base Priority register.
+  \return               Base Priority register value
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_BASEPRI(void)
 {
@@ -394,8 +410,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_BASEPRI(void)
 #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
 /**
   \brief   Get Base Priority (non-secure)
-  \details Returns the current value of the non-secure Base Priority  when in secure state.
-  \return               Base Priority  value
+  \details Returns the current value of the non-secure Base Priority register when in secure state.
+  \return               Base Priority register value
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_BASEPRI_NS(void)
 {
@@ -409,7 +425,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_BASEPRI_NS(void
 
 /**
   \brief   Set Base Priority
-  \details Assigns the given value to the Base Priority .
+  \details Assigns the given value to the Base Priority register.
   \param [in]    basePri  Base Priority value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __set_BASEPRI(uint32_t basePri)
@@ -421,7 +437,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __set_BASEPRI(uint32_t baseP
 #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
 /**
   \brief   Set Base Priority (non-secure)
-  \details Assigns the given value to the non-secure Base Priority  when in secure state.
+  \details Assigns the given value to the non-secure Base Priority register when in secure state.
   \param [in]    basePri  Base Priority value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_BASEPRI_NS(uint32_t basePri)
@@ -433,7 +449,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_BASEPRI_NS(uint32_t
 
 /**
   \brief   Set Base Priority with condition
-  \details Assigns the given value to the Base Priority  only if BASEPRI masking is disabled,
+  \details Assigns the given value to the Base Priority register only if BASEPRI masking is disabled,
            or the new value increases the BASEPRI priority level.
   \param [in]    basePri  Base Priority value to set
  */
@@ -445,8 +461,8 @@ __attribute__((always_inline)) __STATIC_INLINE void __set_BASEPRI_MAX(uint32_t b
 
 /**
   \brief   Get Fault Mask
-  \details Returns the current value of the Fault Mask .
-  \return               Fault Mask  value
+  \details Returns the current value of the Fault Mask register.
+  \return               Fault Mask register value
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_FAULTMASK(void)
 {
@@ -460,8 +476,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_FAULTMASK(void)
 #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
 /**
   \brief   Get Fault Mask (non-secure)
-  \details Returns the current value of the non-secure Fault Mask  when in secure state.
-  \return               Fault Mask  value
+  \details Returns the current value of the non-secure Fault Mask register when in secure state.
+  \return               Fault Mask register value
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_FAULTMASK_NS(void)
 {
@@ -475,7 +491,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_FAULTMASK_NS(vo
 
 /**
   \brief   Set Fault Mask
-  \details Assigns the given value to the Fault Mask .
+  \details Assigns the given value to the Fault Mask register.
   \param [in]    faultMask  Fault Mask value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __set_FAULTMASK(uint32_t faultMask)
@@ -487,7 +503,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __set_FAULTMASK(uint32_t fau
 #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
 /**
   \brief   Set Fault Mask (non-secure)
-  \details Assigns the given value to the non-secure Fault Mask  when in secure state.
+  \details Assigns the given value to the non-secure Fault Mask register when in secure state.
   \param [in]    faultMask  Fault Mask value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_FAULTMASK_NS(uint32_t faultMask)
@@ -511,7 +527,11 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_FAULTMASK_NS(uint32
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_PSPLIM(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, psplim"  : "=r" (result) );
   return(result);
@@ -527,7 +547,11 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_PSPLIM(void)
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_PSPLIM_NS(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, psplim_ns"  : "=r" (result) );
   return(result);
@@ -567,7 +591,11 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_PSPLIM_NS(uint32_t 
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_MSPLIM(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, msplim" : "=r" (result) );
 
@@ -584,7 +612,11 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_MSPLIM(void)
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_MSPLIM_NS(void)
 {
-   uint32_t result;
+  #if __cplusplus >= 201703L
+  uint32_t result;
+  #else
+  register uint32_t result;
+  #endif
 
   __ASM volatile ("MRS %0, msplim_ns" : "=r" (result) );
   return(result);
@@ -625,8 +657,8 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_MSPLIM_NS(uint32_t 
 
 /**
   \brief   Get FPSCR
-  \details Returns the current value of the Floating Point Status/Control .
-  \return               Floating Point Status/Control  value
+  \details Returns the current value of the Floating Point Status/Control register.
+  \return               Floating Point Status/Control register value
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_FPSCR(void)
 {
@@ -644,7 +676,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_FPSCR(void)
 
 /**
   \brief   Set FPSCR
-  \details Assigns the given value to the Floating Point Status/Control .
+  \details Assigns the given value to the Floating Point Status/Control register.
   \param [in]    fpscr  Floating Point Status/Control value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __set_FPSCR(uint32_t fpscr)
@@ -672,7 +704,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __set_FPSCR(uint32_t fpscr)
 */
 
 /* Define macros for porting to both thumb1 and thumb2.
- * For thumb1, use low  (r0-r7), specified by constraint "l"
+ * For thumb1, use low register (r0-r7), specified by constraint "l"
  * Otherwise, use general registers, specified by constraint "r" */
 #if defined (__thumb__) && !defined (__thumb2__)
 #define __CMSIS_GCC_OUT_REG(r) "=l" (r)
@@ -817,7 +849,7 @@ __attribute__((always_inline)) __STATIC_INLINE int32_t __REVSH(int32_t value)
 
 /**
   \brief   Rotate Right in unsigned value (32 bit)
-  \details Rotate Right (immediate) provides the value of the contents of a  rotated by a variable number of bits.
+  \details Rotate Right (immediate) provides the value of the contents of a register rotated by a variable number of bits.
   \param [in]    op1  Value to rotate
   \param [in]    op2  Number of Bits to rotate
   \return               Rotated value

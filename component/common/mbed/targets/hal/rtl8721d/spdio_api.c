@@ -263,7 +263,7 @@ VOID SPDIO_TX_FIFO_DataReady(IN PHAL_SPDIO_ADAPTER pSPDIODev)
 	PINIC_TX_DESC pTxDesc;
 	volatile u16 TxBDWPtr=0;
 	u8 isForceBreak=0;
-	s8 ret=-1;
+	s8 ret=FAIL;
 	u32 reg;
 	SPDIO_TX_BD *pTXBD = NULL;	
 	struct spdio_t *obj = (struct spdio_t *)pSPDIODev->spdio_priv;
@@ -291,7 +291,7 @@ VOID SPDIO_TX_FIFO_DataReady(IN PHAL_SPDIO_ADAPTER pSPDIODev)
 		if ((pTxDesc->txpktsize + pTxDesc->offset) <= obj->rx_bd_bufsz) {
 			// use the callback function to fordward this packet to target(WLan) driver
 			ret = spdio_rx_done_cb(obj, (u8*)pTxBdHdl->priv, pTxDesc->offset, pTxDesc->txpktsize, pTxDesc->type);
-			if(ret == -1)
+			if(ret == FAIL)
 				DBG_PRINTF(MODULE_SDIO, LEVEL_ERROR, "SDIO TX_Callback is Null!\n");
 			pTXBD->Address =  obj->rx_buf[pSPDIODev->TXBDRPtr].buf_addr;
 			DCache_CleanInvalidate((u32)pTXBD->Address, obj->rx_buf[pSPDIODev->TXBDRPtr].size_allocated);
@@ -439,7 +439,7 @@ BOOL SPDIO_Device_Init(struct spdio_t * obj)
 
 	if(obj == NULL){
 		DBG_PRINTF(MODULE_SDIO, LEVEL_ERROR, "struct spdio_t must be inited\n");
-		return -1;	
+		return FAIL;	
 	}
 	
 	DBG_PRINTF(MODULE_SDIO, LEVEL_INFO, "SDIO_Device_Init==>\n");
@@ -613,7 +613,7 @@ SDIO_INIT_ERR:
 		pgSPDIODev->pRXDESCAddr = NULL;
 		pgSPDIODev->pRXDESCAddrAligned = NULL;
 	}
-	return -1;
+	return FAIL;
 }
 
 

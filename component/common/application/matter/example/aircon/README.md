@@ -33,7 +33,7 @@ After obtaining the temperature and humidity measurements, the task will update 
 ## How to build
 
 ### Configurations
-Enable `CONFIG_EXAMPLE_MATTER` and `CONFIG_EXAMPLE_MATTER_AIRCON` in `platform_opts.h`.
+Enable `CONFIG_EXAMPLE_MATTER` and `CONFIG_EXAMPLE_MATTER_AIRCON` in `platform_opts_matter.h`.
 Ensure that `CONFIG_EXAMPLE_MATTER_CHIPTEST` is disabled.
 
 ### Setup the Build Environment

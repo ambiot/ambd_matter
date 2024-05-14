@@ -1,0 +1,26 @@
+CHIPDIR         = $(BASEDIR)/third_party/connectedhomeip
+MATTER_TOOLDIR  = $(BASEDIR)/tools/matter
+MATTER_DIR      = $(BASEDIR)/component/common/application/matter
+MBEDTLSDIR	= $(BASEDIR)/component/common/network/ssl/mbedtls-2.28.1
+
+ifeq ($(COMPILEOS),$(LINUX_OS))
+ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/linux/asdk-10.3.0/linux/newlib
+ASDK_TOOLCHAIN_R = ../toolchain/linux/asdk-10.3.0/linux/newlib
+endif
+
+#*****************************************************************************#
+#                              Include Directories
+#*****************************************************************************#
+IFLAGS    += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include
+IFLAGS    += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/lwip
+IFLAGS    += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/netif
+IFLAGS    += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek
+IFLAGS    += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek/freertos
+IFLAGS    += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek/include
+IFLAGS    += -I$(MATTER_DIR)/common/mbedtls
+#*****************************************************************************#
+#                           MATTER FLAGS
+#*****************************************************************************#
+GLOBAL_CFLAGS += -DMBEDTLS_CONFIG_FILE=\"mbedtls_config.h\"
+
+LD_ARG += -L$(ROOTDIR)/lib/application

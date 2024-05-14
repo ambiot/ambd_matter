@@ -16,7 +16,7 @@ OBJS =
 # Define the Rules to build the core targets
 all: CORE_TARGETS
 ifeq ($(CONFIG_AUDIO_EN),y)
-	amake -C amr	all
+	make -C amr	all
 	make -C opus-1.3.1 all
 endif
 #	haac and faac contain same filenames. cannot build at the same time in amebad.
@@ -53,13 +53,14 @@ clean:
 #	make -C g711 clean
 #	make -C haac clean
 #	make -C speex clean
-#	make -C amr clean
+ifeq ($(CONFIG_AUDIO_EN),y)
+	make -C amr clean
+endif
 #	make -C ac3 clean
 #	make -C haac clean
 #	make -C hmp3 clean
 #	make -C m4a_selfparse clean
 #	make -C m4a clean
-#	make -C amr clean
 #	make -C hls clean
 #	make -C kws clean
 #	make -C flac clean
@@ -67,7 +68,9 @@ clean:
 #	make -C gsm610 clean
 #	make -C ekho clean
 #	make -C libogg-1.3.3 clean
-#	make -C opus-1.3.1 clean
+ifeq ($(CONFIG_AUDIO_EN),y)
+	make -C opus-1.3.1 clean
+endif
 #	make -C opusfile-0.11 clean
 #	make -C example_audio_opus_decode clean
 #	make -C libopusenc-0.2.1 clean

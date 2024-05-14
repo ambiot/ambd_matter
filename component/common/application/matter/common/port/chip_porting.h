@@ -25,6 +25,11 @@ extern "C" {
 /** @brief  Config local address type: 0-pulic address, 1-static random address, 2-random resolvable private address */
 #undef F_BT_LE_USE_RANDOM_ADDR
 #define F_BT_LE_USE_RANDOM_ADDR      1
+
+#ifndef F_BT_LE_USE_STATIC_RANDOM_ADDR
+#define F_BT_LE_USE_STATIC_RANDOM_ADDR 1
+#endif
+
 #endif /*CONFIG_BT_MATTER_ADAPTER*/
 
 #ifdef __cplusplus

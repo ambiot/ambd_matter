@@ -2,7 +2,6 @@
 #include "task.h"
 #include "main.h"
 #include "freertos_service.h"
-#include "osdep_service.h"
 
 #include <lwip/sockets.h>
 #include <lwip/raw.h>
