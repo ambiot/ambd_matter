@@ -93,10 +93,10 @@ struct i2s_s {
 };
 
 struct gdma_s {
-	uint8_t index;
-	uint8_t ch_num;
+	u8 index;
+	u8 ch_num;
 	IRQ_FUN user_cb;
-	uint32_t user_cb_data;
+	u32 user_cb_data;
 };
 
 struct captouch_s {
@@ -106,16 +106,16 @@ struct captouch_s {
 };
 
 struct keyscan_s {
-	uint32_t row;
-	uint32_t col;
-	uint32_t clk;
-	uint32_t workmode;	//0 for regular scan mode, 1 for event trigger mode
-	uint32_t keylimit;
-	uint32_t overctrl;	//0 for discard new, 1 for discard oldest
+	u32 row;
+	u32 col;
+	u32 clk;
+	u32 workmode;	//0 for regular scan mode, 1 for event trigger mode
+	u32 keylimit;
+	u32 overctrl;	//0 for discard new, 1 for discard oldest
 };
 
 struct lcdc_s{
-	uint32_t lcdc_type;
+	u32 lcdc_type;
 	union{
 		LCDC_MCUInitTypeDef LCDC_MCUInitStruct;
 		LCDC_RGBInitTypeDef LCDC_RGBInitStruct;

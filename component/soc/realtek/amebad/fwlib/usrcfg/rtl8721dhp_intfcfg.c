@@ -4,7 +4,7 @@
   * @author
   * @version V1.0.0
   * @date    2016-05-17
-  * @brief   This file provides firmware functions to manage the following
+  * @brief   This file provides firmware functions to manage the following 
   *          functionalities:
   *           - uart mbed function config
   ******************************************************************************
@@ -14,7 +14,7 @@
   * possession or use of this module requires written permission of RealTek.
   *
   * Copyright(c) 2015, Realtek Semiconductor Corporation. All rights reserved.
-  ******************************************************************************
+  ****************************************************************************** 
   */
 
 #include "ameba_soc.h"
@@ -22,14 +22,14 @@
 
 
 PSRAMCFG_TypeDef psram_dev_config = {
-#if defined(CONFIG_REPEATER) && CONFIG_REPEATER
+#if defined(CONFIG_REPEATER) && CONFIG_REPEATER 
 	.psram_dev_enable = TRUE,			//enable psram
 	.psram_dev_cal_enable = TRUE,			//enable psram calibration function
 	.psram_dev_retention = TRUE,			//enable psram retention
 #else
 	.psram_dev_enable = FALSE,			//enable psram
 	.psram_dev_cal_enable = FALSE,			//enable psram calibration function
-	.psram_dev_retention = FALSE,			//enable psram retention
+	.psram_dev_retention = FALSE,			//enable psram retention	
 #endif
 };
 

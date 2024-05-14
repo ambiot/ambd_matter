@@ -18,15 +18,22 @@ all:
 
 ifneq ($(CONFIG_TOOLCHAIN_ARM_GCC), y)
 ifeq ($(COMPILEOS),$(LINUX_OS))
+ifeq ($(CONFIG_MATTER_EN), y)
 	$(MKDIR) -p linux
 	cat asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2* > asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2
 	tar -jxvf asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2 -C linux/
 	rm asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2
+else
+	if [ ! -f asdk/asdk-6.4.1-linux-newlib-build-2773-i686.tar.bz2 ] ; then cat asdk/asdk-6.4.1-linux-newlib-build-2773-i686.tar.bz2* > asdk/asdk-6.4.1-linux-newlib-build-2773-i686.tar.bz2; fi;\
+	$(MKDIR) -p linux
+	tar -jxvf asdk/asdk-6.4.1-linux-newlib-build-2773-i686.tar.bz2 -C linux/
 
 	#LZM for GCC Server build & Cygwin Download
 	#$(MKDIR) -p cygwin
 	#tar -jxvf asdk/asdk-4.9.3-m4-EL-rtos-n2.1-a16ft-150617-cygwin.tar.bz2 -C cygwin/
+endif
 else ifeq ($(COMPILEOS_CYGWIN),Cygwin)
+	if [ ! -f asdk/asdk-6.4.1-cygwin-newlib-build-2778-i686.tar.bz2 ] ; then cat asdk/asdk-6.4.1-cygwin-newlib-build-2778-i686.tar.bz2* > asdk/asdk-6.4.1-cygwin-newlib-build-2778-i686.tar.bz2; fi;\
 	$(MKDIR) -p cygwin
 	tar -jxvf asdk/asdk-6.4.1-cygwin-newlib-build-2778-i686.tar.bz2 -C cygwin/
 else ifeq ($(COMPILEOS),$(DARWIN_OS))

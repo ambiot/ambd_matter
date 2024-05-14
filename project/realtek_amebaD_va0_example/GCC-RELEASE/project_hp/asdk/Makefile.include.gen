@@ -20,9 +20,11 @@ INCDIR		=$(ROOTDIR)/../../../inc/inc_hp
 BASEDIR		= $(ROOTDIR)/../../../../..
 KM0_BUILDDIR	= $(ROOTDIR)/../../project_lp
 KM4_BUILDDIR	= $(ROOTDIR)/../../project_hp
-#CHIPDIR	    =$(BASEDIR)/third_party/connectedhomeip
-CHIPDIR         = $(BASEDIR)/third_party/connectedhomeip
-MATTER_TOOLDIR = $(BASEDIR)/tools/matter
+
+ifeq ($(CONFIG_MATTER_EN),y)
+MATTER_DIR      = $(BASEDIR)/component/common/application/matter
+MATTER_BUILDDIR = $(BASEDIR)/component/common/application/matter/project/amebad
+endif
 
 TARGETDIR	=$(BASEDIR)/component/soc/realtek/amebad
 BOOTLOADER	=$(BASEDIR)/component/soc/realtek/amebad/bootloader
@@ -37,8 +39,9 @@ TOOLCHAINDIR	= $(ROOTDIR)/../toolchain
 OSDIR		= $(BASEDIR)/component/os
 FREERTOSDIR	= $(BASEDIR)/component/os/freertos/freertos_v10.2.0/Source
 SSLDIR		 = $(BASEDIR)/component/common/network/ssl/polarssl-1.3.8
-MBEDTLSDIR	 = $(BASEDIR)/component/common/network/ssl/mbedtls-matter
-
+ifneq ($(CONFIG_MATTER_EN),y)
+MBEDTLSDIR	 = $(BASEDIR)/component/common/network/ssl/mbedtls-2.4.0
+endif
 #ROM code folder
 CMSISMATHLIBDIR  = $(BASEDIR)/component/soc/realtek/8711b/fwlib/test/ft_test/cmsis_math
 
@@ -78,8 +81,10 @@ BUILD_TARGET_ROM_FOLDER_NS = $(ROOTDIR)/build/rom_ns
 IMAGE_TARGET_FOLDER     = $(ROOTDIR)/image
 
 ifeq ($(COMPILEOS),$(LINUX_OS))
-ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/linux/asdk-10.3.0/linux/newlib
-ASDK_TOOLCHAIN_R = ../toolchain/linux/asdk-10.3.0/linux/newlib
+ifneq ($(CONFIG_MATTER_EN),y)
+ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/linux/asdk-6.4.1/linux/newlib
+ASDK_TOOLCHAIN_R = ../toolchain/linux/asdk-6.4.1/linux/newlib
+endif
 else ifeq ($(COMPILEOS_CYGWIN),Cygwin)
 ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/cygwin/asdk-6.4.1/cygwin/newlib
 ASDK_TOOLCHAIN_R = ../toolchain/cygwin/asdk-6.4.1/cygwin/newlib
@@ -160,28 +165,25 @@ IFLAGS               += -I$(BASEDIR)/component/common/api/platform
 IFLAGS               += -I$(BASEDIR)/component/common/api/wifi
 IFLAGS               += -I$(BASEDIR)/component/common/api/network
 IFLAGS               += -I$(BASEDIR)/component/common/api/network/include
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/port
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/protobuf
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/protobuf/nanopb
 IFLAGS               += -I$(BASEDIR)/component/common/audio
 IFLAGS               += -I$(BASEDIR)/component/common/test
 IFLAGS               += -I$(BASEDIR)/component/common/example
 IFLAGS               += -I$(BASEDIR)/component/common/utilities
-IFLAGS				 += -I$(BASEDIR)/component/common/drivers/si
+IFLAGS               += -I$(BASEDIR)/component/common/drivers/si
 
 #AUDIO
 IFLAGS               += -I$(BASEDIR)/component/common/audio
 IFLAGS               += -I$(BASEDIR)/component/common/audio/faac/include
 IFLAGS               += -I$(BASEDIR)/component/common/audio/faac/libfaac
 IFLAGS               += -I$(BASEDIR)/component/common/audio/faac
-IFLAGS				 += -I$(BASEDIR)/component/common/audio/haac
-IFLAGS				 += -I$(BASEDIR)/component/common/audio/hmp3
-IFLAGS				 += -I$(BASEDIR)/component/common/audio/g711
-IFLAGS				 += -I$(BASEDIR)/component/common/audio/speex
-IFLAGS				 += -I$(BASEDIR)/component/common/audio/speex/speex
-IFLAGS				 += -I$(BASEDIR)/component/common/audio/fdk-aac
-#IFLAGS				 += -I$(BASEDIR)/component/common/audio/libav
-IFLAGS				 += -I$(BASEDIR)/component/common/audio/fdk-aac/libSYS/include
+IFLAGS               += -I$(BASEDIR)/component/common/audio/haac
+IFLAGS               += -I$(BASEDIR)/component/common/audio/hmp3
+IFLAGS               += -I$(BASEDIR)/component/common/audio/g711
+IFLAGS               += -I$(BASEDIR)/component/common/audio/speex
+IFLAGS               += -I$(BASEDIR)/component/common/audio/speex/speex
+IFLAGS               += -I$(BASEDIR)/component/common/audio/fdk-aac
+#IFLAGS               += -I$(BASEDIR)/component/common/audio/libav
+IFLAGS               += -I$(BASEDIR)/component/common/audio/fdk-aac/libSYS/include
 
 #MMF
 IFLAGS               += -I$(BASEDIR)/component/common/example/media_framework
@@ -200,13 +202,14 @@ IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/src/h
 IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/wlan_ram_map/rom
 IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/src/core/option
 IFLAGS               += -I$(BASEDIR)/component/common/network
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/lwip
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/netif
-#IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/ipv4
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek/freertos
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek/include
+ifneq ($(CONFIG_MATTER_EN),y)
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.0.2/src/include
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.0.2/src/include/lwip
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.0.2/src/include/netif
+#IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.0.2/src/include/ipv4
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.0.2/port/realtek
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.0.2/port/realtek/freertos
+endif
 IFLAGS               += -I$(BASEDIR)/component/common/api
 IFLAGS               += -I$(BASEDIR)/component/common/api/at_cmd
 IFLAGS               += -I$(BASEDIR)/component/common/api/wifi/rtw_wpa_supplicant/src
@@ -225,12 +228,9 @@ IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/polarssl-1.3.8
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/ssl_ram_map/rom
 
 #MBEDTLS
-IFLAGS               += -I$(MBEDTLSDIR)/include
-IFLAGS               += -I$(MBEDTLSDIR)/include/mbedtls
-IFLAGS               += -I$(MBEDTLSDIR)/library
-#mbedtlc_config
-IFLAGS               += -I$(CHIPDIR)/config/ameba
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
+ifneq ($(CONFIG_MATTER_EN),y)
+IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls-2.4.0/include
+endif
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls_ram_map/rom
 IFLAGS               += -I$(BASEDIR)/component/common/application/amazon/amazon-freertos/lib/include/private
 
@@ -289,8 +289,6 @@ include  $(ABS_ROOTDIR)/Makefile.include.bt.gen
 endif 
 #BT config
 IFLAGS               += -I$(BASEDIR)/component/common/bluetooth/realtek/sdk/example/bt_config
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/bluetooth/bt_matter_adapter
-
 
 #*****************************************************************************#
 #                             ARM ASSEMBLER FLAGS
@@ -361,17 +359,22 @@ GLOBAL_CFLAGS += -D__FPU_PRESENT
 GLOBAL_CFLAGS += -gdwarf-3
 GLOBAL_CFLAGS += -fstack-usage
 GLOBAL_CFLAGS += -fdata-sections
-#GLOBAL_CFLAGS += -ffunction-sections
+ifneq ($(CONFIG_MATTER_EN),y)
+GLOBAL_CFLAGS += -ffunction-sections
+endif
 GLOBAL_CFLAGS += -nostartfiles
 GLOBAL_CFLAGS += -nostdlib
 GLOBAL_CFLAGS += -Wall
 GLOBAL_CFLAGS += -Wpointer-arith
-#GLOBAL_CFLAGS += -Wstrict-prototypes
-#GLOBAL_CFLAGS += -Wundef
+ifneq ($(CONFIG_MATTER_EN),y)
+GLOBAL_CFLAGS += -Wstrict-prototypes
+GLOBAL_CFLAGS += -Wundef
+endif
 GLOBAL_CFLAGS += -Wno-write-strings
 GLOBAL_CFLAGS += -Wno-maybe-uninitialized
-GLOBAL_CFLAGS += -Wno-unused-label
-#GLOBAL_CFLAGS += --save-temps
+ifneq ($(CONFIG_MATTER_EN),y)
+GLOBAL_CFLAGS += --save-temps
+endif
 GLOBAL_CFLAGS += -c
 GLOBAL_CFLAGS += -MMD -MP
 
@@ -386,53 +389,13 @@ GLOBAL_CFLAGS += -DCONFIG_FUNCION_O0_OPTIMIZE
 GLOBAL_CFLAGS += -DDM_ODM_SUPPORT_TYPE=32
 
 CPPFLAGS = $(GLOBAL_CFLAGS)
-#CPPFLAGS += -std=c++11 -fno-use-cxa-atexit
+ifneq ($(CONFIG_MATTER_EN),y)
+CPPFLAGS += -std=c++11 -fno-use-cxa-atexit
+endif
 
-#*****************************************************************************#
-#                           MATTER ADD
-#*****************************************************************************#
-CPPFLAGS += -std=gnu++17
-CPPFLAGS += -fno-rtti
-
-GLOBAL_CFLAGS += -DMBEDTLS_CONFIG_FILE=\"mbedtls_config.h\"
-GLOBAL_CFLAGS += -DLWIP_IPV6_ROUTE_TABLE_SUPPORT=1
-
-GLOBAL_CFLAGS += -Wno-sign-compare
-GLOBAL_CFLAGS += -Wno-unused-function
-GLOBAL_CFLAGS += -Wno-unused-but-set-variable
-GLOBAL_CFLAGS += -Wno-unused-variable
-GLOBAL_CFLAGS += -Wno-deprecated-declarations
-GLOBAL_CFLAGS += -Wno-unused-parameter
-GLOBAL_CFLAGS += -Wno-format
-GLOBAL_CFLAGS += -Wno-format-nonliteral
-GLOBAL_CFLAGS += -Wno-format-security
-
-GLOBAL_CFLAGS += -DFD_SETSIZE=10
-
-GLOBAL_CFLAGS += -DCHIP_DEVICE_LAYER_TARGET=Ameba
-GLOBAL_CFLAGS += -DCHIP_DEVICE_LAYER_NONE=0
-
-GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_USE_ZEPHYR_NET_IF=0
-GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS=0
-GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_USE_ZEPHYR_SOCKET_EXTENSIONS=0
-GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_USE_LWIP=1
-GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_USE_SOCKETS=0
-GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_USE_NETWORK_FRAMEWORK=0
-GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_POSIX_LOCKING=0
-GLOBAL_CFLAGS += -DCHIP_SHELL_MAX_TOKENS=11
-
-GLOBAL_CFLAGS += -DCHIP_HAVE_CONFIG_H
-
-GLOBAL_CFLAGS += -DINET_CONFIG_ENABLE_IPV4=0
-
-GLOBAL_CFLAGS += -DCONFIG_ENABLE_OTA_REQUESTOR=1
-GLOBAL_CFLAGS += -DCONFIG_ENABLE_AMEBA_FACTORY_DATA=0
-GLOBAL_CFLAGS += -DCONFIG_ENABLE_AMEBA_TEST_EVENT_TRIGGER=0
-GLOBAL_CFLAGS += -DCONFIG_ENABLE_FACTORY_DATA_ENCRYPTION=0
-GLOBAL_CFLAGS += -DCONFIG_ENABLE_DCT_ENCRYPTION=0
-#*****************************************************************************#
-#                           MATTER END
-#*****************************************************************************#
+ifeq ($(CONFIG_MATTER_EN), y)
+include $(MATTER_BUILDDIR)/Makefile.include.matter.hp.gen
+endif
 
 ifeq (${BUILD_TYPE},MFG)
 GLOBAL_CFLAGS += -DCONFIG_BT_MP

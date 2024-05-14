@@ -71,7 +71,7 @@ void fATSD(void *arg)
 #if !defined(CONFIG_PLATFORM_8195BHP)
 	int argc = 0;
 	char *argv[MAX_ARGC] = {0};
-
+	
 	AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSD]: _AT_SYSTEM_DUMP_REGISTER_");
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSD] Usage: ATSD=REGISTER");
@@ -88,7 +88,7 @@ void fATSE(void *arg)
 #if !defined(CONFIG_PLATFORM_8195BHP)
 	int argc = 0;
 	char *argv[MAX_ARGC] = {0};
-
+	
 	AT_DBG_MSG(AT_FLAG_EDIT, AT_DBG_ALWAYS, "[ATSE]: _AT_SYSTEM_EDIT_REGISTER_");
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_EDIT, AT_DBG_ALWAYS, "[ATSE] Usage: ATSE=REGISTER[VALUE]");
@@ -113,7 +113,7 @@ void fATSR(void *arg)
 {
 	/* To avoid gcc warnings */
 	( void ) arg;
-
+	
 	AT_DBG_MSG(AT_FLAG_OTA, AT_DBG_ALWAYS, "[ATSR]: _AT_SYSTEM_RECOVER_OTA_SIGNATURE_");
 	sys_recover_ota_signature();
 }
@@ -159,9 +159,9 @@ void fATSK(void *arg)
 			AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Err: RDP key length should be 16 bytes");
 			return;
 		}
-
-		sscanf(argv[2], "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-			&key[0], &key[1], &key[2], &key[3], &key[4], &key[5], &key[6], &key[7],
+		
+		sscanf(argv[2], "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+			&key[0], &key[1], &key[2], &key[3], &key[4], &key[5], &key[6], &key[7], 
 			&key[8], &key[9], &key[10], &key[11], &key[12], &key[13], &key[14], &key[15]);
 
 		EFUSE_RDP_KEY(key);
@@ -182,9 +182,9 @@ void fATSK(void *arg)
 			AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Err: RSIP key length should be 16 bytes");
 			return;
 		}
-
-		sscanf(argv[2], "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-			&key[0], &key[1], &key[2], &key[3], &key[4], &key[5], &key[6], &key[7],
+		
+		sscanf(argv[2], "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+			&key[0], &key[1], &key[2], &key[3], &key[4], &key[5], &key[6], &key[7], 
 			&key[8], &key[9], &key[10], &key[11], &key[12], &key[13], &key[14], &key[15]);
 
 		EFUSE_OTF_KEY(key);
@@ -192,7 +192,7 @@ void fATSK(void *arg)
 	}else if(strcmp(argv[1], "SB_EN") == 0){
 		u8 data = 0;
 		u32 efuse_ctrl = HAL_READ32(SYSTEM_CTRL_BASE, REG_SYS_EFUSE_CTRL);
-
+	
 		EFUSERead8(efuse_ctrl, 0xD3, &data, L25EOUTVOLTAGE);
 		if ((data & EFUSE_PHYSICAL_SBOOT_ON) != 0) {
 			EFUSEWrite8(efuse_ctrl, 0xD3, data & (~EFUSE_PHYSICAL_SBOOT_ON), L25EOUTVOLTAGE);
@@ -202,7 +202,7 @@ void fATSK(void *arg)
 		}
 	}else if(strcmp(argv[1], "SB_PK_MD5") == 0){
 		u8 i = 0;
-
+		
 		if(argc != 3){
 			AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=SB_PK_MD5[value(hex)]");
 			return;
@@ -212,9 +212,9 @@ void fATSK(void *arg)
 			AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Err: MD5 value of public key should be 16 bytes");
 			return;
 		}
-
-		sscanf(argv[2], "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-			&key[0], &key[1], &key[2], &key[3], &key[4], &key[5], &key[6], &key[7],
+		
+		sscanf(argv[2], "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+			&key[0], &key[1], &key[2], &key[3], &key[4], &key[5], &key[6], &key[7], 
 			&key[8], &key[9], &key[10], &key[11], &key[12], &key[13], &key[14], &key[15]);
 
 		for(i = 0; i < 16; i++) {
@@ -225,15 +225,15 @@ void fATSK(void *arg)
 	}else{
 		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=RDP_EN");
 		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=RDP_KEY[value(hex)]");
-		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] 	Example: ATSK=RDP_KEY[345487bbaa435bfe382233445ba359aa]");
+		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] 	Example: ATSK=RDP_KEY[345487bbaa435bfe382233445ba359aa]");		
 		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=RSIP_EN");
 		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=RSIP_DIS");
 		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=RSIP_KEY[value(hex)]");
 		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=SB_EN");
 		AT_DBG_MSG(AT_FLAG_RDP, AT_DBG_ALWAYS, "[ATSK] Usage: ATSK=SB_PK_MD5[value(hex)]");
-
+		
 	}
-
+	
 }
 #endif
 
@@ -245,7 +245,7 @@ void fATSA(void *arg)
 	int argc = 0, channel;
 	char *argv[MAX_ARGC] = {0}, *ptmp;
 	u16 offset, gain;
-
+	
 	AT_DBG_MSG(AT_FLAG_ADC, AT_DBG_ALWAYS, "[ATSA]: _AT_SYSTEM_ADC_TEST_");
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_ADC, AT_DBG_ALWAYS, "[ATSA] Usage: ATSA=CHANNEL(1~3)");
@@ -253,7 +253,7 @@ void fATSA(void *arg)
 		AT_DBG_MSG(AT_FLAG_ADC, AT_DBG_ALWAYS, "[ATSA] Usage: ATSA=k_set[offet(hex),gain(hex)]");
 		return;
 	}
-
+	
 	argc = parse_param(arg, argv);
 	if(strcmp(argv[1], "k_get") == 0){
 		sys_adc_calibration(0, &offset, &gain);
@@ -275,7 +275,7 @@ void fATSA(void *arg)
 		}
 		analogin_t   adc;
 		u16 adcdat;
-
+		
 		// Remove debug info massage
 		ConfigDebugInfo = 0;
 		if(channel == 1)
@@ -288,7 +288,7 @@ void fATSA(void *arg)
 		analogin_deinit(&adc);
 		// Recover debug info massage
 		ConfigDebugInfo = tConfigDebugInfo;
-
+		
 		AT_DBG_MSG(AT_FLAG_ADC, AT_DBG_ALWAYS, "[ATSA] A%d = 0x%04X", channel, adcdat);
 	}
 #elif defined(CONFIG_PLATFORM_8721D)
@@ -316,7 +316,7 @@ void fATSA(void *arg)
 	analogin_init(&adc, ch_list[channel]);
 	adcdat = analogin_read_u16(&adc);
 	analogin_deinit(&adc);
-
+	
 	AT_DBG_MSG(AT_FLAG_ADC, AT_DBG_ALWAYS, "[ATSA] A%d = 0x%04X", channel, adcdat);
 #endif
 }
@@ -329,7 +329,7 @@ void fATSG(void *arg)
 	char *argv[MAX_ARGC] = {0}, port, num;
 	PinName pin = NC;
 	u32 tConfigDebugInfo = ConfigDebugInfo;
-
+    
 	AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "[ATSG]: _AT_SYSTEM_GPIO_TEST_");
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "[ATSG] Usage: ATSG=PINNAME(ex:A0)");
@@ -439,7 +439,7 @@ void fATSG(void *arg)
 	char *argv[MAX_ARGC] = {0}, port;
 	PinName pin = NC;
 	u32 tConfigDebugInfo = ConfigDebugInfo;
-
+    
 	AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "[ATSG]: _AT_SYSTEM_GPIO_TEST_");
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "[ATSG] Usage: ATSG=PINNAME(ex:A0)");
@@ -455,8 +455,8 @@ void fATSG(void *arg)
 	if(port >= 'a' && port <= 'z')
 		port -= ('a' - 'A');
 	num = atoi(argv[1] + 1);
-
-	//PA_6~PA_11 are not allowed to be tested when code running on flash.
+	
+	//PA_6~PA_11 are not allowed to be tested when code running on flash. 
 	//PA_16~PA_17 or PA_29~PA_30 should not be tested when they are used as log UART RX and TX.
 	switch(port){
 		case 'A':
@@ -498,7 +498,7 @@ void fATSG(void *arg)
     int argc = 0, val, num;
 	char *argv[MAX_ARGC] = {0}, port;
 	PinName pin = NC;
-
+    
 	AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "[ATSG]: _AT_SYSTEM_GPIO_TEST_");
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "[ATSG] Usage: ATSG=PINNAME(ex:A0)");
@@ -514,8 +514,8 @@ void fATSG(void *arg)
 	if(port >= 'a' && port <= 'z')
 		port -= ('a' - 'A');
 	num = atoi(argv[1] + 1);
-
-	//PB_12~PB_17 or PB_18~PB_23 are not allowed to be tested when code running on flash.
+	
+	//PB_12~PB_17 or PB_18~PB_23 are not allowed to be tested when code running on flash. 
 	//PA_7~PA_8 should not be tested when they are used as log UART RX and TX.
 	switch(port){
 		case 'A':
@@ -694,7 +694,7 @@ int write_otu_to_system_data(flash_t *flash, uint32_t otu_addr)
 	uint32_t data, i = 0;
 	flash_read_word(flash, FLASH_SYSTEM_DATA_ADDR+0xc, &data);
 	//printf("\n\r[%s] data 0x%x otu_addr 0x%x", __FUNCTION__, data, otu_addr);
-	AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: data 0x%x otu_addr 0x%x", data, otu_addr);
+	AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: data 0x%x otu_addr 0x%x", data, otu_addr);	
 	if(data == ~0x0){
 		flash_write_word(flash, FLASH_SYSTEM_DATA_ADDR+0xc, otu_addr);
 	}else{
@@ -730,7 +730,7 @@ void fATSB(void *arg)
 	u8 gpio_pin;
 	u8 uart_port, uart_index;
 	u8 gpio_pin_bar;
-	u8 uart_port_bar;
+	u8 uart_port_bar;		
 	flash_t flash;
 
 	// parameter check
@@ -781,7 +781,7 @@ void fATSB(void *arg)
 			AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]:uart_port_bar 0x%x", uart_port_bar);
 			AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]:boot_gpio 0x%x", boot_gpio);
 			write_otu_to_system_data(&flash, boot_gpio);
-			flash_read_word(&flash, FLASH_SYSTEM_DATA_ADDR+0x0c, &rb_boot_gpio);
+			flash_read_word(&flash, FLASH_SYSTEM_DATA_ADDR+0x0c, &rb_boot_gpio);			
 			AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]:Read 0x900c 0x%x", rb_boot_gpio);
 		}else{
 			AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: Usage: ATSB=[GPIO_PIN,TRIGER_MODE,UART]");
@@ -789,7 +789,7 @@ void fATSB(void *arg)
 			AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: TRIGER_MODE: low_trigger, high_trigger");
 			AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: UART: UART0, UART2");
 			AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: example: ATSB=[PC_2,low_trigger,UART2]");
-		}
+		}		
 	}else{
 		AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: Usage: ATSB=[GPIO_PIN,TRIGER_MODE,UART]");
 		AT_DBG_MSG(AT_FLAG_DUMP, AT_DBG_ALWAYS, "[ATSB]: GPIO_PIN: PB_1, PC_4 ....");
@@ -891,38 +891,17 @@ void fATSM(void *arg)
 }
 #endif
 
-extern uint16_t _ZN4chip12Base64DecodeEPKctPh(const char * in, uint16_t inLen, uint8_t * out);
-extern uint16_t _ZN4chip12Base64EncodeEPKhtPc(const uint8_t * in, uint16_t inLen, char * out);
-
-void TestBase64(const char * test)
+void fATSt(void *arg)
 {
-    uint8_t buf[256];
-    char buf2[256];
-    uint16_t len;
-
-    strcpy((char *) buf, test);
-
-    len = _ZN4chip12Base64DecodeEPKctPh((char *) buf, strlen((char *) buf), buf);
-    printf("%s: ", test);
-    if (len != UINT16_MAX)
-    {
-        printf("(%d) ", len);
-        for (uint16_t i = 0; i < len; i++)
-            printf("%c", buf[i]);
-
-        len = _ZN4chip12Base64EncodeEPKhtPc(buf, len, buf2);
-        printf(" (%d) ", len);
-        for (uint16_t i = 0; i < len; i++)
-            printf("%c", buf2[i]);
-    }
-    else
-        printf("ERROR");
-    printf("\n");
+	/* To avoid gcc warnings */
+	( void ) arg;
+	
+	AT_PRINTK("[ATS#]: _AT_SYSTEM_TEST_");
 }
 
 #if defined(CONFIG_PLATFORM_8711B)
-/*Function: Check if the input jtag key is matched with the jtag password derived from the SB key stored in EFUSE.
-		    If the input jtag key is correct, it will be stored in system data area of the flash.
+/*Function: Check if the input jtag key is matched with the jtag password derived from the SB key stored in EFUSE. 
+		    If the input jtag key is correct, it will be stored in system data area of the flash. 
 		    Otherwise, the last 1 of the error map will be written to 0, which is also stored in system data of the flash. */
 static void sys_enable_jtag_by_password(char *keystring)
 {
@@ -930,13 +909,13 @@ static void sys_enable_jtag_by_password(char *keystring)
 	u8 key[8];
 	u32 data, key32[8], i = 0, errmap = 0;
 	int is_match = 0;
-
+	
 	if(strlen(keystring) < 16){
 		AT_PRINTK("%s(): Key length should be 16 characters.", __func__);
 		return;
 	}
 	AT_PRINTK("Enter JTAG Key: %s\n", keystring);
-	sscanf((const char*)keystring, "%02x%02x%02x%02x%02x%02x%02x%02x",
+	sscanf((const char*)keystring, "%02x%02x%02x%02x%02x%02x%02x%02x", 
 		&key32[0], &key32[1], &key32[2], &key32[3], &key32[4], &key32[5], &key32[6], &key32[7]);
 	for(i=0; i<8; i++){
 		key[i] = key32[i] & 0xFF;
@@ -953,7 +932,7 @@ static void sys_enable_jtag_by_password(char *keystring)
 
 	// check if jtag key is correct
 	is_match = boot_export_symbol.is_jtag_key_match(key);
-
+	
 	device_mutex_lock(RT_DEV_LOCK_FLASH);
 	flash_read_word(&flash, FLASH_SYSTEM_DATA_ADDR + 0x44, &data);
 	if(data != ~0x0){
@@ -969,7 +948,7 @@ static void sys_enable_jtag_by_password(char *keystring)
 				data = 0xFFFFFFFF;
 			flash_write_word(&flash, FLASH_RESERVED_DATA_BASE + i,data);
 		}
-
+		
 		//erase system data
 		flash_erase_sector(&flash, FLASH_SYSTEM_DATA_ADDR);
 		//write data back to system data
@@ -994,7 +973,7 @@ void fATSJ(void *arg)
 {
 	/* To avoid gcc warnings */
 	( void ) arg;
-
+	
 	//volatile int argc = 0;
 	char *argv[MAX_ARGC] = {0};
 	(void) argv;
@@ -1010,7 +989,7 @@ void fATSJ(void *arg)
 #if defined(CONFIG_PLATFORM_8711B)
 		else if (strcmp(argv[1], "key" ) == 0)
 			sys_enable_jtag_by_password(argv[2]); //Enter "FFFFFFFFFFFFFFFF" to clear key in flash
-#endif
+#endif			
 		else
 			AT_PRINTK("ATSJ=%s is not supported!", argv[1]);
 	}
@@ -1027,7 +1006,7 @@ void fATSJ(void *arg)
 #if defined(CONFIG_PLATFORM_8711B)
 		else if (strcmp(argv[1], "key" ) == 0)
 			sys_enable_jtag_by_password(argv[2]); //Enter "FFFFFFFFFFFFFFFF" to clear key in flash
-#endif
+#endif			
 		else
 			AT_PRINTK("ATSJ=%s is not supported!", argv[1]);
 	}
@@ -1074,7 +1053,7 @@ void fATSx(void *arg)
 {
 	/* To avoid gcc warnings */
 	( void ) arg;
-
+	
 //	uint32_t ability = 0;
 	char buf[64];
 
@@ -1183,7 +1162,7 @@ void fATSP(void *arg){
 
 	uint32_t lock_id;
 	uint32_t bitmap;
-
+	
 	if (!arg) {
 		AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ERROR, "\r\n[ATSP] Usage: ATSP=<a/r/?>");
 		at_printf("\r\n[ATSP] ERROR:1");
@@ -1200,7 +1179,7 @@ void fATSP(void *arg){
 		case 'a': // acquire
 		{
 			pmu_acquire_wakelock(PMU_OS);
-			//at_printf("\r\n[ATSP] wakelock:0x%08x", pmu_get_wakelock_status());
+			//at_printf("\r\n[ATSP] wakelock:0x%08x", pmu_get_wakelock_status());			
 			break;
 		}
 
@@ -1229,7 +1208,7 @@ void fATSE(void *arg){
 	char *argv[MAX_ARGC] = {0};
 	int err_no = 0;
 
-	AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ALWAYS, "[ATSE]: _AT_SYSTEM_ECHO_DBG_SETTING");
+	AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ALWAYS, "[ATSE]: _AT_SYSTEM_ECHO_DBG_SETTING");	
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ERROR, "[ATSE] Usage: ATSE=<echo>,<dbg_msk>,<dbg_lv>");
 		err_no = 1;
@@ -1258,12 +1237,12 @@ void fATSE(void *arg){
 		mask = strtoul(argv[2], NULL, 0);
 		at_set_debug_mask(mask);
 	}
-
+	
 	if((argc == 4) && (argv[3] != NULL)){
 		dbg_lv = strtoul(argv[3], NULL, 0);
 		at_set_debug_level(dbg_lv);
 	}
-
+	
 exit:
 	if(err_no)
 		at_printf("\r\n[ATSE] ERROR:%d", err_no);
@@ -1287,8 +1266,8 @@ void fATSY(void *arg){
 #if CONFIG_OTA_UPDATE
 	// Reset ota image  signature
 	cmd_ota_image(0);
-#endif
-
+#endif	
+	
 	at_printf("\r\n[ATSY] OK");
 	// reboot
 	sys_reset();
@@ -1299,7 +1278,7 @@ extern int wifi_is_connected_to_ap( void );
 void fATSO(void *arg){
 	int argc = 0;
 	char *argv[MAX_ARGC] = {0};
-
+	
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_OTA, AT_DBG_ERROR, "\r\n[ATSO] Usage: ATSO=<ip>,<port>");
 		at_printf("\r\n[ATSO] ERROR:1");
@@ -1316,7 +1295,7 @@ void fATSO(void *arg){
 	if(wifi_is_connected_to_ap()==0){
 		cmd_update(argc, argv);
 		at_printf("\r\n[ATSO] OK");
-
+		
 	}else{
 		at_printf("\r\n[ATSO] ERROR:3");
 	}
@@ -1326,7 +1305,7 @@ void fATSC(void *arg){
 	int argc = 0;
 	char *argv[MAX_ARGC] = {0};
 	int cmd = 0;
-
+	
 	if(!arg){
 		AT_DBG_MSG(AT_FLAG_OTA, AT_DBG_ERROR, "\r\n[ATSC] Usage: ATSC=<0/1>");
 		at_printf("\r\n[ATSC] ERROR:1");
@@ -1344,7 +1323,7 @@ void fATSC(void *arg){
 		at_printf("\r\n[ATSC] ERROR:2");
 		return;
 	}
-
+		
 	at_printf("\r\n[ATSC] OK");
 
  	if(cmd == 1){
@@ -1372,15 +1351,15 @@ void fATSU(void *arg){
 	u8 configmode = 0;
 	int i;
 	UART_LOG_CONF uartconf;
-
+	
 	if(!arg){
-		AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ERROR,
+		AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ERROR, 
 		"[ATSU] Usage: ATSU=<baud>,<databits>,<stopbits>,<parity>,<flowcontrol>,<configmode>");
 		at_printf("\r\n[ATSU] ERROR:1");
 		return;
 	}
 	if((argc = parse_param(arg, argv)) != 7){
-		AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ERROR,
+		AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ERROR, 
 		"[ATSU] Usage: ATSU=<baud>,<databits>,<stopbits>,<parity>,<flowcontrol>,<configmode>");
 		at_printf("\r\n[ATSU] ERROR:1");
 		return;
@@ -1399,7 +1378,7 @@ void fATSU(void *arg){
             break;
         }
     }
-
+    
     if (log_uart_support_rate[i]== 0xFFFFFF) {
 		at_printf("\r\n[ATSU] ERROR:2");
         return;
@@ -1414,14 +1393,14 @@ void fATSU(void *arg){
 		at_printf("\r\n[ATSU] ERROR:2");
 		return;
 	}
-
+	
 	memset((void*)&uartconf, 0, sizeof(UART_LOG_CONF));
 	uartconf.BaudRate = baud;
 	uartconf.DataBits = databits;
 	uartconf.StopBits = stopbits;
 	uartconf.Parity = parity;
 	uartconf.FlowControl = flowcontrol;
-	AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ALWAYS,
+	AT_DBG_MSG(AT_FLAG_COMMON, AT_DBG_ALWAYS, 
 		"AT_UART_CONF: %d,%d,%d,%d,%d", uartconf.BaudRate, uartconf.DataBits,uartconf.StopBits,uartconf.Parity,uartconf.FlowControl);
 	switch(configmode){
 		case 0: // set current configuration, won't save
@@ -1435,7 +1414,7 @@ void fATSU(void *arg){
 			write_uart_atcmd_setting_to_system_data(&uartconf);
 			break;
 	}
-
+	
 	at_printf("\r\n[ATSU] OK");
 }
 #endif //#if (defined(CONFIG_EXAMPLE_UART_ATCMD) && CONFIG_EXAMPLE_UART_ATCMD)
@@ -1451,17 +1430,17 @@ void fATSG(void *arg)
 	AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "[ATSG]: _AT_SYSTEM_GPIO_CTRL_");
 
 	if(!arg){
-		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ERROR,
+		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ERROR, 
 		"[ATSG] Usage: ATSG=<R/W>,<PORT>,<DATA>,<DIR>,<PULL>");
 		error_no = 1;
 		goto exit;
 	}
 	if((argc = parse_param(arg, argv)) < 3){
-		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ERROR,
+		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ERROR, 
 			"[ATSG] Usage: ATSG=<R/W>,<PORT>,<DATA>,<DIR>,<PULL>");
 		error_no = 2;
 		goto exit;
-	}
+	}	
 
 	port = argv[2][1];
 	num = strtoul(&argv[2][3], NULL, 0);
@@ -1472,7 +1451,7 @@ void fATSG(void *arg)
 	pin = (port << 5 | num);
 #endif
 	AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ALWAYS, "PORT: %s[%d]", argv[2], pin);
-
+	
 	if(gpio_set(pin) == 0xff)
 	{
 		AT_DBG_MSG(AT_FLAG_GPIO, AT_DBG_ERROR, "[ATSG]: Invalid Pin Name [%d]", pin);
@@ -1512,7 +1491,7 @@ void fATSG(void *arg)
 		gpio_dir(&gpio_ctrl, PIN_OUTPUT);
 		gpio_write(&gpio_ctrl, val);
 	}
-
+	
 exit:
 	if(error_no){
 		at_printf("\r\n[ATSG] ERROR:%d", error_no);
@@ -1554,7 +1533,7 @@ void fATSL(void *arg)
 				lock_id = strtoul(argv[2], NULL, 16);
 				pmu_acquire_wakelock(lock_id);
 			}
-			AT_DBG_MSG(AT_FLAG_OS, AT_DBG_ALWAYS, "[ATSL] wakelock:0x%08x", pmu_get_wakelock_status());
+			AT_DBG_MSG(AT_FLAG_OS, AT_DBG_ALWAYS, "[ATSL] wakelock:0x%08x", pmu_get_wakelock_status());			
 			break;
 		}
 
@@ -1620,7 +1599,7 @@ log_item_t at_sys_items[] = {
 	{"ATSA", fATSA,},	// MP ADC test
 	{"ATSG", fATSG,},	// MP GPIO test
 	{"ATSP", fATSP,},	// MP Power related test
-	{"ATSB", fATSB,},	// OTU PIN setup
+	{"ATSB", fATSB,},	// OTU PIN setup			
 #endif
 #if (configGENERATE_RUN_TIME_STATS == 1)
 	{"ATSS", fATSS,},	// Show CPU stats
@@ -1633,6 +1612,7 @@ log_item_t at_sys_items[] = {
 #endif
 	{"ATS@", fATSs,{NULL,NULL}},	// Debug message setting
 	{"ATS!", fATSc,{NULL,NULL}},	// Debug config setting
+	{"ATS#", fATSt,{NULL,NULL}},	// test command
 	{"ATS?", fATSx,{NULL,NULL}},	// Help
 #if WIFI_LOGO_CERTIFICATION_CONFIG
 	{"ATSV", fATSV},				// Write SW version for wifi logo test

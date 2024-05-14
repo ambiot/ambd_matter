@@ -20,6 +20,10 @@ INCDIR		=$(ROOTDIR)/../../../inc/inc_lp
 BASEDIR		= $(ROOTDIR)/../../../../..
 KM0_BUILDDIR	= $(ROOTDIR)/../../project_lp
 KM4_BUILDDIR	= $(ROOTDIR)/../../project_hp
+ifeq ($(CONFIG_MATTER_EN), y)
+MATTER_DIR      = $(BASEDIR)/component/common/application/matter
+MATTER_BUILDDIR = $(BASEDIR)/component/common/application/matter/project/amebad
+endif
 
 TARGETDIR	=$(BASEDIR)/component/soc/realtek/amebad
 BOOTLOADER	=$(BASEDIR)/component/soc/realtek/amebad/bootloader
@@ -73,8 +77,10 @@ BUILD_TARGET_ROM_FOLDER = $(ROOTDIR)/build/rom
 IMAGE_TARGET_FOLDER     = $(ROOTDIR)/image
 
 ifeq ($(COMPILEOS),$(LINUX_OS))
-ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/linux/asdk-10.3.0/linux/newlib
-ASDK_TOOLCHAIN_R = ../toolchain/linux/asdk-10.3.0/linux/newlib
+ifneq ($(CONFIG_MATTER_EN),y)
+ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/linux/asdk-6.4.1/linux/newlib
+ASDK_TOOLCHAIN_R = ../toolchain/linux/asdk-6.4.1/linux/newlib
+endif
 else ifeq ($(COMPILEOS_CYGWIN),Cygwin)
 ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/cygwin/asdk-6.4.1/cygwin/newlib
 ASDK_TOOLCHAIN_R = ../toolchain/cygwin/asdk-6.4.1/cygwin/newlib
@@ -167,12 +173,14 @@ IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/src/h
 IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/src/hal/rtl8711b
 IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/wlan_ram_map/rom
 IFLAGS               += -I$(BASEDIR)/component/common/network
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/lwip
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/netif
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/src/include/ipv4
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek
-IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v2.1.2/port/realtek/freertos
+ifneq ($(CONFIG_MATTER_EN),y)
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include/lwip
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include/netif
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include/ipv4
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/port/realtek
+IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/port/realtek/freertos
+endif
 IFLAGS               += -I$(BASEDIR)/component/common/api
 IFLAGS               += -I$(BASEDIR)/component/common/api/at_cmd
 IFLAGS               += -I$(BASEDIR)/component/common/api/wifi/rtw_wpa_supplicant/src
@@ -186,8 +194,6 @@ IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/polarssl-1.3.8
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/ssl_ram_map/rom
 
 #MBEDTLS
-IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
-IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls-2.4.0/include/mbedtls
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls-2.4.0/include
 IFLAGS               += -I$(BASEDIR)/component/common/network/ssl/mbedtls_ram_map/rom
 IFLAGS               += -I$(BASEDIR)/component/common/application/amazon/amazon-freertos/lib/include/private
@@ -256,7 +262,9 @@ GLOBAL_CFLAGS += -Wextra
 #GLOBAL_CFLAGS += -Wconversion
 GLOBAL_CFLAGS += $(IFLAGS)
 GLOBAL_CFLAGS += -DCONFIG_PLATFORM_8721D
-GLOBAL_CFLAGS += -DMBEDTLS_CONFIG_FILE=\"mbedtls_config.h\"
+ifeq ($(CONFIG_MATTER_EN),y)
+include $(MATTER_BUILDDIR)/Makefile.include.matter.lp.gen
+endif
 
 #*****************************************************************************#
 #                           ARM LD FLAGS

@@ -321,6 +321,7 @@ bool "Enable BT"				CONFIG_BT_EN
 if [ "$CONFIG_BT_EN" = "y" ]; then
 	define_bool CONFIG_BT y
 	bool "BT_Peripheral"		CONFIG_BT_PERIPHERAL
+	bool "BT_Matter_Adapter"	CONFIG_BT_MATTER_ADAPTER
 	bool "BT_Central"			CONFIG_BT_CENTRAL
 	dep_bool "BT_Scatternet"	CONFIG_BT_SCATTERNET $CONFIG_BT_PERIPHERAL $CONFIG_BT_CENTRAL
 	bool "BT_Beacon"			CONFIG_BT_BEACON
@@ -363,6 +364,7 @@ if [ "$CONFIG_BT_EN" = "y" ]; then
 else
 	define_bool CONFIG_BT n
 	define_bool CONFIG_BT_PERIPHERAL n
+	define_bool CONFIG_BT_MATTER_ADAPTER n
 	define_bool CONFIG_BT_CENTRAL n
 	define_bool CONFIG_BT_SCATTERNET n
 	define_bool CONFIG_BT_BEACON n
@@ -430,6 +432,14 @@ endmenu
 mainmenu_option next_comment
 comment '< MQTT Config '
 bool "Enable MQTT"                    		CONFIG_MQTT_EN
+endmenu
+
+mainmenu_option next_comment
+comment '< Matter Config '
+bool "Enable Matter"							CONFIG_MATTER_EN
+if [ "$CONFIG_MATTER_EN" = "y" ]; then
+	define_bool CONFIG_MATTER y
+fi
 endmenu
 
 mainmenu_option next_comment

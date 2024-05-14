@@ -7,7 +7,11 @@ IFLAGS               += -I$(BASEDIR)/component/common/network/libcoap/include
 #*****************************************************************************#
 #                               VARIABLES	                              #
 #*****************************************************************************#
+ifeq ($(CONFIG_MATTER_EN),y)
 LWIPDIR = $(BASEDIR)/component/common/network/lwip/lwip_v2.1.2
+else
+LWIPDIR = $(BASEDIR)/component/common/network/lwip/lwip_v2.0.2
+endif
 NETWORK = $(BASEDIR)/component/common/network
 WLANDRV = $(BASEDIR)/component/common/drivers/wlan/realtek
 
@@ -29,7 +33,6 @@ OBJS += \
 		$(LWIPDIR)/port/realtek/freertos/br_rpt_handle.o \
 		$(LWIPDIR)/port/realtek/freertos/bridgeif.o \
 		$(LWIPDIR)/port/realtek/freertos/bridgeif_fdb.o \
-		$(LWIPDIR)/port/realtek/hooks/lwip_default_hooks.o \
 		$(WLANDRV)/src/osdep/lwip_intf.o \
 
 OBJS +=		\
@@ -55,6 +58,10 @@ OBJS +=		\
 		$(LWIPDIR)/src/api/netdb.o \
 		$(LWIPDIR)/src/api/api_lib.o \
 		$(LWIPDIR)/src/api/netifapi.o \
+
+ifeq ($(CONFIG_MATTER_EN),y)
+OBJS += $(LWIPDIR)/port/realtek/hooks/lwip_default_hooks.o
+endif
 
 #ifeq ($(CONFIG_HIGH_TP),y)
 #OBJS += $(OBJS_CONFIG) 

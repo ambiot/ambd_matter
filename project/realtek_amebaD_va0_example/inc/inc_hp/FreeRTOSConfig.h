@@ -82,7 +82,7 @@ extern uint32_t SystemCoreClock;
 #define configMINIMAL_SECURE_STACK_SIZE					( 1024 )
 #define configMAX_TASK_NAME_LEN							( 10 )
 #ifdef CONFIG_WIFI_EN
-#define configTOTAL_HEAP_SIZE						( ( size_t ) ( 200 * 1024 ) ) //default
+#define configTOTAL_HEAP_SIZE						( ( size_t ) ( 250 * 1024 ) ) //default
 #if (defined CONFIG_HIGH_TP_TEST)
 	#define configTOTAL_HEAP_SIZE					( ( size_t ) ( 100 * 1024 ) )		
 #endif
@@ -135,8 +135,6 @@ extern uint32_t SystemCoreClock;
 #define INCLUDE_vTaskDelay								1
 #define INCLUDE_pcTaskGetTaskName       				1
 #define INCLUDE_uxTaskGetStackHighWaterMark				0
-#define INCLUDE_uxTaskGetStackSize      				1
-#define INCLUDE_uxTaskGetFreeStackSize    				1
 #define INCLUDE_xTaskGetIdleTaskHandle					0
 #define INCLUDE_eTaskGetState							1
 #define INCLUDE_xTaskResumeFromISR						0
@@ -235,5 +233,9 @@ extern int  freertos_ready_to_sleep(void);
 #define configUSE_WAKELOCK_PMU                  		1
 	
 #endif /* __IASMARM__ */
+
+#if defined(CONFIG_MATTER) && CONFIG_MATTER
+#include "FreeRTOSConfig_Matter.h"
+#endif /* CONFIG_MATTER */
 
 #endif /* FREERTOS_CONFIG_H */

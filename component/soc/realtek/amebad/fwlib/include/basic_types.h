@@ -32,8 +32,6 @@
 #define SUCCESS	0
 #define FAIL	(-1)
 
-#undef FAIL // matter conflict
-
 #undef _SUCCESS
 #define _SUCCESS	1
 

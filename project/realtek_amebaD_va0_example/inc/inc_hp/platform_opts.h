@@ -48,7 +48,7 @@
 /******************************************************************************/
 
 /**
-* For common flash usage
+* For common flash usage  
 */
 #if (defined(CONFIG_BAIDU_DUER) && CONFIG_BAIDU_DUER) || (defined(CONFIG_BT_MESH_PROVISIONER) && CONFIG_BT_MESH_PROVISIONER)	\
 	|| (defined(CONFIG_BT_MESH_PROVISIONER_MULTIPLE_PROFILE) && CONFIG_BT_MESH_PROVISIONER_MULTIPLE_PROFILE)	\
@@ -61,70 +61,10 @@
 #else
 #define UART_SETTING_SECTOR		0x000FC000
 #define AP_SETTING_SECTOR		0x000FE000
-#define FTL_PHY_PAGE_START_ADDR	0x001DC000
-#define FAST_RECONNECT_DATA 	0x001DF000
+#define FTL_PHY_PAGE_START_ADDR	0x00102000
+#define FAST_RECONNECT_DATA 	0x00105000
 #endif
 #define CONFIG_ENABLE_RDP		0
-
-//IF Support MATTER
-#undef UART_SETTING_SECTOR
-#undef AP_SETTING_SECTOR
-#undef FTL_PHY_PAGE_START_ADDR
-#undef FAST_RECONNECT_DATA
-
-/* Matter Flash Layout
- *
- * 0x08006000 -------------------- FW1
- *
- *
- *
- * 0x081B6000 -------------------- UART_SETTING_SECTOR
- *
- * 0x081B7000 -------------------- AP_SETTING_SECTOR
- *
- * 0x081B8000 -------------------- FTL_PHY_PAGE_START_ADDR
- *
- * 0x081CB000 -------------------- FAST_CONNECT_DATA
- *
- * 0x081CC000 -------------------- MATTER_KVS_BEGIN_ADDR
- *
- *
- * 0x08206000 -------------------- FW2
- *
- *
- *
- * 0x083B6000 -------------------- MATTER_KVS_BEGIN_ADDR2
- *
- *
- * 0x083FF000 -------------------- MATTER_FACTORY_DATA
- */
-
-#define UART_SETTING_SECTOR		0x001B6000  // 1K
-#define AP_SETTING_SECTOR		0x001B7000  // 1K
-#define FTL_PHY_PAGE_START_ADDR         0x001B8000  // 3K
-#define FAST_RECONNECT_DATA             0x001CB000  // 1K
-
-// DCT size : module size is 4k, module number is 4, the total module number is 4 + 0*4 = 4, the size is 4*4 = 16k,
-//            if backup enabled, the total module number is 4 + 1*4 = 8, the size is 4*8 = 32k;
-//            if wear leveling enabled, the total module number is 4 + 2*4 + 3*4 = 24, the size is 96k
-#define MATTER_KVS_ENABLE_BACKUP        0
-#define MATTER_KVS_ENABLE_WEAR_LEVELING 0
-
-// MATTER KVS (chip-factory, chip-config, chip-counters)
-#define MATTER_KVS_BEGIN_ADDR           0x001CC000  // 96K (4*24), DCT begin address of flash, ex: 0x100000 = 1M
-#define MATTER_KVS_MODULE_NUM           13           // max number of module
-#define MATTER_KVS_VARIABLE_NAME_SIZE   32          // max size of the variable name
-#define MATTER_KVS_VARIABLE_VALUE_SIZE  64+4          // max size of the variable value, +4 so it can store 64 bytes variable
-                                                    // max value number in moudle = floor(4024 / (32 + 64 + 4)) = 40
-                                                    
-// MATTER KVS2, for key length large than 64 (Fabric1 ~ FabricF)
-#define MATTER_KVS_BEGIN_ADDR2	        0x003B6000  // 20K (4*5)
-#define MATTER_KVS_MODULE_NUM2          6          // max number of module
-#define MATTER_KVS_VARIABLE_NAME_SIZE2  32          // max size of the variable name
-#define MATTER_KVS_VARIABLE_VALUE_SIZE2 400+4        // max size of the variable value, +4 so it can store 400 bytes variable
-                                                    // max value number in moudle = floor(4024 / (32 + 400 + 4)) = 9
-// Matter Factory Data
-#define MATTER_FACTORY_DATA             0x003FF000 
 
 /**
  * For Wlan configurations
@@ -153,7 +93,7 @@
 //#define CONFIG_BAIDU_DUER	1
 #define CONFIG_DMIC_SEL	0
 /* For WPS and P2P */
-#define CONFIG_ENABLE_WPS		0
+#define CONFIG_ENABLE_WPS		1
 #define CONFIG_ENABLE_P2P		0//on/off p2p cmd in log_service or interactive mode
 #if CONFIG_ENABLE_WPS
 #define CONFIG_ENABLE_WPS_DISCOVERY	1
@@ -164,7 +104,7 @@
 #define CONFIG_WIFI_IND_USE_THREAD	1
 #endif
 #if (CONFIG_ENABLE_P2P && ((CONFIG_ENABLE_WPS_AP == 0) || (CONFIG_ENABLE_WPS == 0)))
-#error "If CONFIG_ENABLE_P2P, need to define CONFIG_ENABLE_WPS_AP 1"
+#error "If CONFIG_ENABLE_P2P, need to define CONFIG_ENABLE_WPS_AP 1" 
 #endif
 
 /* For SSL/TLS */
@@ -182,14 +122,14 @@
 #define CONFIG_INCLUDE_SIMPLE_CONFIG		1
 
 /*For fast reconnection*/
-#define CONFIG_EXAMPLE_WLAN_FAST_CONNECT	0
+#define CONFIG_EXAMPLE_WLAN_FAST_CONNECT	1
 
 /*For wowlan service settings*/
 #define CONFIG_WOWLAN_SERVICE           			0
 
 #define CONFIG_GAGENT			0
 /*Disable CONFIG_EXAMPLE_WLAN_FAST_CONNECT when CONFIG_GAGENT is enabled,because
-	reconnect to previous AP is not suitable when re-configuration.
+	reconnect to previous AP is not suitable when re-configuration. 
 */
 #if CONFIG_GAGENT
 #define CONFIG_EXAMPLE_WLAN_FAST_CONNECT 0
@@ -283,7 +223,7 @@
 
 /* For cJSON example */
 #define CONFIG_EXAMPLE_CJSON         0
-
+   
 /* For HTTP CLIENT example */
 #define CONFIG_EXAMPLE_HTTP_CLIENT  0
 
@@ -302,7 +242,7 @@
 /* for CoAP example*/
 #define CONFIG_EXAMPLE_COAP		0
 
-/* for lib CoAP example*/
+/* for lib CoAP example*/ 
 #define CONFIG_EXAMPLE_COAP_SERVER        0
 #define CONFIG_EXAMPLE_COAP_CLIENT        0
 
@@ -418,7 +358,7 @@
 #define CONFIG_EXAMPLE_AUDIO_AMR_FLASH 0
 
 #define CONFIG_EXAMPLE_AUDIO_AC3		0
-#if CONFIG_EXAMPLE_AUDIO_AC3
+#if CONFIG_EXAMPLE_AUDIO_AC3	
 #define FATFS_DISK_SD	1
 #endif
 
@@ -530,7 +470,7 @@
 #undef CONFIG_INCLUDE_SIMPLE_CONFIG
 #define CONFIG_INCLUDE_SIMPLE_CONFIG		0
 #define CONFIG_ENABLE_WPS	0
-#endif
+#endif  
 
 /* For Mjpeg capture example*/
 #define CONFIG_EXAMPLE_MJPEG_CAPTURE		0
@@ -612,7 +552,7 @@
 #endif
 
 /* For uart adapter example */
-/* Please also configure LWIP_UART_ADAPTER to 1
+/* Please also configure LWIP_UART_ADAPTER to 1 
 in lwip_opt.h for support uart adapter*/
 #define CONFIG_EXAMPLE_UART_ADAPTER	0
 #if CONFIG_EXAMPLE_UART_ADAPTER
@@ -630,7 +570,7 @@ in lwip_opt.h for support uart adapter*/
 /* For wifi scenarios example (Wi-Fi, WPS enrollee, P2P GO) */
 // also need to enable WPS and P2P
 #define CONFIG_EXAMPLE_WLAN_SCENARIO	0
-
+	 
 /* For broadcast example */
 #define CONFIG_EXAMPLE_BCAST			0
 
@@ -652,7 +592,7 @@ in lwip_opt.h for support uart adapter*/
 #if CONFIG_ENABLE_WPS
 #define WPS_CONNECT_RETRY_COUNT		4
 #define WPS_CONNECT_RETRY_INTERVAL	5000 // in ms
-#endif
+#endif 
 
 #define AUTO_RECONNECT_COUNT	8
 #define AUTO_RECONNECT_INTERVAL	5 // in sec
@@ -759,14 +699,8 @@ in lwip_opt.h for support uart adapter*/
 #define CONFIG_BRIDGE                   0
 #endif
 
-#define CONFIG_EXAMPLE_MATTER 1
-#define CONFIG_EXAMPLE_MATTER_CHIPTEST 1
-#define CONFIG_EXAMPLE_MATTER_LIGHT 0
-#define CONFIG_EXAMPLE_MATTER_THERMOSTAT 0
-#define CONFIG_EXAMPLE_MATTER_BRIDGE 0
-#define CONFIG_EXAMPLE_MATTER_REFRIGERATOR 0
-#define CONFIG_EXAMPLE_MATTER_AIRCON 0
-#define CONFIG_EXAMPLE_MATTER_DISHWASHER 0
-#define CONFIG_EXAMPLE_MATTER_LAUNDRYWASHER 0
+#if defined(CONFIG_MATTER) && CONFIG_MATTER
+#include "platform_opts_matter.h"
+#endif
 
 #endif

@@ -174,7 +174,7 @@ int rtl_crypto_sha2_init(IN const SHA2_TYPE sha2type)
 		case SHA2_384 : 
 		case SHA2_512 : 
 		default: 
-			return -1;
+			return FAIL;
 	}
 
 	// for sequential hash
@@ -492,7 +492,7 @@ int rtl_crypto_hmac_sha2_init(
 		case SHA2_384 : 
 		case SHA2_512 : 
 		default: 
-			return -1;
+			return FAIL;
 	}
 
 	// for sequential hash

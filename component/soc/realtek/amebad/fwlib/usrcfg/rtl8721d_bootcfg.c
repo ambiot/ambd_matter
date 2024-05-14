@@ -4,7 +4,7 @@
   * @author
   * @version V1.0.0
   * @date    2018-09-12
-  * @brief   This file provides firmware functions to manage the following
+  * @brief   This file provides firmware functions to manage the following 
   *          functionalities:
   *           - memory layout config
   ******************************************************************************
@@ -14,13 +14,13 @@
   * possession or use of this module requires written permission of RealTek.
   *
   * Copyright(c) 2015, Realtek Semiconductor Corporation. All rights reserved.
-  ******************************************************************************
+  ****************************************************************************** 
   */
 
 #include "ameba_soc.h"
 
 /*
-* @brif	MMU Configuration.
+* @brif	MMU Configuration. 
 *	There are 8 MMU entries totally. Entry 0 & Entry 1 are already used by OTA, Entry 2~7 can be used by Users.
 */
 BOOT_RAM_DATA_SECTION
@@ -42,12 +42,16 @@ MMU_ConfDef Flash_MMU_Config[] = {
 BOOT_RAM_DATA_SECTION
 u32 OTA_Region[2] = {
 	0x08006000,		/* OTA1 region start address */
+#if defined(CONFIG_MATTER) && CONFIG_MATTER
 	0x08206000,		/* OTA2 region start address */
+#else
+	0x08106000,		/* OTA2 region start address */
+#endif
 };
 
 /*
-* @brif	RSIP Mask Configuration.
-*	There are 4 RSIP mask entries totally. Entry 0 is already used by System Data, Entry 3 is reserved by Realtek.
+* @brif	RSIP Mask Configuration.  
+*	There are 4 RSIP mask entries totally. Entry 0 is already used by System Data, Entry 3 is reserved by Realtek. 
 *	Only Entry 1 & Entry 2 can be used by Users.
 *	MaskAddr: start address for RSIP Mask, should be 4KB aligned
 *	MaskSize: size of the mask area, unit is 4KB, MaxSize 255*4KB
@@ -68,8 +72,8 @@ RSIP_MaskDef RSIP_Mask_Config[] = {
 
 /**
 * @brif  GPIO force OTA1 as image2. 0xFF means force OTA1 trigger is disabled.
-* 	BIT[7]: active level, 0 is low level active, 1 is high level active,
-*	BIT[6:5]: port, 0 is PORT_A, 1 is PORT_B
+* 	BIT[7]: active level, 0 is low level active, 1 is high level active, 
+*	BIT[6:5]: port, 0 is PORT_A, 1 is PORT_B 
 *	BIT[4:0]: pin num 0~31
 */
 BOOT_RAM_DATA_SECTION
@@ -77,8 +81,8 @@ u8 Force_OTA1_GPIO = 0xFF;
 
 /**
 * @brif  boot log enable or disable.
-* 	FALSE: disable
-*	TRUE: enable
+* 	FALSE: disable 
+*	TRUE: enable 
 */
 BOOT_RAM_DATA_SECTION
 u8 Boot_Log_En = FALSE;

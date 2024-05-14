@@ -529,25 +529,25 @@ void fATWx(void *arg){
 
 	int i = 0;
 #if CONFIG_LWIP_LAYER
-	uint8_t *mac = LwIP_GetMAC(&xnetif[0]);
-	uint8_t *ip = LwIP_GetIP(&xnetif[0]);
+	u8 *mac = LwIP_GetMAC(&xnetif[0]);
+	u8 *ip = LwIP_GetIP(&xnetif[0]);
 #if LWIP_VERSION_MAJOR >= 2 && LWIP_VERSION_MINOR >= 1
 #if LWIP_IPV6
-	uint8_t *ipv6_0 = LwIP_GetIPv6_linklocal(&xnetif[0]);
-	uint8_t *ipv6_1 = LwIP_GetIPv6_global(&xnetif[0]);
+	u8 *ipv6_0 = LwIP_GetIPv6_linklocal(&xnetif[0]);
+	u8 *ipv6_1 = LwIP_GetIPv6_global(&xnetif[0]);
 #endif
 #endif
-	uint8_t *gw = LwIP_GetGW(&xnetif[0]);
-	uint8_t *msk = LwIP_GetMASK(&xnetif[0]);
+	u8 *gw = LwIP_GetGW(&xnetif[0]);
+	u8 *msk = LwIP_GetMASK(&xnetif[0]);
 #endif
-	uint8_t *ifname[2] = {(uint8_t*)WLAN0_NAME,(uint8_t*)WLAN1_NAME};
+	u8 *ifname[2] = {(u8*)WLAN0_NAME,(u8*)WLAN1_NAME};
 	rtw_wifi_setting_t setting;
 
 	printf("[ATW?]: _AT_WLAN_INFO_\n\r");
 #if defined(CONFIG_INIC_CMD_RSP) && CONFIG_INIC_CMD_RSP
 	int ret = RTW_SUCCESS;
 	int info_sz = 0;
-	uint8_t *info = malloc(NET_IF_NUM*sizeof(rtw_wifi_setting_t)+3*sizeof(rtw_mac_t));
+	u8 *info = malloc(NET_IF_NUM*sizeof(rtw_wifi_setting_t)+3*sizeof(rtw_mac_t));
 	if(info == NULL)
 		ret = RTW_BUFFER_UNAVAILABLE_TEMPORARY;
 #endif

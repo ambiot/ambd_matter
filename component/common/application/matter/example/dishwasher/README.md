@@ -25,7 +25,7 @@ You may add clusters and attributes handling in `matter_driver_uplink_update_han
 ## How to build
 
 ### Configurations
-Enable `CONFIG_EXAMPLE_MATTER` and `CONFIG_EXAMPLE_MATTER_DISHWASHER` in `platform_opts.h`.
+Enable `CONFIG_EXAMPLE_MATTER` and `CONFIG_EXAMPLE_MATTER_DISHWASHER` in `platform_opts_matter.h`.
 Ensure that `CONFIG_EXAMPLE_MATTER_CHIPTEST` is disabled.
 
 ### Setup the Build Environment

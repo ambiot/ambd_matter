@@ -3,7 +3,7 @@
   * This module is a confidential and proprietary property of RealTek and
   * possession or use of this module requires written permission of RealTek.
   *
-  * Copyright(c) 2016, Realtek Semiconductor Corporation. All rights reserved.
+  * Copyright(c) 2016, Realtek Semiconductor Corporation. All rights reserved. 
   *
 ******************************************************************************/
 
@@ -36,7 +36,7 @@ typedef	long long __i64;
 
 #define ETH_ALEN	6		/* Octets in one ethernet addr	 */
 
-
+ 
 #define RTKIOCDEVPRIVATE	0x89F0	/* to 89FF */
 
 
@@ -135,7 +135,7 @@ enum RTK_IW_MODE {
 /* RTKIOCSIWAUTH/RTKIOCGIWAUTH struct rtw_param flags */
 #define RTW_AUTH_INDEX		0x0FFF
 
-enum RTK_IW_AUTH_PARAM {
+enum RTK_IW_AUTH_PARAM {	
 	RTW_AUTH_WPA_VERSION = 0,
 	RTW_AUTH_CIPHER_PAIRWISE,
 	RTW_AUTH_CIPHER_GROUP,
@@ -167,20 +167,11 @@ enum RTW_IW_ENC_ALG {
 	RTW_ENCODE_ALG_AES_CMAC //IGTK
 };
 
-// for matter
-/* struct iw_encode_ext ->alg */
-#define IW_ENCODE_ALG_NONE	0
-#define IW_ENCODE_ALG_WEP	1
-#define IW_ENCODE_ALG_TKIP	2
-#define IW_ENCODE_ALG_CCMP	3
-#define IW_ENCODE_ALG_PMK   4
-#define IW_ENCODE_ALG_AES_CMAC  5 //IGTK
-
 /* struct rtw_encode_ext ->ext_flags */
 #define RTW_ENCODE_EXT_RX_SEQ_VALID	0x00000002
 #define RTW_ENCODE_EXT_GROUP_KEY	0x00000004
 #define RTW_ENCODE_EXT_SET_TX_KEY	0x00000008
-
+			   
 
 struct sockaddr_t {
   __u8 sa_len;
@@ -261,14 +252,14 @@ union	rtwreq_data
 	struct rtw_point	passphrase;		/* Extended network name */
 };
 
-struct	rtwreq
+struct	rtwreq 
 {
 	char	ifr_name[IFNAMSIZ];	/* if name, e.g. "eth0" */
 
 	/* Data part (defined just above) */
 	union	rtwreq_data	u;
 };
-
+ 
 struct	rtw_priv_args
 {
 	__u32		cmd;		/* Number of the ioctl to issue */

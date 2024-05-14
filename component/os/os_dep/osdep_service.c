@@ -782,7 +782,7 @@ int rtw_init_xqueue( _xqueue* queue, const char* name, u32 message_size, u32 num
 	else
 		OSDEP_DBG("Not implement osdep service: rtw_init_xqueue");
 
-	return -1;
+	return FAIL;
 }
 
 int rtw_push_to_xqueue( _xqueue* queue, void* message, u32 timeout_ms )
@@ -792,7 +792,7 @@ int rtw_push_to_xqueue( _xqueue* queue, void* message, u32 timeout_ms )
 	else
 		OSDEP_DBG("Not implement osdep service: rtw_push_to_xqueue");
 
-	return -1;
+	return FAIL;
 }
 
 int rtw_pop_from_xqueue( _xqueue* queue, void* message, u32 timeout_ms )
@@ -802,7 +802,7 @@ int rtw_pop_from_xqueue( _xqueue* queue, void* message, u32 timeout_ms )
 	else
 		OSDEP_DBG("Not implement osdep service: rtw_pop_from_xqueue");
 
-	return -1;
+	return FAIL;
 }
 
 int rtw_peek_from_xqueue( _xqueue* queue, void* message, u32 timeout_ms )
@@ -812,7 +812,7 @@ int rtw_peek_from_xqueue( _xqueue* queue, void* message, u32 timeout_ms )
 	else
 		OSDEP_DBG("Not implement osdep service: rtw_peek_from_xqueue");
 
-	return -1;
+	return FAIL;
 }
 
 int rtw_deinit_xqueue( _xqueue* queue )
@@ -822,7 +822,7 @@ int rtw_deinit_xqueue( _xqueue* queue )
 	else
 		OSDEP_DBG("Not implement osdep service: rtw_deinit_xqueue");
 
-	return -1;
+	return FAIL;
 }
 
 #if 0
@@ -1225,19 +1225,19 @@ static void worker_thread_main( void *arg )
 int rtw_create_worker_thread( rtw_worker_thread_t* worker_thread, u8 priority, u32 stack_size, u32 event_queue_size )
 {
 	if(NULL == worker_thread)
-		return -1;
+		return FAIL;
 
 	memset( worker_thread, 0, sizeof( *worker_thread ) );
 
 	if ( rtw_init_xqueue( &worker_thread->event_queue, "worker queue", sizeof(rtw_event_message_t), event_queue_size ) != SUCCESS )
 	{
-		return -1;
+		return FAIL;
 	}
 
 	if ( !rtw_create_task( &worker_thread->thread, "worker thread", stack_size, priority, worker_thread_main, (void*) worker_thread ) )
 	{
 		rtw_deinit_xqueue( &worker_thread->event_queue );
-		return -1;
+		return FAIL;
 	}
 
 	return SUCCESS;
@@ -1246,7 +1246,7 @@ int rtw_create_worker_thread( rtw_worker_thread_t* worker_thread, u8 priority, u
 int rtw_delete_worker_thread( rtw_worker_thread_t* worker_thread )
 {
 	if(NULL == worker_thread)
-		return -1;
+		return FAIL;
 
 	rtw_deinit_xqueue( &worker_thread->event_queue );
 

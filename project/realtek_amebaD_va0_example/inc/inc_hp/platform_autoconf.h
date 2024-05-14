@@ -155,6 +155,12 @@
 #undef  CONFIG_MQTT_EN
 
 /*
+ * < Matter Config 
+ */
+#define CONFIG_MATTER_EN 1
+#define CONFIG_MATTER 1
+
+/*
  * < GUI Config 
  */
 #undef  CONFIG_GUI_EN

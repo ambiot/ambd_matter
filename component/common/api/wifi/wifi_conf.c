@@ -179,8 +179,10 @@ extern int rltk_set_mode_posthandle(rtw_mode_t curr_mode, rtw_mode_t next_mode, 
 #ifdef CONFIG_PMKSA_CACHING
 extern int wifi_set_pmk_cache_enable(unsigned char value);
 #endif
+#if defined(CONFIG_MATTER) && CONFIG_MATTER
 extern u8 matter_wifi_trigger;
 extern void matter_wifi_autoreconnect_hdl(rtw_security_t security_type, char *ssid, int ssid_len, char *password, int password_len, int key_id);
+#endif
 
 //----------------------------------------------------------------------------//
 static int wifi_connect_local(rtw_network_info_t *pWifi)
@@ -887,7 +889,6 @@ int wifi_connect(
 	}
 
 	result = RTW_SUCCESS;
-
 #if CONFIG_LWIP_LAYER
 #if defined(CONFIG_MBED_ENABLED) || defined(CONFIG_PLATFOMR_CUSTOMER_RTOS)
 	//TODO
@@ -3211,13 +3212,15 @@ void wifi_autoreconnect_hdl(rtw_security_t security_type,
 
 int wifi_config_autoreconnect(__u8 mode, __u8 retry_times, __u16 timeout)
 {
-	if(mode == RTW_AUTORECONNECT_DISABLE)
+    if(mode == RTW_AUTORECONNECT_DISABLE)
 		p_wlan_autoreconnect_hdl = NULL;
+#if defined(CONFIG_MATTER) && CONFIG_MATTER
 	else if (matter_wifi_trigger)
 		p_wlan_autoreconnect_hdl = matter_wifi_autoreconnect_hdl;
+#endif
 	else
 		p_wlan_autoreconnect_hdl = wifi_autoreconnect_hdl;
-	return wext_set_autoreconnect(WLAN0_NAME, mode, retry_times, timeout);
+    return wext_set_autoreconnect(WLAN0_NAME, mode, retry_times, timeout);
 }
 
 int wifi_set_autoreconnect(__u8 mode)
@@ -3724,6 +3727,7 @@ u32 wifi_set_pmf(unsigned char pmf_mode){
 }
 #endif
 #endif
+
 
 int wifi_ap_switch_chl_and_inform(unsigned char new_channel)
 {

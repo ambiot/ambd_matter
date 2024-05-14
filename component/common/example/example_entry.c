@@ -779,8 +779,8 @@ void example_entry(void)
 
 #if defined(CONFIG_EXAMPLE_AZURE) && CONFIG_EXAMPLE_AZURE 
     example_azure();
-#endif
-    
+#endif    
+
 #if CONFIG_ALINK
 	example_alink();
 #endif

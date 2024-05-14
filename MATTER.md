@@ -8,11 +8,11 @@ If you need to change all-clusters-app.zap, please change it in the following di
 
 	component/common/application/matter/example/chiptest/all-clusters-app.zap
 
-This is because we have added all files required for all supported clusters in project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/asdk/make/chip_main/all_clusters_app/Makefile, while the default all-clusters-app.zap in connectedhomeip does not include some clusters supported by Ameba. Therefore, build errors occur.
+This is because we have added all files required for all supported clusters in `component/common/application/matter/project/amebad/make/chip_main/all_clusters_app/Makefile`, while the default all-clusters-app.zap in connectedhomeip does not include some clusters supported by Ameba. Therefore, build errors occur.
 
 The only solution is to add Ameba's all-clusters-app.zap. 
 
-In project/realtek_amebaD_v0_example/GCC-RELEASE/project_hp/asdk/Makefile, the default all-clusters-app.zap in connectedhomeip will be replaced by Ameba's all-clusters-app.zap
+In `component/common/application/matter/project/amebad/Makefile`, the default all-clusters-app.zap in connectedhomeip will be replaced by Ameba's all-clusters-app.zap
 
 	@cp $(MATTER_DIR)/example/chiptest/all-clusters-app.zap $(ALL_CLUSTERS_ZAP)
 
