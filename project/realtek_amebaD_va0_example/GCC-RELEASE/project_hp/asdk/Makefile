@@ -203,7 +203,7 @@ bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h
 	make -C $(MATTER_BUILDDIR) bridge_dm
 
 dishwasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) laundrywasher_port
+	make -C $(MATTER_BUILDDIR) dishwasher_port
 
 laundrywasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
 	make -C $(MATTER_BUILDDIR) laundrywasher_port
