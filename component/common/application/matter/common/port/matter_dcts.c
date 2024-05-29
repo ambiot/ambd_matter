@@ -343,7 +343,7 @@ bool checkExist(const char *domain, const char *key)
         }
 
         len = VARIABLE_VALUE_SIZE2;
-        ret = dct_get_variable_new2(&handle, key, str, &len);
+        ret = dct_get_variable_new2(&handle, key, (char *)str, &len);
         if(ret == DCT_SUCCESS)
         {
             printf("checkExist key=%s found.\n", key);
@@ -604,6 +604,7 @@ s32 getPref_str_new(const char *domain, const char *key, char * buf, size_t bufS
     dct_handle_t handle;
     s32 ret;
     char ns[15];
+    uint16_t *len = (uint16_t *)(&bufSize);
 
     // Loop over DCT1 modules
     for (size_t i=0; i<MODULE_NUM; i++)
@@ -616,9 +617,9 @@ s32 getPref_str_new(const char *domain, const char *key, char * buf, size_t bufS
             goto exit;
         }
 #if CONFIG_ENABLE_DCT_ENCRYPTION
-        ret = dct_get_encrypted_variable(&handle, key, buf, &bufSize, DCT_REGION_1);
+        ret = dct_get_encrypted_variable(&handle, key, buf, len, DCT_REGION_1);
 #else
-        ret = dct_get_variable_new(&handle, key, buf, &bufSize);
+        ret = dct_get_variable_new(&handle, key, buf, len);
 #endif
         dct_close_module(&handle);
         if (ret == DCT_SUCCESS)
@@ -639,9 +640,9 @@ s32 getPref_str_new(const char *domain, const char *key, char * buf, size_t bufS
             goto exit;
         }
 #if CONFIG_ENABLE_DCT_ENCRYPTION
-        ret = dct_get_encrypted_variable(&handle, key, buf, &bufSize, DCT_REGION_2);
+        ret = dct_get_encrypted_variable(&handle, key, buf, len, DCT_REGION_2);
 #else
-        ret = dct_get_variable_new2(&handle, key, buf, &bufSize);
+        ret = dct_get_variable_new2(&handle, key, buf, len);
 #endif
         dct_close_module2(&handle);
         if (ret == DCT_SUCCESS)
@@ -660,6 +661,7 @@ s32 getPref_bin_new(const char *domain, const char *key, u8 * buf, size_t bufSiz
     dct_handle_t handle;
     s32 ret;
     char ns[15];
+    uint16_t *len = (uint16_t *)(&bufSize);
 
     // Loop over DCT1 modules
     for (size_t i=0; i<MODULE_NUM; i++)
@@ -672,9 +674,9 @@ s32 getPref_bin_new(const char *domain, const char *key, u8 * buf, size_t bufSiz
             goto exit;
         }
 #if CONFIG_ENABLE_DCT_ENCRYPTION
-        ret = dct_get_encrypted_variable(&handle, key, (char *)buf, &bufSize, DCT_REGION_1);
+        ret = dct_get_encrypted_variable(&handle, key, (char *)buf, len, DCT_REGION_1);
 #else
-        ret = dct_get_variable_new(&handle, key, (char *)buf, &bufSize);
+        ret = dct_get_variable_new(&handle, key, (char *)buf, len);
 #endif
         dct_close_module(&handle);
         if (ret == DCT_SUCCESS)
@@ -695,9 +697,9 @@ s32 getPref_bin_new(const char *domain, const char *key, u8 * buf, size_t bufSiz
             goto exit;
         }
 #if CONFIG_ENABLE_DCT_ENCRYPTION
-        ret = dct_get_encrypted_variable(&handle, key, (char *)buf, &bufSize, DCT_REGION_2);
+        ret = dct_get_encrypted_variable(&handle, key, (char *)buf, len, DCT_REGION_2);
 #else
-        ret = dct_get_variable_new2(&handle, key, (char *)buf, &bufSize);
+        ret = dct_get_variable_new2(&handle, key, (char *)buf, len);
 #endif
         dct_close_module2(&handle);
         if (ret == DCT_SUCCESS)

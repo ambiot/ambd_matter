@@ -187,5 +187,6 @@ clean:
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/dishwasher_port/*.d
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/dishwasher_port/*.ii
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/dishwasher_port/*.su
+	rm -rf $(MATTER_EXAMPLEDIR)/dishwasher/dishwasher-app.matter
 
 -include $(DEPS)

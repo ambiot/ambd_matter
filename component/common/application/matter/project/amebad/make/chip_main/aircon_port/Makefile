@@ -181,5 +181,6 @@ clean:
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.d
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.ii
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.su
+	rm -rf $(MATTER_EXAMPLEDIR)/aircon/aircon-app.matter
 
 -include $(DEPS)

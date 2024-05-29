@@ -2,6 +2,7 @@ CHIPDIR         = $(BASEDIR)/third_party/connectedhomeip
 MATTER_TOOLDIR  = $(BASEDIR)/tools/matter
 MATTER_DIR      = $(BASEDIR)/component/common/application/matter
 MBEDTLSDIR      = $(BASEDIR)/component/common/network/ssl/mbedtls-2.28.1
+MATTER_EXAMPLEDIR	= $(BASEDIR)/component/common/application/matter/example
 
 ifeq ($(COMPILEOS),$(LINUX_OS))
 ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/linux/asdk-10.3.0/linux/newlib
@@ -27,6 +28,8 @@ IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/
 IFLAGS               += -I$(MBEDTLSDIR)/include
 IFLAGS               += -I$(MBEDTLSDIR)/include/mbedtls
 IFLAGS               += -I$(MBEDTLSDIR)/library
+
+IFLAGS               += -I$(BASEDIR)/component/common/application/matter/example
 IFLAGS               += -I$(CHIPDIR)/config/ameba
 IFLAGS               += -I$(BASEDIR)/component/common/application/matter/common/mbedtls
 
