@@ -6,72 +6,29 @@
 #include <vector>
 #include <app-common/zap-generated/attribute-type.h>
 #include <app/util/attribute-metadata.h>
+#include <app/util/af-types.h>
 
 using namespace ::chip;
 
 class Node;
 class Endpoint;
-class Cluster;
 class Attribute;
-class Command;
-class Event;
 
 // Use variant to represent the different data types supported
 typedef std::variant<uint8_t, uint8_t*, int8_t, uint16_t, int16_t, uint32_t, int32_t, uint64_t, int64_t, float> AttributeValue;
-
-// Configurations
-struct AttributeConfig
-{
-    std::uint32_t attributeId;
-    std::uint8_t dataType; /* use ZAP_TYPE(type) */
-    EmberAfDefaultOrMinMaxAttributeValue value; /* use ZAP_EMPTY(), ZAP_SIMPLE(), etc */
-    std::uint16_t size;
-    std::uint8_t mask = 0; /* attribute flag */
-    AttributeConfig(uint32_t attributeId, uint8_t dataType, EmberAfDefaultOrMinMaxAttributeValue value, uint16_t size, uint8_t mask) : attributeId(attributeId), dataType(dataType), value(value), size(size), mask(mask) {}
-};
-
-struct EventConfig
-{
-    std::uint32_t eventId;
-    EventConfig(uint32_t eventId) : eventId(eventId) {}
-};
-
-struct CommandConfig
-{
-    std::uint32_t commandId;
-    std::uint8_t mask = 0; /* command flag */
-    CommandConfig(uint32_t commandId, uint8_t mask) : commandId(commandId), mask(mask) {}
-};
-
-struct ClusterConfig
-{
-public:
-    std::uint32_t clusterId;
-    std::vector<AttributeConfig> attributeConfigs;
-    std::vector<EventConfig> eventConfigs;
-    std::vector<CommandConfig> commandConfigs;
-    std::vector<EmberAfGenericClusterFunction> functionConfigs;
-    std::uint8_t mask = 0; /* cluster flag */
-};
-
-class EndpointConfig
-{
-public:
-    std::vector<ClusterConfig> clusterConfigs;
-};
 
 // Attribute class
 class Attribute
 {
 public:
-    Attribute(chip::ClusterId clusterId, chip::EndpointId endpointId, AttributeConfig attributeConfig) : 
-        attributeId(attributeConfig.attributeId),
-        attributeSize(attributeConfig.size),
-        attributeType(attributeConfig.dataType),
-        attributeMask(attributeConfig.mask),
+    Attribute(chip::ClusterId clusterId, chip::EndpointId endpointId, const EmberAfAttributeMetadata *attributeConfig) : 
+        attributeId(attributeConfig->attributeId),
+        attributeSize(attributeConfig->size),
+        attributeType(attributeConfig->attributeType),
+        attributeMask(attributeConfig->mask),
         parentClusterId(clusterId),
         parentEndpointId(endpointId),
-        defaultValue(attributeConfig.value)
+        defaultValue(attributeConfig->defaultValue)
     {
         // Retrieve value from NVS if available, else
         // assign value to be of base type with default value from config
@@ -86,7 +43,7 @@ public:
             }
             else
             {
-                value = uint8_t(attributeConfig.value.defaultValue);
+                value = uint8_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_INT16U_ATTRIBUTE_TYPE:
@@ -97,7 +54,7 @@ public:
             }
             else
             {
-                value = uint16_t(attributeConfig.value.defaultValue);
+                value = uint16_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_INT32U_ATTRIBUTE_TYPE:
@@ -108,7 +65,7 @@ public:
             }
             else
             {
-                value = uint32_t(attributeConfig.value.defaultValue);
+                value = uint32_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_INT64U_ATTRIBUTE_TYPE:
@@ -119,7 +76,7 @@ public:
             }
             else
             {
-                value = uint64_t(attributeConfig.value.defaultValue);
+                value = uint64_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_INT8S_ATTRIBUTE_TYPE:
@@ -130,7 +87,7 @@ public:
             }
             else
             {
-                value = int8_t(attributeConfig.value.defaultValue);
+                value = int8_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_INT16S_ATTRIBUTE_TYPE:
@@ -141,7 +98,7 @@ public:
             }
             else
             {
-                value = int16_t(attributeConfig.value.defaultValue);
+                value = int16_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_INT32S_ATTRIBUTE_TYPE:
@@ -152,7 +109,7 @@ public:
             }
             else
             {
-                value = int32_t(attributeConfig.value.defaultValue);
+                value = int32_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_INT64S_ATTRIBUTE_TYPE:
@@ -163,7 +120,7 @@ public:
             }
             else
             {
-                value = int64_t(attributeConfig.value.defaultValue);
+                value = int64_t(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_SINGLE_ATTRIBUTE_TYPE:
@@ -174,7 +131,7 @@ public:
             }
             else
             {
-                value = float(attributeConfig.value.defaultValue);
+                value = float(attributeConfig->defaultValue.defaultValue);
             }
             break;
         case ZCL_OCTET_STRING_ATTRIBUTE_TYPE:
@@ -183,9 +140,9 @@ public:
             if (retrieveValue(valueBuffer, attributeSize) != CHIP_NO_ERROR)
             {
                 memset(valueBuffer, 0, ATTRIBUTE_LARGEST);
-                if (attributeConfig.value.ptrToDefaultValue != nullptr)
+                if (attributeConfig->defaultValue.ptrToDefaultValue != nullptr)
                 {
-                    memcpy(valueBuffer, attributeConfig.value.ptrToDefaultValue, attributeSize);
+                    memcpy(valueBuffer, attributeConfig->defaultValue.ptrToDefaultValue, attributeSize);
                 }
             }
             break;
@@ -249,23 +206,6 @@ private:
     uint8_t valueBuffer[ATTRIBUTE_LARGEST];
 };
 
-// Event class
-class Event
-{
-public:
-    Event(chip::ClusterId clusterId, chip::EndpointId endpointId, EventConfig eventConfig) :
-        eventId(eventConfig.eventId),
-        parentClusterId(clusterId),
-        parentEndpointId(endpointId) {}
-    chip::EventId getEventId() const;
-    chip::ClusterId getParentClusterId() const;
-
-private:
-    chip::EventId eventId;
-    chip::ClusterId parentClusterId;
-    chip::EndpointId parentEndpointId;
-};
-
 /** Command flags */
 /** The command is not a standard command */
 #define COMMAND_MASK_CUSTOM (0x01)
@@ -273,74 +213,6 @@ private:
 #define COMMAND_MASK_ACCEPTED (0x02)
 /** The command is server generated */
 #define COMMAND_MASK_GENERATED (0x04)
-
-// Command class
-class Command
-{
-public:
-    Command(chip::ClusterId clusterId, chip::EndpointId endpointId, CommandConfig commandConfig) :
-        commandId(commandConfig.commandId),
-        commandFlag(commandConfig.mask),
-        parentClusterId(clusterId),
-        parentEndpointId(endpointId) {}
-    chip::CommandId getCommandId() const;
-    chip::ClusterId getParentClusterId() const;
-    uint8_t getFlag() const;
-
-private:
-    chip::CommandId commandId;
-    uint8_t commandFlag;
-    chip::ClusterId parentClusterId;
-    chip::EndpointId parentEndpointId;
-};
-
-// Cluster class
-class Cluster
-{
-public:
-    friend class Endpoint;
-
-    Cluster(chip::EndpointId endpointId, ClusterConfig clusterConfig) :
-        clusterId(clusterConfig.clusterId),
-        clusterMask(clusterConfig.mask),
-        parentEndpointId(endpointId) {}
-    chip::ClusterId getClusterId() const;
-    EmberAfClusterMask getClusterMask() const;
-    chip::EndpointId getParentEndpointId() const;
-    Attribute *getAttribute(chip::AttributeId attributeId);
-    uint32_t getAttributeCount() const;
-    Event *getEvent(chip::EventId eventId); 
-    uint32_t getEventCount() const;
-    Command *getAcceptedCommand(chip::CommandId commandId);
-    uint32_t getAcceptedCommandCount() const;
-    Command *getGeneratedCommand(chip::CommandId commandId);
-    uint32_t getGeneratedCommandCount() const;
-    uint32_t getFunctionCount() const;
-    void addAttribute(AttributeConfig attributeConfig);
-    void addAttribute(const Attribute& attribute);
-    void removeAttribute(chip::AttributeId attributeId);
-    void addEvent(EventConfig eventConfig);
-    void addEvent(const Event& event);
-    void removeEvent(chip::EventId eventId);
-    void addAcceptedCommand(CommandConfig commandConfig);
-    void addAcceptedCommand(const Command& command);
-    void addGeneratedCommand(CommandConfig commandConfig);
-    void addGeneratedCommand(const Command& command);
-    void removeAcceptedCommand(chip::CommandId commandId);
-    void removeGeneratedCommand(chip::CommandId commandId);
-    void addFunction(const EmberAfGenericClusterFunction function);
-    void removeFunction();
-
-private:
-    chip::ClusterId clusterId;
-    EmberAfClusterMask clusterMask;
-    chip::EndpointId parentEndpointId;
-    std::vector<Attribute> attributes;
-    std::vector<Event> events;
-    std::vector<Command> acceptedCommands;
-    std::vector<Command> generatedCommands;
-    std::vector<EmberAfGenericClusterFunction> functions;
-};
 
 // Endpoint class
 class Endpoint
@@ -355,12 +227,11 @@ public:
         parentNode(node),
         deviceTypeList(deviceTypeList) {}
     chip::EndpointId getEndpointId() const;
-    Cluster *getCluster(chip::ClusterId clusterId);
-    void addCluster(ClusterConfig & clusterConfig);
-    void addCluster(const Cluster& cluster);
-    void removeCluster(chip::ClusterId clusterId);
+    const EmberAfCluster *getCluster(chip::ClusterId clusterId);
+    const EmberAfAttributeMetadata *getAttributeOfCluster(const EmberAfCluster *cluster, chip::AttributeId attributeId);
     chip::EndpointId getParentEndpointId() const;   // This returns the endpointId of the previous endpoint, not to be confused with Cluster::getParentEndpointId
     void setParentEndpointId(chip::EndpointId parentEndpointId);
+    void addEndpointType(EmberAfEndpointType *endpointType);
     void enableEndpoint();
     void disableEndpoint();
 
@@ -372,17 +243,7 @@ private:
     chip::DataVersion *dataVersion = nullptr;
     Span<const EmberAfDeviceType> deviceTypeList;
     EmberAfEndpointType *endpointMetadata;
-    std::vector<Cluster> clusters;
     bool enabled = false;
-
-    // Metadata collectors
-    // Store dynamic allocated objects here when endpoint is enabled, then delete it when disabled
-    std::vector<EmberAfCluster*> clusterCollector;
-    std::vector<EmberAfAttributeMetadata*> attributeCollector;
-    std::vector<EmberAfGenericClusterFunction*> functionCollector;
-    std::vector<chip::CommandId*> acceptedCommandCollector;
-    std::vector<chip::CommandId*> generatedCommandCollector;
-    std::vector<chip::EventId*> eventCollector;
 };
 
 // Node class
@@ -392,9 +253,10 @@ public:
     static Node& getInstance();
     Endpoint *getEndpoint(chip::EndpointId endpointId);
     chip::EndpointId getNextEndpointId() const;
-    chip::EndpointId addEndpoint(const EndpointConfig& endpointConfig, Span<const EmberAfDeviceType> deviceTypeList);
+    chip::EndpointId addEndpoint(EmberAfEndpointType *endpointType, Span<const EmberAfDeviceType> deviceTypeList);
     void removeEndpoint(chip::EndpointId endpointId);
     void enableAllEndpoints();
+    void disableAllEndpoints();
 
 private:
     Node() {} /* singleton instance */

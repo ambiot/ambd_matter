@@ -66,14 +66,9 @@ static void example_matter_light_task(void *pvParameters)
     if (err != CHIP_NO_ERROR)
         ChipLogProgress(DeviceLayer, "matter_driver_led_init failed!\n");
 
-    EndpointConfig rootNodeEndpointConfig;
-    EndpointConfig dimmableLightEndpointConfig;
-    Presets::Endpoints::matter_root_node_preset(&rootNodeEndpointConfig);
-    Presets::Endpoints::matter_dimmable_light_preset(&dimmableLightEndpointConfig);
-
     // Initial, root node on ep0, dimmable light on ep1
-    node.addEndpoint(rootNodeEndpointConfig, Span<const EmberAfDeviceType>(rootNodeDeviceTypes));
-    node.addEndpoint(dimmableLightEndpointConfig, Span<const EmberAfDeviceType>(dimmableLightDeviceTypes));
+    node.addEndpoint(&Presets::Endpoints::matter_root_node_endpoint, Span<const EmberAfDeviceType>(rootNodeDeviceTypes));
+    node.addEndpoint(&Presets::Endpoints::matter_dimmable_light_endpoint, Span<const EmberAfDeviceType>(dimmableLightDeviceTypes));
 
     // Enable endpoints
     node.enableAllEndpoints();
@@ -98,7 +93,7 @@ static void example_matter_light_task(void *pvParameters)
 
     // Test add another dimmable light on ep2
     chip::EndpointId testEndpointId;
-    testEndpointId = node.addEndpoint(dimmableLightEndpointConfig, Span<const EmberAfDeviceType>(dimmableLightDeviceTypes));
+    testEndpointId = node.addEndpoint(&Presets::Endpoints::matter_dimmable_light_endpoint, Span<const EmberAfDeviceType>(dimmableLightDeviceTypes));
     node.enableAllEndpoints();
 
     vTaskDelay(20000);
@@ -108,22 +103,6 @@ static void example_matter_light_task(void *pvParameters)
     node.removeEndpoint(testEndpointId);
 
     vTaskDelete(NULL);
-}
-
-// let new and delete operators use psram for more memory by overloading these operators
-// remember to enable psram in rtl8721dhp_intfcfg.c
-extern "C" void *Psram_reserve_malloc(int size);
-extern "C" void Psram_reserve_free(void *ptr);
-
-void *operator new(size_t size)
-{
-    void* ptr = Psram_reserve_malloc(size);
-    return ptr;
-}
-
-void operator delete(void *p)
-{
-    Psram_reserve_free(p);
 }
 
 extern "C" void example_matter_light(void)

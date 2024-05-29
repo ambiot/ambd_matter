@@ -64,38 +64,31 @@ static void example_matter_bridge_task(void *pvParameters)
     if (err != CHIP_NO_ERROR)
         ChipLogProgress(DeviceLayer, "matter_interaction_start_uplink failed!\n");
 
-    vTaskDelay(50);
+    vTaskDelay(1000);
 
     bridge.Init(node);
 
-    EndpointConfig bridgedonoffEndpointConfig;
-    Presets::Endpoints::matter_dimmable_light_preset(&bridgedonoffEndpointConfig);
-    bridge.addBridgedEndpoint(bridgedonoffEndpointConfig, Span<const EmberAfDeviceType>(gBridgedOnOffDeviceTypes));
+    ChipLogProgress(DeviceLayer, "Add dimmable lights");
+    for (int i = 0; i < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT - 2; i++) //adding endpoints 2 to 19
+    {
+        ChipLogProgress(DeviceLayer, "Add dimmable lights [Endpoint 0x%x]", node.getNextEndpointId());
+        bridge.addBridgedEndpoint(&Presets::Endpoints::matter_dimmable_light_endpoint, Span<const EmberAfDeviceType>(gBridgedOnOffDeviceTypes));
+    }
 
     if(xTaskCreate(matter_customer_bridge_code, ((const char*)"matter_customer_bridge_code"), 1024, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
         printf("\n\r%s xTaskCreate(matter_customer_bridge_code) failed\n", __FUNCTION__);
 
-    vTaskDelay(20000);
-
-    bridge.removeBridgedEndpoint(2);
+    ChipLogProgress(DeviceLayer, "60 seconds until all lights removed\n\n");
+    vTaskDelay(60000);
+    ChipLogProgress(DeviceLayer, "Removing All Lights");
+    for (int i = 1; i <= CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT - 2; i++) //removing endpoints 19 to 2
+    {
+        uint16_t epToBeRemoved = node.getNextEndpointId() - i;
+        ChipLogProgress(DeviceLayer, "Removing Endpoint 0x%x", epToBeRemoved);
+        bridge.removeBridgedEndpoint(epToBeRemoved);
+    }
 
     vTaskDelete(NULL);
-}
-
-// let new and delete operators use psram for more memory by overloading these operators
-// remember to enable psram in rtl8721dhp_intfcfg.c
-extern "C" void *Psram_reserve_malloc(int size);
-extern "C" void Psram_reserve_free(void *ptr);
-
-void *operator new(size_t size)
-{
-    void* ptr = Psram_reserve_malloc(size);
-    return ptr;
-}
-
-void operator delete(void *p)
-{
-    Psram_reserve_free(p);
 }
 
 extern "C" void example_matter_bridge(void)

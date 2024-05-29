@@ -176,3 +176,28 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
     uplink_event.mHandler = matter_driver_uplink_update_handler;
     PostUplinkEvent(&uplink_event);
 }
+
+void matter_interaction_clean_up(void)
+{
+    ChipLogProgress(DeviceLayer, "Cleaning Uplink and Downlink Tasks and Queues.");
+    if (UplinkTaskHandle)
+    {
+        vTaskDelete(UplinkTaskHandle);
+        memset(&UplinkTaskHandle, 0, sizeof(TaskHandle_t));
+    }
+    if (DownlinkTaskHandle)
+    {
+        vTaskDelete(DownlinkTaskHandle);
+        memset(&DownlinkTaskHandle, 0, sizeof(TaskHandle_t));
+    }
+    if (UplinkEventQueue)
+    {
+        vQueueDelete(UplinkEventQueue);
+        memset(&UplinkEventQueue, 0, sizeof(QueueHandle_t));
+    }
+    if (DownlinkEventQueue)
+    {
+        vQueueDelete(DownlinkEventQueue);
+        memset(&DownlinkEventQueue, 0, sizeof(QueueHandle_t));
+    }
+}

@@ -18,17 +18,6 @@ After another 20 second delay, the `Dimmable Light` endpoint on Endpoint2 will b
 Enable `CONFIG_EXAMPLE_MATTER` and `CONFIG_EXAMPLE_MATTER_LIGHT` in `platform_opts_matter.h`.
 Ensure that `CONFIG_EXAMPLE_MATTER_CHIPTEST` is disabled.
 
-### PSRAM usage
-Due to insufficient memory in SRAM, we will use the PSRAM for dynamic allocation.
-To run this example without error, you need to enable PSRAM.
-In `rtl8721dhp_intfcfg.c`, set the below configurations
-
-    PSRAMCFG_TypeDef psram_dev_config = {
-      .psram_dev_enable = TRUE,			//enable psram
-	  .psram_dev_cal_enable = TRUE,			//enable psram calibration function
-	  .psram_dev_retention = TRUE,
-    }
-
 ### Setup the Build Environment
   
     cd connectedhomeip

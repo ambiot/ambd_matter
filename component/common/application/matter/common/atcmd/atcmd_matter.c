@@ -54,15 +54,50 @@ void fATchipapp2(void *arg)
 #endif
 }
 
+__weak void MatterCoreStatusCommandHandler(void) 
+{
+	printf("MatterCoreStatusCommandHandler() not implemented\r\n");
+}
+
+__weak void MatterCoreStartCommandHandler(void) 
+{
+	printf("MatterCoreStartCommandHandler() not implemented\r\n");
+}
+
+__weak void MatterCoreStopCommandHandler(void) 
+{
+	printf("MatterCoreStopCommandHandler() not implemented\r\n");
+}
+
 void fATmattershell(void *arg)
 {
     if (arg != NULL)
     {
-        xQueueSend(shell_queue, arg, pdMS_TO_TICKS(10));
+        if(strcmp((const char *) arg, "status") == 0)
+        {
+            MatterCoreStatusCommandHandler();
+        }
+        else if(strcmp((const char *) arg, "start") == 0)
+        {
+            MatterCoreStartCommandHandler();
+        }
+        else if(strcmp((const char *) arg, "stop") == 0)
+        {
+            MatterCoreStopCommandHandler();
+        }
+        else
+        {
+            xQueueSend(shell_queue, arg, pdMS_TO_TICKS(10));
+        }
     }
     else
     {
-        printf("No arguments provided for matter shell\r\n");
+        printf("%s\n%s\n%s\n%s\n%s\r\n",
+            "No arguments provided for matter shell",
+            "ATMS=status to check matter server status",
+            "ATMS=start  to turn on matter server",
+            "ATMS=stop   to turn off matter server",
+            "ATMS=help   to check built in matter commands while matter server is on");
     } 
 }
 
