@@ -25,6 +25,14 @@ using chip::Protocols::InteractionModel::Status;
 
 MatterBridgedDeviceOnOff ALight1("Light 1", "Office");
 
+MatterBridge bridge;
+Node& node = Node::getInstance();
+
+EmberAfDeviceType gBridgedOnOffDeviceTypes[] = {
+    { DEVICE_TYPE_LO_ON_OFF_LIGHT, DEVICE_VERSION_DEFAULT },
+    { DEVICE_TYPE_BRIDGED_NODE, DEVICE_VERSION_DEFAULT },
+};
+
 namespace {
 void CallReportingCallback(intptr_t closure)
 {
@@ -70,8 +78,38 @@ CHIP_ERROR matter_driver_bridge_light_init(void)
 {
     ALight1.SetReachable(true);
     ALight1.SetChangeCallback(&HandleDeviceOnOffStatusChanged);
-
+	
     return CHIP_NO_ERROR;
+}
+
+void matter_driver_bridge_bind_device(MatterBridgeDevice * dev, chip::EndpointId endpointid)
+{
+    dev->SetEndpointId(endpointid);
+    ChipLogProgress(DeviceLayer, "Bind device %s to dynamic endpoint %d ", dev->GetName(), endpointid);
+}
+
+void matter_driver_bridge_unbind_device(MatterBridgeDevice * dev)
+{
+    bridge.removeBridgedEndpoint(dev->GetEndpointId());
+    dev->SetEndpointId(0);
+    ChipLogProgress(DeviceLayer, "Unbind device %s to dynamic endpoint %d ", dev->GetName(), dev->GetEndpointId());
+}
+
+void matter_bridge_test_device(void)
+{
+    bridge.Init(node);
+
+    EndpointConfig bridgedonoffEndpointConfig;
+    Presets::Endpoints::matter_dimmable_light_preset(&bridgedonoffEndpointConfig);
+    chip::EndpointId endpointid = bridge.addBridgedEndpoint(bridgedonoffEndpointConfig, Span<const EmberAfDeviceType>(gBridgedOnOffDeviceTypes));
+	matter_driver_bridge_bind_device(&ALight1, endpointid);
+
+    if(xTaskCreate(matter_customer_bridge_code, ((const char*)"matter_customer_bridge_code"), 1024, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
+        printf("\n\r%s xTaskCreate(matter_customer_bridge_code) failed\n", __FUNCTION__);
+
+    vTaskDelay(20000);
+
+    //matter_driver_bridge_unbind_device(&ALight1);
 }
 
 void matter_driver_uplink_update_handler(AppEvent *aEvent)
@@ -83,7 +121,11 @@ void matter_driver_uplink_update_handler(AppEvent *aEvent)
     case Clusters::OnOff::Id:
         if(path.mAttributeId == Clusters::OnOff::Attributes::OnOff::Id)
         {
-            ALight1.Set(aEvent->value._u8, true);
+			if(aEvent->path.mEndpointId == ALight1.GetEndpointId())
+			{
+				ChipLogProgress(DeviceLayer, "Setting ALight1 to %d ", aEvent->value._u8);
+                ALight1.Set(aEvent->value._u8, true);
+            }
         }
         break;
     case Clusters::Identify::Id:

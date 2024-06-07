@@ -28,14 +28,6 @@ using namespace ::chip::DeviceLayer;
 using namespace ::chip::Platform;
 using namespace ::chip::app::Clusters;
 
-MatterBridge bridge;
-Node& node = Node::getInstance();
-
-EmberAfDeviceType gBridgedOnOffDeviceTypes[] = {
-    { DEVICE_TYPE_LO_ON_OFF_LIGHT, DEVICE_VERSION_DEFAULT },
-    { DEVICE_TYPE_BRIDGED_NODE, DEVICE_VERSION_DEFAULT },
-};
-
 static void example_matter_bridge_task(void *pvParameters)
 {
     while(!(wifi_is_up(RTW_STA_INTERFACE) || wifi_is_up(RTW_AP_INTERFACE))) {
@@ -66,18 +58,7 @@ static void example_matter_bridge_task(void *pvParameters)
 
     vTaskDelay(50);
 
-    bridge.Init(node);
-
-    EndpointConfig bridgedonoffEndpointConfig;
-    Presets::Endpoints::matter_dimmable_light_preset(&bridgedonoffEndpointConfig);
-    bridge.addBridgedEndpoint(bridgedonoffEndpointConfig, Span<const EmberAfDeviceType>(gBridgedOnOffDeviceTypes));
-
-    if(xTaskCreate(matter_customer_bridge_code, ((const char*)"matter_customer_bridge_code"), 1024, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
-        printf("\n\r%s xTaskCreate(matter_customer_bridge_code) failed\n", __FUNCTION__);
-
-    vTaskDelay(20000);
-
-    bridge.removeBridgedEndpoint(2);
+    matter_bridge_test_device();
 
     vTaskDelete(NULL);
 }

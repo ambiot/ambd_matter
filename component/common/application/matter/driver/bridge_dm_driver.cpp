@@ -55,10 +55,11 @@ void MatterBridge::Init(Node& mNode)
     node->enableAllEndpoints();
 }
 
-void MatterBridge::addBridgedEndpoint(EndpointConfig bridgedConfig, Span<const EmberAfDeviceType> bridgedDeviceType)
+chip::EndpointId MatterBridge::addBridgedEndpoint(EndpointConfig bridgedConfig, Span<const EmberAfDeviceType> bridgedDeviceType)
 {
-    node->addEndpoint(bridgedConfig, bridgedDeviceType);
+    chip::EndpointId endpointid = node->addEndpoint(bridgedConfig, bridgedDeviceType);
     node->enableAllEndpoints();
+    return endpointid;
 }
 
 void MatterBridge::removeBridgedEndpoint(chip::EndpointId endpointID)
