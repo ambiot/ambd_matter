@@ -951,7 +951,7 @@ example_hilink();
 	example_matter_aircon();
 #elif defined(CONFIG_EXAMPLE_MATTER_DISHWASHER) && (CONFIG_EXAMPLE_MATTER_DISHWASHER == 1)
 	example_matter_dishwasher();
-#elif defined(CONFIG_EXAMPLE_MATTER_LAUNDRYWASHER) && (CONFIG_EXAMPLE_MATTER_LAUNDRYWASHER == 1)
+#elif defined(CONFIG_EXAMPLE_MATTER_LAUNDRY_WASHER) && (CONFIG_EXAMPLE_MATTER_LAUNDRY_WASHER == 1)
 	example_matter_laundrywasher();
 #endif
 #endif

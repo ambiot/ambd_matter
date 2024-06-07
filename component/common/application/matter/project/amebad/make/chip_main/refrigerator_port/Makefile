@@ -182,11 +182,11 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/refrigerator_port/*.o
-	rm -f $(ROOTDIR)/make/chip_main/refrigerator_port/*.i
-	rm -f $(ROOTDIR)/make/chip_main/refrigerator_port/*.s
-	rm -f $(ROOTDIR)/make/chip_main/refrigerator_port/*.d
-	rm -f $(ROOTDIR)/make/chip_main/refrigerator_port/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/refrigerator_port/*.su
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/refrigerator_port/*.o
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/refrigerator_port/*.i
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/refrigerator_port/*.s
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/refrigerator_port/*.d
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/refrigerator_port/*.ii
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/refrigerator_port/*.su
 
 -include $(DEPS)
