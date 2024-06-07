@@ -173,14 +173,14 @@ IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/src/h
 IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/src/hal/rtl8711b
 IFLAGS               += -I$(BASEDIR)/component/common/drivers/wlan/realtek/wlan_ram_map/rom
 IFLAGS               += -I$(BASEDIR)/component/common/network
-ifneq ($(CONFIG_MATTER_EN),y)
+
 IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include
 IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include/lwip
 IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include/netif
 IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/src/include/ipv4
 IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/port/realtek
 IFLAGS               += -I$(BASEDIR)/component/common/network/lwip/lwip_v1.4.1/port/realtek/freertos
-endif
+
 IFLAGS               += -I$(BASEDIR)/component/common/api
 IFLAGS               += -I$(BASEDIR)/component/common/api/at_cmd
 IFLAGS               += -I$(BASEDIR)/component/common/api/wifi/rtw_wpa_supplicant/src

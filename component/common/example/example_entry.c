@@ -392,6 +392,10 @@
 #include <amazon_freertos/example_amazon_freertos.h>
 #endif
 
+#if defined(CONFIG_EXAMPLE_MATTER) && CONFIG_EXAMPLE_MATTER
+#include <matter_example_entry.h>
+#endif
+
 /*
 	Preprocessor of example
 */
@@ -937,23 +941,6 @@ example_hilink();
 #endif
 
 #if defined(CONFIG_EXAMPLE_MATTER) && CONFIG_EXAMPLE_MATTER
-#if defined(CONFIG_EXAMPLE_MATTER_CHIPTEST) && (CONFIG_EXAMPLE_MATTER_CHIPTEST == 1)
-    example_matter_task();
-#elif defined(CONFIG_EXAMPLE_MATTER_LIGHT) && (CONFIG_EXAMPLE_MATTER_LIGHT == 1)
-    example_matter_light();
-#elif defined(CONFIG_EXAMPLE_MATTER_THERMOSTAT) && (CONFIG_EXAMPLE_MATTER_THERMOSTAT == 1)
-    example_matter_thermostat();
-#elif defined(CONFIG_EXAMPLE_MATTER_BRIDGE) && (CONFIG_EXAMPLE_MATTER_BRIDGE == 1)
-	example_matter_bridge();
-#elif defined(CONFIG_EXAMPLE_MATTER_REFRIGERATOR) && (CONFIG_EXAMPLE_MATTER_REFRIGERATOR == 1)
-	example_matter_refrigerator();
-#elif defined(CONFIG_EXAMPLE_MATTER_AIRCON) && (CONFIG_EXAMPLE_MATTER_AIRCON == 1)
-	example_matter_aircon();
-#elif defined(CONFIG_EXAMPLE_MATTER_DISHWASHER) && (CONFIG_EXAMPLE_MATTER_DISHWASHER == 1)
-	example_matter_dishwasher();
-#elif defined(CONFIG_EXAMPLE_MATTER_LAUNDRY_WASHER) && (CONFIG_EXAMPLE_MATTER_LAUNDRY_WASHER == 1)
-	example_matter_laundrywasher();
+	matter_example_entry();
 #endif
-#endif
-
 }

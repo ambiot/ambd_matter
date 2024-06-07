@@ -186,5 +186,6 @@ clean:
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/laundrywasher_port/*.d
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/laundrywasher_port/*.ii
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/laundrywasher_port/*.su
+	rm -rf $(MATTER_EXAMPLEDIR)/laundrywasher/laundrywasher-app.matter
 
 -include $(DEPS)

@@ -17,7 +17,7 @@ extern int _rtl_sprintf(char* str, const char* fmt, ...);
 extern int _rtl_snprintf(char* str, size_t size, const char* fmt, ...);
 extern int _rtl_vsnprintf(char *buf, size_t size, const char *fmt, va_list ap);
 extern int _rtl_sscanf(const char *buf, const char *fmt, ...);
-#if __cplusplus
+#ifdef __cplusplus
 extern int strcasecmp(const char *s1, const char *s2);
 extern int strncasecmp(const char *s1, const char *s2, size_t n);
 extern size_t strnlen(const char *s, size_t count);
