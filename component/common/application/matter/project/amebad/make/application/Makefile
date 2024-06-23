@@ -39,6 +39,7 @@ CSRC += $(PORTDIR)/matter_ota.c
 CSRC += $(PORTDIR)/matter_timers.c
 CSRC += $(PORTDIR)/matter_utils.c
 CSRC += $(PORTDIR)/matter_wifis.c
+CSRC += $(PORTDIR)/matter_freertos.c
 CSRC += $(PROTOBUFDIR)/ameba_factory.pb.c
 CSRC += $(NANOPBDIR)/pb_common.c
 CSRC += $(NANOPBDIR)/pb_decode.c

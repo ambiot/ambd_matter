@@ -1,6 +1,7 @@
 CHIPDIR         = $(BASEDIR)/third_party/connectedhomeip
 MATTER_TOOLDIR  = $(BASEDIR)/tools/matter
 MATTER_DIR      = $(BASEDIR)/component/common/application/matter
+MATTER_BUILDDIR = $(BASEDIR)/component/common/application/matter/project/amebad
 MBEDTLSDIR      = $(BASEDIR)/component/common/network/ssl/mbedtls-2.28.1
 
 ifeq ($(COMPILEOS),$(LINUX_OS))
@@ -78,3 +79,64 @@ GLOBAL_CFLAGS += -DCONFIG_ENABLE_AMEBA_FACTORY_DATA=0
 GLOBAL_CFLAGS += -DCONFIG_ENABLE_AMEBA_TEST_EVENT_TRIGGER=0
 GLOBAL_CFLAGS += -DCONFIG_ENABLE_FACTORY_DATA_ENCRYPTION=0
 GLOBAL_CFLAGS += -DCONFIG_ENABLE_DCT_ENCRYPTION=0
+GLOBAL_CFLAGS += -DCONFIG_ENABLE_PW_RPC=0
+
+#*****************************************************************************#
+#                        MATTER RPC BUILD DEFINE                              #
+#*****************************************************************************#
+
+CMAKE_BUILD_DIR := $(MATTER_BUILDDIR)/chip_rpc
+CMAKE_INSTALL_DIR = install
+CMAKE_LIB_DIR = lib
+CMAKE_INCLUDE_DIR = include
+PIGWEED_OUTDIR := $(CMAKE_BUILD_DIR)/out/pigweed
+
+CHIP_ENABLE_PW_RPC := $(patsubst -DCONFIG_ENABLE_PW_RPC=%,%, $(filter -DCONFIG_ENABLE_PW_RPC=%, $(GLOBAL_CFLAGS)))
+
+LINK_APP_LIB_MATTER_RPC =
+ifeq ($(CHIP_ENABLE_PW_RPC), 1)
+LINK_APP_LIB_MATTER_RPC += \
+    $(PIGWEED_OUTDIR)/pw_protobuf/libpw_protobuf.common_proto.nanopb.a \
+    $(PIGWEED_OUTDIR)/pw_hdlc/libpw_hdlc.decoder.a \
+    $(PIGWEED_OUTDIR)/pw_hdlc/libpw_hdlc.encoder.a \
+    $(PIGWEED_OUTDIR)/pw_checksum/libpw_checksum.a \
+    $(PIGWEED_OUTDIR)/pw_checksum/libpw_checksum.crc32.a \
+    $(PIGWEED_OUTDIR)/pw_trace_tokenized/libpw_trace_tokenized.rpc_service.a \
+    $(PIGWEED_OUTDIR)/pw_trace_tokenized/libpw_trace_tokenized.trace_buffer.a \
+    $(PIGWEED_OUTDIR)/pw_trace_tokenized/libpw_trace_tokenized.a \
+    $(PIGWEED_OUTDIR)/pw_tokenizer/libpw_tokenizer.a \
+    $(PIGWEED_OUTDIR)/pw_ring_buffer/libpw_ring_buffer.a \
+    $(PIGWEED_OUTDIR)/pw_trace_tokenized/libpw_trace_tokenized.protos.nanopb.a \
+    $(PIGWEED_OUTDIR)/pw_rpc/nanopb/libpw_rpc.nanopb.server_api.a \
+    $(PIGWEED_OUTDIR)/pw_rpc/nanopb/libpw_rpc.nanopb.common.a \
+    $(PIGWEED_OUTDIR)/pw_rpc/libpw_rpc.client.a \
+    $(PIGWEED_OUTDIR)/pw_rpc/raw/libpw_rpc.raw.server_api.a \
+    $(PIGWEED_OUTDIR)/pw_rpc/libpw_rpc.server.a \
+    $(PIGWEED_OUTDIR)/pw_rpc/libpw_rpc.common.a \
+    $(PIGWEED_OUTDIR)/pw_containers/libpw_containers.intrusive_list.a \
+    $(PIGWEED_OUTDIR)/pw_protobuf/libpw_protobuf.a \
+    $(PIGWEED_OUTDIR)/pw_stream/libpw_stream.interval_reader.a \
+    $(PIGWEED_OUTDIR)/pw_varint/libpw_varint.stream.a \
+    $(PIGWEED_OUTDIR)/pw_stream/libpw_stream.a \
+    $(PIGWEED_OUTDIR)/pw_varint/libpw_varint.a \
+    $(PIGWEED_OUTDIR)/pw_bytes/libpw_bytes.a \
+    $(PIGWEED_OUTDIR)/pw_log_basic/libpw_log_basic.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.builder.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.format.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.to_string.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.util.a \
+    $(PIGWEED_OUTDIR)/pw_assert_log/libpw_assert_log.check_backend.a \
+    $(PIGWEED_OUTDIR)/pw_bytes/libpw_bytes.a \
+    $(PIGWEED_OUTDIR)/pw_log_basic/libpw_log_basic.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.builder.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.format.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.to_string.a \
+    $(PIGWEED_OUTDIR)/pw_string/libpw_string.util.a \
+    $(PIGWEED_OUTDIR)/pw_assert_log/libpw_assert_log.check_backend.a \
+    $(PIGWEED_OUTDIR)/pw_status/libpw_status.a \
+    $(PIGWEED_OUTDIR)/pw_chrono/libpw_chrono.protos.nanopb.a \
+    $(CMAKE_BUILD_DIR)/install/lib/libprotobuf-nanopb.a \
+    $(CMAKE_BUILD_DIR)/libchip_main_rpc.a \
+    $(CMAKE_BUILD_DIR)/*.nanopb.a \
+    $(ROOTDIR)/lib/application/libPwRpc.a
+endif

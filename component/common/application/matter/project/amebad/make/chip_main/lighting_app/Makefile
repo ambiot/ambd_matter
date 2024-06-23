@@ -24,8 +24,9 @@ include $(MAKE_INCLUDE_GEN)
 .PHONY: all clean
 
 #*****************************************************************************#
-#                               VARIABLES	                              #
+#                               VARIABLES	                                  #
 #*****************************************************************************#
+CMAKE_SOURCE_DIR := $(shell pwd)
 OUTPUT_DIR = $(CHIPDIR)/examples/lighting-app/ameba/build/chip
 CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
@@ -40,11 +41,9 @@ DIR += $(CHIPDIR)/examples/lighting-app/ameba/main
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
 DIR += $(CHIPDIR)/examples/providers
-DIR += $(CHIPDIR)/zzz_generated/lighting-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
 DIR += $(BASEDIR)/component/common/application/matter/api
-DIR += $(BASEDIR)/tools/matter/codegen_helpers/gen/app
 DIR += $(CODEGEN_DIR)/app
 DIR += $(CODEGEN_DIR)/zap-generated
 
@@ -157,16 +156,28 @@ STATIC_LIB = lib_main.a
 #*****************************************************************************#
 
 # Define the Rules to build the core targets
-all: CORE_TARGETS
+all: matter_rpc CORE_TARGETS
 
 #*****************************************************************************#
 #              GENERATE OBJECT FILE
 #*****************************************************************************#
-#CORE_TARGETS:	$(CPPOBJS) $(COBJS)
-CORE_TARGETS:	$(OBJS) $(STATIC_LIB)
+CORE_TARGETS: $(OBJS) $(STATIC_LIB)
 $(STATIC_LIB):$(OBJS)
 	$(AR) rvs $@ $^
 	$(MOVE) -f $@ $(ROOTDIR)/lib/application
+
+#*****************************************************************************#
+#                        RULES TO BUILD RPC                                   #
+#*****************************************************************************#
+
+matter_rpc:
+ifeq ($(CHIP_ENABLE_PW_RPC), 1)
+	echo "=====BUILD MATTER RPC $(CMAKE_BUILD_DIR)====="
+	mkdir -p $(CMAKE_BUILD_DIR)
+	cd $(CMAKE_BUILD_DIR) && cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=$(MATTER_BUILDDIR)/toolchain.cmake -DCMAKE_INSTALL_PREFIX=$(CMAKE_INSTALL_DIR) $(CMAKE_SOURCE_DIR)
+	cd $(CMAKE_BUILD_DIR) && make
+	cd $(CMAKE_BUILD_DIR) && make install
+endif
 
 #*****************************************************************************#
 #              CLEAN GENERATED FILES                                          #
@@ -178,5 +189,8 @@ clean:
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_app/*.d
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_app/*.ii
 	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_app/*.su
+ifeq ($(CHIP_ENABLE_PW_RPC), 1)
+	rm -rf $(CMAKE_BUILD_DIR)
+endif
 
 -include $(DEPS)

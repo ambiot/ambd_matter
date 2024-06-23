@@ -42,6 +42,9 @@
 
 #define INCLUDE_uxTaskGetStackSize				1
 #define INCLUDE_uxTaskGetFreeStackSize			1
+#if defined(CONFIG_ENABLE_PW_RPC) && CONFIG_ENABLE_PW_RPC
+#define configSUPPORT_STATIC_ALLOCATION			1
+#endif
 #endif
 
 #endif /* FREERTOS_CONFIG_MATTER_H */

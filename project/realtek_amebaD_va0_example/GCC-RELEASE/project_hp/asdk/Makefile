@@ -172,7 +172,8 @@ endif
 #matter lib
 ifeq ($(CONFIG_MATTER_EN), y)
 # --whole-archive forces linker to override weak functions with strong ones
-LINK_APP_LIB_MATTER += -Wl,--start-group -Wl,--whole-archive $(ROOTDIR)/lib/application/lib_main.a -Wl,--no-whole-archive $(ROOTDIR)/lib/application/libCHIP.a -Wl,--end-group 
+LINK_APP_LIB_MATTER =
+LINK_APP_LIB_MATTER += -Wl,--start-group -Wl,--whole-archive $(ROOTDIR)/lib/application/lib_main.a -Wl,--no-whole-archive $(ROOTDIR)/lib/application/libCHIP.a $(LINK_APP_LIB_MATTER_RPC) -Wl,--end-group
 endif
 
 rom: build_target_folder copy_ld_rom check_toolchain build_info.h make_subdirs_rom package_prebuilt_rom_objs rom_linker 

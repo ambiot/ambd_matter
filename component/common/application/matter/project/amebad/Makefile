@@ -13,7 +13,6 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
           else echo sh; fi ; fi)
 
 include $(MAKE_INCLUDE_GEN)
-include $(CURRENT_DIR)/Makefile.include.matter.hp.gen
 
 #*****************************************************************************#
 #                            MATTER ZAP files                                 #
