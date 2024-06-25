@@ -38,6 +38,7 @@ DIR += $(CHIPDIR)/examples/bridge-app/ameba/main
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
 DIR += $(CHIPDIR)/examples/providers
+DIR += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common
 DIR += $(CHIPDIR)/zzz_generated/bridge-app/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
@@ -73,6 +74,7 @@ IFLAGS += -I$(CHIPDIR)/zzz_generated/app-common
 IFLAGS += -I$(CHIPDIR)/zzz_generated/bridge-app
 IFLAGS += -I$(CHIPDIR)/zzz_generated/bridge-app/zap-generated
 IFLAGS += -I$(CHIPDIR)/examples/bridge-app/bridge-common
+IFLAGS += -I$(CHIPDIR)/examples/all-clusters-app/all-clusters-common
 IFLAGS += -I$(CHIPDIR)/examples/bridge-app/ameba/main/include
 IFLAGS += -I$(CHIPDIR)/examples/bridge-app/ameba/build/chip/gen/include
 IFLAGS += -I$(CHIPDIR)/examples/platform/ameba
@@ -123,7 +125,7 @@ CPPSRC += $(CHIPDIR)/src/app/reporting/reporting.cpp
 CPPSRC += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders/IP.cpp
 
 CPPSRC += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes/Accessors.cpp
-
+CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/src/bridged-actions-stub.cpp
 CPPSRC += $(CHIPDIR)/examples/providers/DeviceInfoProviderImpl.cpp
 
 CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_hook.c

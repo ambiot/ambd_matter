@@ -37,6 +37,9 @@
 
 #undef configTOTAL_HEAP_SIZE
 #undef CONFIG_DYNAMIC_HEAP_SIZE
+#undef INCLUDE_uxTaskGetStackSize
+#undef INCLUDE_uxTaskGetFreeStackSize
+
 #define configTOTAL_HEAP_SIZE					( ( size_t ) ( 200 * 1024 ) ) //default
 #define CONFIG_DYNAMIC_HEAP_SIZE				0
 
