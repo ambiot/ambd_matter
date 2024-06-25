@@ -15,6 +15,7 @@ MBEDDIR = $(BASEDIR)/component/common/application/matter/mbedtls
 PORTDIR = $(BASEDIR)/component/common/application/matter/port
 PROTOBUFDIR = $(BASEDIR)/component/common/application/matter/protobuf
 NANOPBDIR = $(BASEDIR)/component/common/application/matter/protobuf/nanopb
+EXAMPLEDIR = $(BASEDIR)/component/common/application/matter/example
 CHIPTESTDIR = $(BASEDIR)/component/common/application/matter/example/chiptest
 
 vpath %.c $(DIR) $(shell find $(DIR) -type d)
@@ -34,6 +35,7 @@ CSRC += $(BTDIR)/bt_matter_adapter_peripheral_app.c
 CSRC += $(BTDIR)/bt_matter_adapter_service.c
 CSRC += $(BTDIR)/bt_matter_adapter_wifi.c
 CSRC += $(MBEDDIR)/net_sockets.c
+CSRC += $(PORTDIR)/DsoHandle.c
 CSRC += $(PORTDIR)/matter_dcts.c
 CSRC += $(PORTDIR)/matter_ota.c
 CSRC += $(PORTDIR)/matter_timers.c
@@ -44,6 +46,7 @@ CSRC += $(NANOPBDIR)/pb_common.c
 CSRC += $(NANOPBDIR)/pb_decode.c
 CSRC += $(NANOPBDIR)/pb_encode.c
 CSRC += $(CHIPTESTDIR)/example_matter.c
+CSRC += $(EXAMPLEDIR)/matter_example_entry.c
 
 #*****************************************************************************#
 #                               Object FILE LIST                              #

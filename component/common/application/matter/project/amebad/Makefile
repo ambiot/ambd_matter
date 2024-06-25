@@ -3,17 +3,16 @@
 #                            Basic Configurations                             #
 #*****************************************************************************#
 
-CURRENT_DIR = $(shell pwd)
-ABS_ROOTDIR = $(shell pwd)/../../../../../../project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/asdk
-MATTER_DIR 		= $(ABS_ROOTDIR)/../../../../../component/common/application/matter
+ROOT_DIR = $(shell pwd)/../../../../..
+ABS_ROOTDIR = $(ROOT_DIR)/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/asdk
 MAKE_INCLUDE_GEN = $(ABS_ROOTDIR)/Makefile.include.gen
+
+MATTER_DIR = $(ROOT_DIR)/component/common/application/matter
+MATTER_BUILDDIR = $(MATTER_DIR)/project/amebad
 
 CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
           else if [ -x /bin/bash ]; then echo /bin/bash; \
           else echo sh; fi ; fi)
-
-include $(MAKE_INCLUDE_GEN)
-include $(CURRENT_DIR)/Makefile.include.matter.hp.gen
 
 #*****************************************************************************#
 #                            MATTER ZAP files                                 #
@@ -44,57 +43,57 @@ LAUNDRYWASHER_PORT_ZAP = $(BASEDIR)/component/common/application/matter/example/
 #*****************************************************************************#
 #                         MATTER MAKE DEFINES                                 #
 #*****************************************************************************#
-all_clusters: $(ALL_CLUSTERS_FILE)
-	make -C make/chip/all_clusters_app all
-	make -C make/chip_main/all_clusters_app all
+all_clusters: build_target_folder copy_ld_img2 check_toolchain build_info.h $(ALL_CLUSTERS_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/all_clusters_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/all_clusters_app all
 
-aircon_port: $(AIRCON_PORT_FILE)
-	make -C make/chip/aircon_app all
-	make -C make/chip_main/aircon_port all
+aircon_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(AIRCON_PORT_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/aircon_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/aircon_port all
 
-air_purifier: $(AIR_PURIFIER_FILE)
-	make -C make/chip/air_purifier_app all
-	make -C make/chip_main/air_purifier_app all
+air_purifier: build_target_folder copy_ld_img2 check_toolchain build_info.h $(AIR_PURIFIER_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/air_purifier_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/air_purifier_app all
 
-bridge_port: $(BRIDGE_PORT_FILE)
-	make -C make/chip/bridge_app all
-	make -C make/chip_main/bridge_port all
+bridge_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRIDGE_PORT_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/bridge_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/bridge_port all
 
-bridge_dm: $(BRIDGE_DM_FILE) copy_gen_files_bridge_dm
-	make -C make/chip/bridge_app all
-	make -C make/chip_main/bridge_dm_app all
+bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(BRIDGE_DM_FILE) copy_gen_files_bridge_dm
+	make -C $(MATTER_BUILDDIR)/make/chip/bridge_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/bridge_dm_app all
 
-dishwasher_port: $(DISHWASHER_PORT_FILE)
-	make -C make/chip/dishwasher_app all
-	make -C make/chip_main/dishwasher_port all
+dishwasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(DISHWASHER_PORT_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/dishwasher_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/dishwasher_port all
 
-laundrywasher_port: $(LAUNDRYWASHER_PORT_FILE)
-	make -C make/chip/laundrywasher_app all
-	make -C make/chip_main/laundrywasher_port all
+laundrywasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LAUNDRYWASHER_PORT_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/laundrywasher_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/laundrywasher_port all
 
-light: $(LIGHTING_FILE)
-	make -C make/chip/lighting_app all
-	make -C make/chip_main/lighting_app all
+light: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/lighting_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/lighting_app all
 
-light_port: $(LIGHTING_FILE)
-	make -C make/chip/lighting_app all
-	make -C make/chip_main/lighting_port all
+light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/lighting_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/lighting_port all
 
-light_dm:    $(LIGHTING_FILE) copy_gen_files_light_dm 
-	make -C make/chip/lighting_app all
-	make -C make/chip_main/lighting_dm_app all
+light_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHTING_FILE) copy_gen_files_light_dm 
+	make -C $(MATTER_BUILDDIR)/make/chip/lighting_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/lighting_dm_app all
 
-light_switch: $(LIGHT_SWITCH_FILE)
-	make -C make/chip/light_switch_app all
-	make -C make/chip_main/light_switch_app all
+light_switch: build_target_folder copy_ld_img2 check_toolchain build_info.h $(LIGHT_SWITCH_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/light_switch_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/light_switch_app all
 
-refrigerator_port: $(REFRIGERATOR_PORT_FILE)
-	make -C make/chip/refrigerator_app all
-	make -C make/chip_main/refrigerator_port all
+refrigerator_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(REFRIGERATOR_PORT_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/refrigerator_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/refrigerator_port all
 
-thermostat_port: $(THERMOSTAT_PORT_FILE)
-	make -C make/chip/thermostat_app all
-	make -C make/chip_main/thermostat_port all
+thermostat_port: build_target_folder copy_ld_img2 check_toolchain build_info.h $(THERMOSTAT_PORT_FILE)
+	make -C $(MATTER_BUILDDIR)/make/chip/thermostat_app all
+	make -C $(MATTER_BUILDDIR)/make/chip_main/thermostat_port all
 
 #*****************************************************************************#
 #                      RULES TO MAKE MATTER DIRS                              #
