@@ -41,23 +41,17 @@ void MatterBridge::Init(Node& mNode)
         node->removeEndpoint(1);
     }
 
-    EndpointConfig rootNodeEndpointConfig;
-    EndpointConfig aggregatorEndpointConfig;
-
-    Presets::Endpoints::matter_root_node_preset(&rootNodeEndpointConfig);
-    Presets::Endpoints::matter_aggregator_preset(&aggregatorEndpointConfig);
-
     // Initialization for Bridge: Root Node on ep0 and Aggregator on ep1
-    node->addEndpoint(rootNodeEndpointConfig, Span<const EmberAfDeviceType>(gRootNodeDeviceTypes));
-    node->addEndpoint(aggregatorEndpointConfig, Span<const EmberAfDeviceType>(gAggregatorDeviceTypes));
+    node->addEndpoint(&Presets::Endpoints::matter_root_node_endpoint, Span<const EmberAfDeviceType>(gRootNodeDeviceTypes));
+    node->addEndpoint(&Presets::Endpoints::matter_aggregator_endpoint, Span<const EmberAfDeviceType>(gAggregatorDeviceTypes));
 
     // Enable endpoints
     node->enableAllEndpoints();
 }
 
-void MatterBridge::addBridgedEndpoint(EndpointConfig bridgedConfig, Span<const EmberAfDeviceType> bridgedDeviceType)
+void MatterBridge::addBridgedEndpoint(EmberAfEndpointType *endpointType, Span<const EmberAfDeviceType> bridgedDeviceType)
 {
-    node->addEndpoint(bridgedConfig, bridgedDeviceType);
+    node->addEndpoint(endpointType, bridgedDeviceType);
     node->enableAllEndpoints();
 }
 

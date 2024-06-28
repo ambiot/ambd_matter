@@ -30,6 +30,7 @@ OUTPUT_DIR = $(BASEDIR)/component/common/application/matter/example/aircon/build
 CODEGEN_DIR = $(OUTPUT_DIR)/codegen
 
 CHIP_ENABLE_OTA_REQUESTOR = $(shell grep 'chip_enable_ota_requestor' $(OUTPUT_DIR)/args.gn | cut -d' ' -f3)
+CHIP_BUILD_LIBSHELL = $(shell grep 'chip_build_libshell' $(OUTPUT_DIR)/args.gn | cut -d' ' -f3)
 
 DIR = $(SRCDIR)
 DIR += $(CHIPDIR)/src/app
@@ -37,6 +38,9 @@ DIR += $(CHIPDIR)/src/app/server
 DIR += $(CHIPDIR)/src/lib/dnssd/minimal_mdns/responders
 DIR += $(CHIPDIR)/examples/platform/ameba/ota
 DIR += $(CHIPDIR)/examples/platform/ameba/route_hook
+ifeq ($(CHIP_BUILD_LIBSHELL), true)
+DIR += $(CHIPDIR)/examples/platform/ameba/shell/
+endif
 DIR += $(CHIPDIR)/examples/providers
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated
 DIR += $(CHIPDIR)/zzz_generated/app-common/app-common/zap-generated/attributes
@@ -56,6 +60,9 @@ vpath %.c $(DIR) $(shell find $(DIR) -type d)
 
 GLOBAL_CFLAGS += -DCHIP_PROJECT=1
 GLOBAL_CFLAGS += -DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=\"lib/address_resolve/AddressResolve_DefaultImpl.h\"
+ifeq ($(CHIP_BUILD_LIBSHELL), true)
+GLOBAL_CFLAGS += -DCONFIG_ENABLE_CHIP_SHELL=1
+endif
 
 #*****************************************************************************#
 #                               Include FILE LIST                             #
@@ -132,6 +139,11 @@ CSRC += $(CHIPDIR)/examples/platform/ameba/route_hook/ameba_route_table.c
 CPPSRC += $(BASEDIR)/component/common/application/matter/api/matter_api.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_core.cpp
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_interaction.cpp
+ifeq ($(CHIP_BUILD_LIBSHELL), true)
+CPPSRC += $(CHIPDIR)/examples/platform/ameba/shell/launch_shell.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_prov.cpp
+CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_control.cpp
+endif
 ifeq ($(CHIP_ENABLE_OTA_REQUESTOR), true)
 CPPSRC += $(BASEDIR)/component/common/application/matter/core/matter_ota_initializer.cpp
 endif

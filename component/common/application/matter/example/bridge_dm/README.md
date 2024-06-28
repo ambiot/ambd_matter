@@ -4,8 +4,8 @@ You will need 2 non-Matter peripherals running TCP client socket.
 
 ## Ameba Data Model
 This example demonstrates adding and removing endpoints dynamically using the *Ameba Data Model*.
-A `Root Node` device type will be created on Endpoint0, a `Aggregator` device type on Endpoint1 and a `Dimmable Light` device type on Endpoint2.
-After 20 seconds delay, the `Dimmable Light` endpoint on Endpoint2 will be removed.
+A `Root Node` device type will be created on Endpoint0, a `Aggregator` device type on Endpoint1 and 18 `Dimmable Light` device type on Endpoint2 to Endpoint19.
+After 60 seconds delay, the `Dimmable Light` endpoint on Endpoint19 to Endpoint2 will be removed.
 
 Additionally a new thread will be created for user to input their code to communicate with non-matter device based on the protocol (e.g., IP-based (TCP,UDP), BLE, zigbee and etc) they wish to use.
 
@@ -14,17 +14,6 @@ Additionally a new thread will be created for user to input their code to commun
 ### Configurations
 Enable `CONFIG_EXAMPLE_MATTER` and `CONFIG_EXAMPLE_MATTER_BRIDGE` in `platform_opts_matter.h`.
 Ensure that `CONFIG_EXAMPLE_MATTER_CHIPTEST` is disabled.
-
-### PSRAM usage
-Due to insufficient memory in SRAM, we will use the PSRAM for dynamic allocation.
-To run this example without error, you need to enable PSRAM.
-In `rtl8721dhp_intfcfg.c`, set the below configurations
-
-    PSRAMCFG_TypeDef psram_dev_config = {
-      .psram_dev_enable = TRUE,			//enable psram
-      .psram_dev_cal_enable = TRUE,			//enable psram calibration function
-      .psram_dev_retention = TRUE,
-    }
 
 ### Setup the Build Environment
   
