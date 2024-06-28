@@ -11,6 +11,7 @@
 #include "stddef.h"
 #include "string.h"
 #include "errno.h"
+#include "sntp/sntp.h"
 #include "FreeRTOS.h"
 #include "chip_porting.h"
 #include "time.h"

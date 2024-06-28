@@ -170,11 +170,11 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/air_purifier_app/*.o
-	rm -f $(ROOTDIR)/make/chip_main/air_purifier_app/*.i
-	rm -f $(ROOTDIR)/make/chip_main/air_purifier_app/*.s
-	rm -f $(ROOTDIR)/make/chip_main/air_purifier_app/*.d
-	rm -f $(ROOTDIR)/make/chip_main/air_purifier_app/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/air_purifier_app/*.su
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/air_purifier_app/*.o
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/air_purifier_app/*.i
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/air_purifier_app/*.s
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/air_purifier_app/*.d
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/air_purifier_app/*.ii
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/air_purifier_app/*.su
 
 -include $(DEPS)

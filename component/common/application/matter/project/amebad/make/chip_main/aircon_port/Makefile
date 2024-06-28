@@ -187,11 +187,12 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/aircon_port/*.o
-	rm -f $(ROOTDIR)/make/chip_main/aircon_port/*.i
-	rm -f $(ROOTDIR)/make/chip_main/aircon_port/*.s
-	rm -f $(ROOTDIR)/make/chip_main/aircon_port/*.d
-	rm -f $(ROOTDIR)/make/chip_main/aircon_port/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/aircon_port/*.su
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.o
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.i
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.s
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.d
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.ii
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/aircon_port/*.su
+	rm -rf $(MATTER_EXAMPLEDIR)/aircon/aircon-app.matter
 
 -include $(DEPS)

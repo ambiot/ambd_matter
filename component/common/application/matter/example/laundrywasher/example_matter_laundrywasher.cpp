@@ -11,7 +11,7 @@
 #include "matter_drivers.h"
 #include "matter_interaction.h"
 
-#if defined(CONFIG_EXAMPLE_MATTER_LAUNDRYWASHER) && CONFIG_EXAMPLE_MATTER_LAUNDRYWASHER
+#if defined(CONFIG_EXAMPLE_MATTER_LAUNDRY_WASHER) && CONFIG_EXAMPLE_MATTER_LAUNDRY_WASHER
 
 static void example_matter_laundrywasher_task(void *pvParameters)
 {

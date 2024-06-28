@@ -81,10 +81,11 @@ all: CORE_TARGETS COPY_RAM_OBJS
 #*****************************************************************************#
 CORE_TARGETS: $(OBJS)
 
-# We don't move this to SRAM, leave them in XIP due to SRAM constraints
-# %.o:%.c
-# 	$(CC) $(GLOBAL_CFLAGS) $(MODULE_IFLAGS) $<  -o $@
-# 	$(FROMELF) --prefix-sections .image2.net.ram $@
+ifneq ($(CONFIG_MATTER_EN),y)
+%.o:%.c
+	$(CC) $(GLOBAL_CFLAGS) $(MODULE_IFLAGS) $<  -o $@
+	$(FROMELF) --prefix-sections .image2.net.ram $@
+endif
 	
 #*****************************************************************************#
 #              CLEAN GENERATED FILES                                          #

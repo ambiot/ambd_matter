@@ -350,11 +350,11 @@ size_t xPortGetTotalHeapSize( void )
 
 void xPortResetHeapMinimumEverFreeHeapSize(void)
 {
-    taskENTER_CRITICAL();
-    {
-        xMinimumEverFreeBytesRemaining = xFreeBytesRemaining;
-    }
-    taskEXIT_CRITICAL();
+	taskENTER_CRITICAL();
+	{
+		xMinimumEverFreeBytesRemaining = xFreeBytesRemaining;
+	}
+	taskEXIT_CRITICAL();
 }
 /*-----------------------------------------------------------*/
 #endif

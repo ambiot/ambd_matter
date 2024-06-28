@@ -61,7 +61,7 @@ ifeq ($(CONFIG_LINK_ROM_SYMB),y)
 LINK_ROM_LIB =
 LINK_ROM_LIB_NS =
 ifeq ($(CONFIG_MATTER_EN), y)
-LINK_ROM_SYMBOL_NS = ./ld/rlx8721d_rom_symbol_acut_matter.ld
+LINK_ROM_SYMBOL_NS = $(MATTER_BUILDDIR)/ld/rlx8721d_rom_symbol_acut_matter.ld
 else
 LINK_ROM_SYMBOL_NS = ./ld/rlx8721d_rom_symbol_acut.ld
 endif
@@ -184,49 +184,6 @@ mp_image3_s: build_target_folder copy_ld_img3 check_toolchain build_info.h make_
 bootloader: build_target_folder copy_ld_img1 check_toolchain build_info.h make_subdirs_bootloader linker_loader gen_rom_symbol
 
 #*****************************************************************************#
-#                         MATTER SUB DIRS                                     #
-#*****************************************************************************#
-ifeq ($(CONFIG_MATTER_EN), y)
-all_clusters: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) all_clusters
-
-aircon_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) aircon_port
-
-air_purifier: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) air_purifier
-
-bridge_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) bridge_port
-
-bridge_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) bridge_dm
-
-dishwasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) laundrywasher_port
-
-laundrywasher_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) laundrywasher_port
-
-light: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) light
-
-light_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) light_port
-
-light_dm: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) light_dm
-
-light_switch: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) light_switch
-
-refrigerator_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) refrigerator_port
-
-thermostat_port: build_target_folder copy_ld_img2 check_toolchain build_info.h
-	make -C $(MATTER_BUILDDIR) thermostat_port
-endif
-#*****************************************************************************#
 #                      RULES TO CREATE DIRECTORY                              #
 #*****************************************************************************#
 
@@ -278,6 +235,12 @@ make_subdirs_bootloader:
 	@ rm -f $(RAM_OBJS_LIST)
 	@make -C make/bootloader all
 
+#*****************************************************************************#
+#                          MATTER MAKE RULES                                  #
+#*****************************************************************************#
+ifeq ($(CONFIG_MATTER_EN), y)
+include $(MATTER_BUILDDIR)/Makefile
+endif
 
 #*****************************************************************************#
 #                      RULES TO LINKER IMAGE                                  #
@@ -635,7 +598,6 @@ clean:
 ifeq ($(CONFIG_MATTER_EN), y)
 	make -C $(MATTER_BUILDDIR)/make/chip_main clean
 	make -C $(MATTER_BUILDDIR)/make/chip clean
-	rm -rf $(BASEDIR)/tools/matter/codegen_helpers/gen
 endif
 
 clean_rom:

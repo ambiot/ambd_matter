@@ -175,11 +175,12 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.o
-	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.i
-	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.s
-	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.d
-	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/bridge_dm_app/*.su
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/bridge_dm_app/*.o
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/bridge_dm_app/*.i
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/bridge_dm_app/*.s
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/bridge_dm_app/*.d
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/bridge_dm_app/*.ii
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/bridge_dm_app/*.su
+	rm -rf $(MATTER_EXAMPLEDIR)/bridge_dm/bridge-app.matter
 
 -include $(DEPS)

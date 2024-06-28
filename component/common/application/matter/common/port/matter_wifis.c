@@ -13,6 +13,7 @@
 #include "wifi_conf.h"
 #include "chip_porting.h"
 #include "osdep_service.h"
+#include "lwip/dhcp.h"
 
 u32 apNum = 0; // no of total AP scanned
 u8 matter_wifi_trigger = 0;
@@ -272,6 +273,12 @@ static void matter_wifi_autoreconnect_thread(void *param)
     if(is_wpa3_disable)
         wext_set_support_wpa3(ENABLE);
 #endif
+
+    if (ret == RTW_SUCCESS) {
+        RTW_API_INFO("WiFi connected successfully\n");
+    } else {
+        RTW_API_INFO("WiFi connection failed with error code %d\n", ret);
+    }
 
     matter_param_indicator = NULL;
     rtw_delete_task(&matter_wifi_autoreconnect_task);

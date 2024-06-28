@@ -6,6 +6,7 @@
 
 #include <sys_api.h>
 #include "log_service.h"
+#include "wifi_conf.h"
 extern u32 deinitPref(void);
 #if MATTER_OTA_REQUESTOR_APP
 extern void amebaQueryImageCmdHandler();

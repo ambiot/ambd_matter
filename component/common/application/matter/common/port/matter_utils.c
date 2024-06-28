@@ -247,7 +247,7 @@ int32_t ReadFactory(uint8_t *buffer, uint16_t *pfactorydata_len)
 
     // The first 2 bytes of the binary file is the length of the FactoryData
     device_mutex_lock(RT_DEV_LOCK_FLASH);
-    ret = flash_stream_read(&flash, address, length_bytes, pfactorydata_len);
+    ret = flash_stream_read(&flash, address, length_bytes, (uint8_t *)pfactorydata_len);
     device_mutex_unlock(RT_DEV_LOCK_FLASH);
 
     // Check if factory data length is more than 4096

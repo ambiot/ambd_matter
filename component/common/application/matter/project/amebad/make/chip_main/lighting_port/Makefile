@@ -193,11 +193,11 @@ $(STATIC_LIB):$(OBJS)
 #              CLEAN GENERATED FILES                                          #
 #*****************************************************************************#
 clean:
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.o
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.i
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.s
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.d
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.ii
-	rm -f $(ROOTDIR)/make/chip_main/lighting_port/*.su
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_port/*.o
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_port/*.i
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_port/*.s
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_port/*.d
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_port/*.ii
+	rm -f $(MATTER_BUILDDIR)/make/chip_main/lighting_port/*.su
 
 -include $(DEPS)
