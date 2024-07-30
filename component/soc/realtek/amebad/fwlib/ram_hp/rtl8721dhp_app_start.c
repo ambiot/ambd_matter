@@ -149,6 +149,9 @@ void _fini(void) {}
 
 void INT_HardFault_Patch_C(uint32_t mstack[], uint32_t pstack[], uint32_t lr_value, uint32_t fault_id)
 {
+	/* To avoid gcc warnings */
+	( void ) fault_id;
+
 	u8 IsPstack = 0;
 
 	DBG_8195A("\r\nHard Fault Patch (Non-secure)\r\n");
@@ -177,7 +180,6 @@ void INT_HardFault_Patch_C(uint32_t mstack[], uint32_t pstack[], uint32_t lr_val
 
 	INT_HardFault_C(mstack, pstack, lr_value, fault_id);
 #endif	
-	
 }
 
 VOID
@@ -291,7 +293,8 @@ u32 app_psram_resume(u32 expected_idle_time, void *param)
 	( void ) expected_idle_time;
 	( void ) param;
 
-    u32 temp;
+    u32 temp = 0;
+	( void ) temp;
 
 	if((SLEEP_PG == pmu_get_sleep_type()) || (FALSE == psram_dev_config.psram_dev_retention)) {
 		app_init_psram();
@@ -348,9 +351,10 @@ void app_init_psram(void)
 	pmu_register_sleep_callback(PMU_PSRAM_DEVICE, (PSM_HOOK_FUN)app_psram_suspend, NULL, (PSM_HOOK_FUN)app_psram_resume, NULL);
 }
 
-static void* app_psram_load_ns()
+static void* app_psram_load_ns(void)
 {
-	IMAGE_HEADER *Image2Hdr = (IMAGE_HEADER *)((__flash_text_start__) - IMAGE_HEADER_LEN);
+	IMAGE_HEADER *Image2Hdr = NULL;
+	Image2Hdr = (IMAGE_HEADER *)((__flash_text_start__) - IMAGE_HEADER_LEN);
 	IMAGE_HEADER * Image2DataHdr = (IMAGE_HEADER *)(__flash_text_start__ + Image2Hdr->image_size);
 	IMAGE_HEADER *PsramHdr =  (IMAGE_HEADER *)((u32)Image2DataHdr + IMAGE_HEADER_LEN + Image2DataHdr->image_size);
 
@@ -368,7 +372,7 @@ static void* app_psram_load_ns()
     return NULL;
 }
 
-static void* app_psram_load_s()
+static void* app_psram_load_s(void)
 {
 #if defined (configENABLE_TRUSTZONE) && (configENABLE_TRUSTZONE == 1U)
 	load_psram_image_s();
@@ -413,6 +417,10 @@ void app_start(void)
 	}
 
 	/* configure FreeRTOS interrupt and heap region */
+#if (defined(configUSE_PSRAM_FOR_HEAP_REGION) && ( configUSE_PSRAM_FOR_HEAP_REGION == 1 ))
+	/* psram should be enabled */
+	assert_param(TRUE == psram_dev_config.psram_dev_enable);
+#endif
 	os_heap_init();
 	__NVIC_SetVector(SVCall_IRQn, (u32)(VOID*)vPortSVCHandler);
 	__NVIC_SetVector(PendSV_IRQn, (u32)(VOID*)xPortPendSVHandler);
