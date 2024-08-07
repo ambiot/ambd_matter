@@ -144,7 +144,6 @@ VOID app_vdd1833_detect(VOID)
 #if defined (__GNUC__)
 /* Add This for C++ support to avoid compile error */
 void _init(void) {}
-void _fini(void) {}
 #endif
 
 void INT_HardFault_Patch_C(uint32_t mstack[], uint32_t pstack[], uint32_t lr_value, uint32_t fault_id)

@@ -22,8 +22,9 @@ KM0_BUILDDIR	= $(ROOTDIR)/../../project_lp
 KM4_BUILDDIR	= $(ROOTDIR)/../../project_hp
 
 ifeq ($(CONFIG_MATTER_EN),y)
-MATTER_DIR      = $(BASEDIR)/component/common/application/matter
-MATTER_BUILDDIR = $(BASEDIR)/component/common/application/matter/project/amebad
+MATTER_DIR       = $(BASEDIR)/component/common/application/matter
+MATTER_BUILDDIR  = $(BASEDIR)/component/common/application/matter/project/amebad
+MATTER_INCLUDE   = $(MATTER_BUILDDIR)/Makefile.include.matter
 endif
 
 TARGETDIR	=$(BASEDIR)/component/soc/realtek/amebad
@@ -393,13 +394,13 @@ ifneq ($(CONFIG_MATTER_EN),y)
 CPPFLAGS += -std=c++11 -fno-use-cxa-atexit
 endif
 
-ifeq ($(CONFIG_MATTER_EN), y)
-include $(MATTER_BUILDDIR)/Makefile.include.matter.hp.gen
-endif
-
 ifeq (${BUILD_TYPE},MFG)
 GLOBAL_CFLAGS += -DCONFIG_BT_MP
 GLOBAL_CFLAGS += -DCONFIG_MP_INCLUDED
+endif
+
+ifeq ($(CONFIG_MATTER_EN), y)
+include $(MATTER_INCLUDE)
 endif
 
 #*****************************************************************************#

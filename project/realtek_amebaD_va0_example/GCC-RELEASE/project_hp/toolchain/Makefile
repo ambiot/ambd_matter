@@ -19,10 +19,7 @@ all:
 ifneq ($(CONFIG_TOOLCHAIN_ARM_GCC), y)
 ifeq ($(COMPILEOS),$(LINUX_OS))
 ifeq ($(CONFIG_MATTER_EN), y)
-	$(MKDIR) -p linux
-	cat asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2* > asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2
-	tar -jxvf asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2 -C linux/
-	rm asdk/asdk-10.3.0-linux-newlib-build-3638-x86_64.tar.bz2
+	make -C $(MATTER_BUILDDIR)/toolchain km4_toolchain
 else
 	if [ ! -f asdk/asdk-6.4.1-linux-newlib-build-2773-i686.tar.bz2 ] ; then cat asdk/asdk-6.4.1-linux-newlib-build-2773-i686.tar.bz2* > asdk/asdk-6.4.1-linux-newlib-build-2773-i686.tar.bz2; fi;\
 	$(MKDIR) -p linux
