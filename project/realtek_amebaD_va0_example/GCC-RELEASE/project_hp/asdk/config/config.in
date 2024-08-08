@@ -321,7 +321,6 @@ bool "Enable BT"				CONFIG_BT_EN
 if [ "$CONFIG_BT_EN" = "y" ]; then
 	define_bool CONFIG_BT y
 	bool "BT_Peripheral"		CONFIG_BT_PERIPHERAL
-	bool "BT_Matter_Adapter"	CONFIG_BT_MATTER_ADAPTER
 	bool "BT_Central"			CONFIG_BT_CENTRAL
 	dep_bool "BT_Scatternet"	CONFIG_BT_SCATTERNET $CONFIG_BT_PERIPHERAL $CONFIG_BT_CENTRAL
 	bool "BT_Beacon"			CONFIG_BT_BEACON
@@ -361,6 +360,10 @@ if [ "$CONFIG_BT_EN" = "y" ]; then
 		define_bool CONFIG_BT_MESH_PERIPHERAL            n
 		define_bool CONFIG_BT_MESH_SCATTERNET            n
 	fi
+	bool "BT_Matter_Adapter"								CONFIG_BLE_MATTER_ADAPTER
+	if [ "$CONFIG_BLE_MATTER_ADAPTER" = "y" ]; then
+		bool "BT_Matter_Multi_ADV"							CONFIG_BLE_MATTER_MULTI_ADV_ON
+	fi
 else
 	define_bool CONFIG_BT n
 	define_bool CONFIG_BT_PERIPHERAL n
@@ -380,6 +383,8 @@ else
 	define_bool CONFIG_BT_MESH_CENTRAL n
 	define_bool CONFIG_BT_MESH_PERIPHERAL n
 	define_bool CONFIG_BT_MESH_SCATTERNET n
+	define_bool CONFIG_BLE_MATTER_ADAPTER n
+	define_bool CONFIG_BLE_MATTER_MULTI_ADV_ON n
 fi
 endmenu
 
@@ -417,6 +422,11 @@ comment '< SSL Config '
 define_bool CONFIG_USE_MBEDTLS_ROM y
 bool "MBEDTLS Enable"		CONFIG_MBED_TLS_ENABLED
 bool "SSL ROM Test"		CONFIG_SSL_ROM_TEST
+if [ "$CONFIG_MBED_TLS_ENABLED" = "y" ]; then
+choice 'MBEDTLS Version'        "MBEDTLS_V_2_4_0         MBEDTLS_V_2_4_0_ENABLE \
+								 MBEDTLS_MATTER_DEFINED  MBEDTLS_MATTER_ENABLE \
+								 " 'MBEDTLS_MATTER_DEFINED' 
+fi
 endmenu
 
 mainmenu_option next_comment

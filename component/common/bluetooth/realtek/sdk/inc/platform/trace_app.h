@@ -25,14 +25,10 @@ extern "C" {
 #define COMBINE_TRACE_INFO_APP(type, subtype, module, level)  (uint32_t)(((type)<<24) | ((subtype)<<16) | ((module)<<8) | (level))
 
 /* Internal macro that is wrapped by internal macro DBG_BUFFER. */
-#ifndef __cplusplus
 #define DBG_BUFFER_APP(type, sub_type, module, level, fmt, param_num, ...) do {\
         static const char format[] TRACE_APP_DATA = fmt;\
         trace_log_buffer(COMBINE_TRACE_INFO_APP(type, sub_type, module, level), (uint32_t)format, param_num, ##__VA_ARGS__);\
     } while (0)
-#else
-#define DBG_BUFFER_APP(type, sub_type, module, level, fmt, param_num, ...) do {} while (0)
-#endif
 
 /**
  * trace_app.h

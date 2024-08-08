@@ -1412,7 +1412,7 @@ static int tls_set_session_ticket_ext(mbedtls_ssl_context *ssl, void *ext_data, 
 
 	int ret;
 	if (ssl->conf->min_minor_ver >= MBEDTLS_SSL_MINOR_VERSION_1) {
-
+#if defined(MBEDTLS_SSL_SESSION_TICKETS) && defined(MBEDTLS_SSL_CLI_C)
 		mbedtls_ssl_session session;
 		mbedtls_ssl_session_init( &session );
 
@@ -1434,6 +1434,7 @@ static int tls_set_session_ticket_ext(mbedtls_ssl_context *ssl, void *ext_data, 
 		mbedtls_ssl_session_free(&session);
 
 		return 1;
+#endif
 	}
 
 	return 0;

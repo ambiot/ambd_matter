@@ -77,7 +77,9 @@ BUILD_TARGET_ROM_FOLDER = $(ROOTDIR)/build/rom
 IMAGE_TARGET_FOLDER     = $(ROOTDIR)/image
 
 ifeq ($(COMPILEOS),$(LINUX_OS))
-ifneq ($(CONFIG_MATTER_EN),y)
+ifeq ($(CONFIG_MATTER_EN), y)
+include $(MATTER_BUILDDIR)/Makefile.toolchain.matter
+else
 ASDK_TOOLCHAIN = $(TOOLCHAINDIR)/linux/asdk-6.4.1/linux/newlib
 ASDK_TOOLCHAIN_R = ../toolchain/linux/asdk-6.4.1/linux/newlib
 endif
@@ -262,9 +264,6 @@ GLOBAL_CFLAGS += -Wextra
 #GLOBAL_CFLAGS += -Wconversion
 GLOBAL_CFLAGS += $(IFLAGS)
 GLOBAL_CFLAGS += -DCONFIG_PLATFORM_8721D
-ifeq ($(CONFIG_MATTER_EN),y)
-include $(MATTER_BUILDDIR)/Makefile.include.matter.lp.gen
-endif
 
 #*****************************************************************************#
 #                           ARM LD FLAGS

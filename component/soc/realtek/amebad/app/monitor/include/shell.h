@@ -78,15 +78,10 @@ typedef struct {
 //#endif
 
 #define AMEBA_CONSOLE_PREFIX	"#"
-#if defined(CONFIG_MATTER) && CONFIG_MATTER
+
 #define CONSOLE_AMEBA(...)     do {\
 	_ConsolePrint("\r" AMEBA_CONSOLE_PREFIX __VA_ARGS__);\
 }while(0)
-#else
-#define CONSOLE_AMEBA(...)     do {\
-	_ConsolePrint("\r"AMEBA_CONSOLE_PREFIX __VA_ARGS__);\
-}while(0)
-#endif
 
 _LONG_CALL_ VOID shell_init_rom(u32 TBLSz, VOID *pTBL);
 _LONG_CALL_ VOID shell_task_rom(VOID *Data);

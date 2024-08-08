@@ -23,7 +23,6 @@ IFLAGS += \
 IFLAGS += \
    -I$(BLEDIR)/sdk/example/ble_peripheral \
    -I$(BLEDIR)/sdk/example/ble_central \
-   -I$(BLEDIR)/sdk/example/bt_matter_adapter \
    -I$(BLEDIR)/sdk/example/ble_scatternet \
    -I$(BLEDIR)/sdk/example/bt_beacon \
    -I$(BLEDIR)/sdk/example/bt_config \
@@ -32,4 +31,5 @@ IFLAGS += \
    -I$(BLEDIR)/sdk/example/bt_breeze \
    -I$(BLEDIR)/../../application/breeze/include \
    -I$(BLEDIR)/sdk/example/bt_mesh_multiple_profile/provisioner_multiple_profile \
-   -I$(BLEDIR)/sdk/example/bt_mesh_multiple_profile/device_multiple_profile
+   -I$(BLEDIR)/sdk/example/bt_mesh_multiple_profile/device_multiple_profile \
+   -I$(BLEDIR)/sdk/example/ble_matter_adapter
