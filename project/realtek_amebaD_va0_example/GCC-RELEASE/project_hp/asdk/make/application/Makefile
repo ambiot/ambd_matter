@@ -23,7 +23,7 @@ endif
 	#@make -C azure_emb all
 	#@make -C airkiss all
 ifeq ($(CONFIG_MATTER_EN),y)
-	@make -C $(MATTER_BUILDDIR)/make/application all
+	@make -C $(MATTER_BUILDDIR)/make all
 endif
 #*****************************************************************************#
 #              CLEAN GENERATED FILES                                          #
@@ -35,6 +35,6 @@ clean:
 	#@make -C airkiss clean
 	@make -C linkkit clean
 ifeq ($(CONFIG_MATTER_EN),y)
-	@make -C $(MATTER_BUILDDIR)/make/application clean
+	@make -C $(MATTER_BUILDDIR)/make clean
 endif
 -include $(DEPS)

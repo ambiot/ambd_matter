@@ -59,10 +59,6 @@ OBJS +=		\
 		$(LWIPDIR)/src/api/api_lib.o \
 		$(LWIPDIR)/src/api/netifapi.o \
 
-ifeq ($(CONFIG_MATTER_EN),y)
-OBJS += $(LWIPDIR)/port/realtek/hooks/lwip_default_hooks.o
-endif
-
 #ifeq ($(CONFIG_HIGH_TP),y)
 #OBJS += $(OBJS_CONFIG) 
 #endif

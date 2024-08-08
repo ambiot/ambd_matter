@@ -14,7 +14,7 @@ The only solution is to add Ameba's all-clusters-app.zap.
 
 In `component/common/application/matter/project/amebad/Makefile`, the default all-clusters-app.zap in connectedhomeip will be replaced by Ameba's all-clusters-app.zap
 
-	@cp $(MATTER_DIR)/example/chiptest/all-clusters-app.zap $(ALL_CLUSTERS_ZAP)
+    @cp $(MATTER_DIR)/example/chiptest/all-clusters-app.zap $(ALL_CLUSTERS_ZAP)
 
 ## Get Ameba SDK & Matter SDK
 
@@ -23,12 +23,12 @@ In `component/common/application/matter/project/amebad/Makefile`, the default al
 Create a common directory for Ameba and Matter SDK
 
     mkdir dev
-    
+
     cd dev
 
 To check out this repository:
 
-    git clone https://github.com/ambiot/ambd_matter.git
+    git clone --recurse-submodules https://github.com/ambiot/ambd_matter.git
 
 To check out Matter repository:
 
@@ -37,8 +37,8 @@ To check out Matter repository:
 Make sure ambz2_matter and connectedhomeip are on the same directory level
 
     dev/
-	├── ambd_matter
-	└── connectedhomeip
+    ├── ambd_matter
+    └── connectedhomeip
 
 ## Set Matter Build Environment 
 
@@ -46,11 +46,11 @@ Make sure ambz2_matter and connectedhomeip are on the same directory level
     > https://github.com/project-chip/connectedhomeip/blob/master/docs/guides/BUILDING.md
 
     cd connectedhomeip
-    
+
     git submodule sync
 
     git submodule update --init --recursive
-    
+
     source scripts/bootstrap.sh
 
     source scripts/activate.sh
@@ -58,15 +58,15 @@ Make sure ambz2_matter and connectedhomeip are on the same directory level
 ## Make project_lp
 
     cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp/
-    
+
     make all
 
 ## Make Matter Libraries
 
     cd ambd_matter/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp/
-    
+
     make -C asdk all_clusters
-    
+
 ## Make project_hp
 
     in the same project_hp directory,

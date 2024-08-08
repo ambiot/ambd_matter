@@ -3,10 +3,6 @@
 
 #define CONFIG_PLATFORM_AMEBA_X 1
 
-#if defined(CHIP_PROJECT) && CHIP_PROJECT
-#define STD_PRINTF 1
-#endif
-
 #if defined (__IARSTDLIB__)
 	#include <stdio.h>
 	#include <stdlib.h>

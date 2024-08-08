@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    dct.h
+  * @file    dct2.h
   * @author
   * @version
   * @brief   Device Configuration Table API for storing information in NVRAM(flash).
@@ -12,8 +12,8 @@
   * Copyright(c) 2016, Realtek Semiconductor Corporation. All rights reserved.
   ******************************************************************************
   */
-#ifndef __RTK_DCT_MATTER_H__
-#define __RTK_DCT_MATTER_H__
+#ifndef __RTK_DCT2_H__
+#define __RTK_DCT2_H__
 
 #include <platform_stdlib.h>
 #include <osdep_service.h>
@@ -151,5 +151,5 @@ int32_t dct_delete_variable_new2(dct_handle_t *dct_handle, char *variable_name);
  */
 int32_t dct_remain_variable2(dct_handle_t *dct_handle);
 
-#endif // __RTK_DCT_MATTER_H__
+#endif // __RTK_DCT2_H__
 
