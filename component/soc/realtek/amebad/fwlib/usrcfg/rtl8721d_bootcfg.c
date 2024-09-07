@@ -42,11 +42,7 @@ MMU_ConfDef Flash_MMU_Config[] = {
 BOOT_RAM_DATA_SECTION
 u32 OTA_Region[2] = {
 	0x08006000,		/* OTA1 region start address */
-#if defined(CONFIG_MATTER) && CONFIG_MATTER
 	0x08206000,		/* OTA2 region start address */
-#else
-	0x08106000,		/* OTA2 region start address */
-#endif
 };
 
 /*
