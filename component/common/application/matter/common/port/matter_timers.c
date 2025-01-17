@@ -209,15 +209,14 @@ void matter_rtc_write(long long time)
 
 uint64_t ameba_get_clock_time(void)
 {
-#if 0
+    uint32_t current_tick = 0;
     uint64_t global_us = 0;
-    current_us = gtimer_read_us(&matter_rtc_timer);
+    current_tick = gtimer_read_tick(&matter_rtc_timer);
+    current_us = (uint64_t) current_tick * 1000000 / 32768;
     global_us = ((uint64_t)rtc_counter * US_OVERFLOW_MAX) + (current_us);
     return global_us;
-#else
-    return ((xTaskGetTickCount()) * configTICK_RATE_HZ);
-#endif
 }
+
 
 static void matter_timer_rtc_callback(void)
 {
@@ -226,7 +225,6 @@ static void matter_timer_rtc_callback(void)
 
 void matter_timer_init(void)
 {
-    //currently unable to use gtimer, as it will lead to hang issue.
     gtimer_init(&matter_rtc_timer, MATTER_SW_RTC_TIMER_ID);
     gtimer_start_periodical(&matter_rtc_timer, US_OVERFLOW_MAX, (void *)matter_timer_rtc_callback, (uint32_t) &matter_rtc_timer);
 }

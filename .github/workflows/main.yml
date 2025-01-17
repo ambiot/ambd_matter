@@ -28,7 +28,7 @@ jobs:
               uses: actions/checkout@v3
               with:
                   repository: project-chip/connectedhomeip
-                  ref: master
+                  ref: 70d9a61475d31686f0fde8e7b56f352a0f59b299
                   submodules: recursive
                   path: connectedhomeip
                   

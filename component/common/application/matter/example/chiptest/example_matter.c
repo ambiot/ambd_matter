@@ -11,6 +11,7 @@ static void example_matter_task_thread(void *pvParameters)
         //waiting for Wifi to be initialized
     }
 
+    matter_timer_init();
     ChipTest();
 
     vTaskDelete(NULL);
